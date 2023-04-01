@@ -1,0 +1,44 @@
+syntax = "proto3";
+package com.cloud.office.customer.busi.imserver.protocol;
+option java_package = "com.cloud.office.customer.busi.imserver.protocol";
+option java_outer_classname = "MessageProto";
+
+import "Header.proto";
+
+
+message ImMessage {
+  Header header = 1;
+  oneof body {
+    SendMessageRequest send_message_request = 2;
+    SendMessageResponse send_message_response = 3;
+  }
+}
+
+
+// 发送消息请求消息体
+message SendMessageRequest {
+  enum DataType {
+    TEXT = 0;
+    IMAGE = 1;
+    AUDIO = 2;
+    VIDEO = 3;
+  }
+  Header header = 1;
+  string sender_id = 2;
+  string receiver_id = 3;
+  uint32 timestamp = 4;
+  bytes content = 5;
+  DataType data_type = 6;
+}
+
+// 发送消息响应消息体,回传给发送方，实现如“已发送”功能
+message SendMessageResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAILURE = 1;
+  }
+  Header header = 1;
+  Status status = 2;
+  string message = 3;
+  string message_id = 4;
+}

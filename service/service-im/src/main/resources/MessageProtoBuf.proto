@@ -1,10 +1,16 @@
 syntax = "proto3";
-package com.cloud.office.customer.busi.imserver.protocol;
-option java_package = "com.cloud.office.customer.busi.imserver.protocol";
-option java_outer_classname = "MessageProto";
 
-import "Header.proto";
-
+message Header {
+  // 消息类型编号
+  enum MessageType {
+    SEND_MESSAGE_REQUEST = 0;
+    SEND_MESSAGE_RESPONSE = 1;
+  }
+  uint32 magic_number = 1; // 魔数，用于校验协议是否匹配
+  uint32 version = 2; // 协议版本号，用于兼容旧协议
+  uint32 message_type = 3; // 消息类型，用于区分不同类型的消息
+  uint32 message_length = 4; // 消息体长度，单位为字节
+}
 
 message ImMessage {
   Header header = 1;

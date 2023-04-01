@@ -3,7 +3,7 @@ package com.cloud.office.customer.busi.imserver.server;
 import com.cloud.office.customer.busi.imserver.codec.WebSocketProtobufDecoder;
 import com.cloud.office.customer.busi.imserver.codec.WebSocketProtobufEncoder;
 import com.cloud.office.customer.busi.imserver.handler.MessageRequestHandler;
-import com.cloud.office.customer.busi.imserver.protocol.MessageProto;
+import com.cloud.office.customer.busi.imserver.protocol.MessageProtoBuf;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -13,14 +13,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketFrameDecoder;
-import io.netty.handler.codec.http.websocketx.WebSocketFrameEncoder;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.springframework.stereotype.Component;
 
@@ -64,7 +59,7 @@ public class NettyServer {
                             //自定义解码器：把传入的Websocket帧转换成ByteBuf
                             .addLast(new WebSocketProtobufDecoder())
                             //再把ByteBuf转换成ProtoBuf
-                            .addLast(new ProtobufDecoder(MessageProto.ImMessage.getDefaultInstance()))
+                            .addLast(new ProtobufDecoder(MessageProtoBuf.ImMessage.getDefaultInstance()))
                             //登录校验
 //                            .addLast(new LoginRequestHandler())
                             //登录校验热插拔处理器
@@ -72,7 +67,8 @@ public class NettyServer {
                             //消息处理Handler
                             .addLast(new MessageRequestHandler())
                             //自定义编码器：把ProtoBuf转换成ByteBuf并包装成Websocket帧
-                            .addLast(new WebSocketProtobufEncoder());
+                            .addLast(new WebSocketProtobufEncoder())
+                    ;
                     }
                 });
         bind(serverBootstrap, PORT);

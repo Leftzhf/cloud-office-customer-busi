@@ -1,6 +1,5 @@
 package com.cloud.office.customer.busi.imserver.codec;
 
-import com.cloud.office.customer.busi.imserver.protocol.MessageProto;
 import com.google.protobuf.MessageLite;
 import com.google.protobuf.MessageLiteOrBuilder;
 import io.netty.buffer.ByteBuf;

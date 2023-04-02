@@ -8,6 +8,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
+
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageProtoBuf.ImMessage> {
 
     private Logger log = LoggerFactory.getLogger(MessageRequestHandler.class);
@@ -17,7 +19,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessagePr
         // 拿到消息发送方的会话信息
         Session session = SessionUtil.getSession(channelHandlerContext.channel());
 
-        log.info("收到来自{}的消息:{}", imMessage.getSendMessageRequest().getSenderId(), imMessage.getSendMessageRequest().getContent());
+        log.info("收到来自{}的消息:{}", imMessage.getSendMessageRequest().getSenderId(), imMessage.getSendMessageRequest().getContent().toString(StandardCharsets.UTF_8));
 
 
         //TODO 把消息内容存入MongoDB

@@ -29,11 +29,11 @@ message SendMessageRequest {
     AUDIO = 2;
     VIDEO = 3;
   }
-  string sender_id = 2;
-  string receiver_id = 3;
-  uint32 timestamp = 4;
-  bytes content = 5;
-  DataType data_type = 6;
+  string sender_id = 1;
+  string receiver_id = 2;
+  uint32 timestamp = 3;
+  bytes content = 4;
+  DataType data_type = 5;
 }
 
 // 发送消息响应消息体,回传给发送方，实现如“已发送”功能
@@ -42,7 +42,7 @@ message SendMessageResponse {
     SUCCESS = 0;
     FAILURE = 1;
   }
-  Status status = 2;
-  string message = 3;
-  string message_id = 4;
+  Status status = 1;
+  string message = 2;
+  string message_id = 3;
 }

@@ -2057,48 +2057,48 @@ public final class MessageProtoBuf {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string sender_id = 2;</code>
+     * <code>string sender_id = 1;</code>
      * @return The senderId.
      */
     java.lang.String getSenderId();
     /**
-     * <code>string sender_id = 2;</code>
+     * <code>string sender_id = 1;</code>
      * @return The bytes for senderId.
      */
     com.google.protobuf.ByteString
         getSenderIdBytes();
 
     /**
-     * <code>string receiver_id = 3;</code>
+     * <code>string receiver_id = 2;</code>
      * @return The receiverId.
      */
     java.lang.String getReceiverId();
     /**
-     * <code>string receiver_id = 3;</code>
+     * <code>string receiver_id = 2;</code>
      * @return The bytes for receiverId.
      */
     com.google.protobuf.ByteString
         getReceiverIdBytes();
 
     /**
-     * <code>uint32 timestamp = 4;</code>
+     * <code>uint32 timestamp = 3;</code>
      * @return The timestamp.
      */
     int getTimestamp();
 
     /**
-     * <code>bytes content = 5;</code>
+     * <code>bytes content = 4;</code>
      * @return The content.
      */
     com.google.protobuf.ByteString getContent();
 
     /**
-     * <code>.SendMessageRequest.DataType data_type = 6;</code>
+     * <code>.SendMessageRequest.DataType data_type = 5;</code>
      * @return The enum numeric value on the wire for dataType.
      */
     int getDataTypeValue();
     /**
-     * <code>.SendMessageRequest.DataType data_type = 6;</code>
+     * <code>.SendMessageRequest.DataType data_type = 5;</code>
      * @return The dataType.
      */
     MessageProtoBuf.SendMessageRequest.DataType getDataType();
@@ -2156,29 +2156,29 @@ public final class MessageProtoBuf {
             case 0:
               done = true;
               break;
-            case 18: {
+            case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
               senderId_ = s;
               break;
             }
-            case 26: {
+            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               receiverId_ = s;
               break;
             }
-            case 32: {
+            case 24: {
 
               timestamp_ = input.readUInt32();
               break;
             }
-            case 42: {
+            case 34: {
 
               content_ = input.readBytes();
               break;
             }
-            case 48: {
+            case 40: {
               int rawValue = input.readEnum();
 
               dataType_ = rawValue;
@@ -2342,10 +2342,10 @@ public final class MessageProtoBuf {
       // @@protoc_insertion_point(enum_scope:SendMessageRequest.DataType)
     }
 
-    public static final int SENDER_ID_FIELD_NUMBER = 2;
+    public static final int SENDER_ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object senderId_;
     /**
-     * <code>string sender_id = 2;</code>
+     * <code>string sender_id = 1;</code>
      * @return The senderId.
      */
     @java.lang.Override
@@ -2362,7 +2362,7 @@ public final class MessageProtoBuf {
       }
     }
     /**
-     * <code>string sender_id = 2;</code>
+     * <code>string sender_id = 1;</code>
      * @return The bytes for senderId.
      */
     @java.lang.Override
@@ -2380,10 +2380,10 @@ public final class MessageProtoBuf {
       }
     }
 
-    public static final int RECEIVER_ID_FIELD_NUMBER = 3;
+    public static final int RECEIVER_ID_FIELD_NUMBER = 2;
     private volatile java.lang.Object receiverId_;
     /**
-     * <code>string receiver_id = 3;</code>
+     * <code>string receiver_id = 2;</code>
      * @return The receiverId.
      */
     @java.lang.Override
@@ -2400,7 +2400,7 @@ public final class MessageProtoBuf {
       }
     }
     /**
-     * <code>string receiver_id = 3;</code>
+     * <code>string receiver_id = 2;</code>
      * @return The bytes for receiverId.
      */
     @java.lang.Override
@@ -2418,10 +2418,10 @@ public final class MessageProtoBuf {
       }
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 4;
+    public static final int TIMESTAMP_FIELD_NUMBER = 3;
     private int timestamp_;
     /**
-     * <code>uint32 timestamp = 4;</code>
+     * <code>uint32 timestamp = 3;</code>
      * @return The timestamp.
      */
     @java.lang.Override
@@ -2429,10 +2429,10 @@ public final class MessageProtoBuf {
       return timestamp_;
     }
 
-    public static final int CONTENT_FIELD_NUMBER = 5;
+    public static final int CONTENT_FIELD_NUMBER = 4;
     private com.google.protobuf.ByteString content_;
     /**
-     * <code>bytes content = 5;</code>
+     * <code>bytes content = 4;</code>
      * @return The content.
      */
     @java.lang.Override
@@ -2440,17 +2440,17 @@ public final class MessageProtoBuf {
       return content_;
     }
 
-    public static final int DATA_TYPE_FIELD_NUMBER = 6;
+    public static final int DATA_TYPE_FIELD_NUMBER = 5;
     private int dataType_;
     /**
-     * <code>.SendMessageRequest.DataType data_type = 6;</code>
+     * <code>.SendMessageRequest.DataType data_type = 5;</code>
      * @return The enum numeric value on the wire for dataType.
      */
     @java.lang.Override public int getDataTypeValue() {
       return dataType_;
     }
     /**
-     * <code>.SendMessageRequest.DataType data_type = 6;</code>
+     * <code>.SendMessageRequest.DataType data_type = 5;</code>
      * @return The dataType.
      */
     @java.lang.Override public MessageProtoBuf.SendMessageRequest.DataType getDataType() {
@@ -2474,19 +2474,19 @@ public final class MessageProtoBuf {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getSenderIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, senderId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, senderId_);
       }
       if (!getReceiverIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, receiverId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, receiverId_);
       }
       if (timestamp_ != 0) {
-        output.writeUInt32(4, timestamp_);
+        output.writeUInt32(3, timestamp_);
       }
       if (!content_.isEmpty()) {
-        output.writeBytes(5, content_);
+        output.writeBytes(4, content_);
       }
       if (dataType_ != MessageProtoBuf.SendMessageRequest.DataType.TEXT.getNumber()) {
-        output.writeEnum(6, dataType_);
+        output.writeEnum(5, dataType_);
       }
       unknownFields.writeTo(output);
     }
@@ -2498,22 +2498,22 @@ public final class MessageProtoBuf {
 
       size = 0;
       if (!getSenderIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, senderId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, senderId_);
       }
       if (!getReceiverIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, receiverId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, receiverId_);
       }
       if (timestamp_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(4, timestamp_);
+          .computeUInt32Size(3, timestamp_);
       }
       if (!content_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, content_);
+          .computeBytesSize(4, content_);
       }
       if (dataType_ != MessageProtoBuf.SendMessageRequest.DataType.TEXT.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(6, dataType_);
+          .computeEnumSize(5, dataType_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2834,7 +2834,7 @@ public final class MessageProtoBuf {
 
       private java.lang.Object senderId_ = "";
       /**
-       * <code>string sender_id = 2;</code>
+       * <code>string sender_id = 1;</code>
        * @return The senderId.
        */
       public java.lang.String getSenderId() {
@@ -2850,7 +2850,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string sender_id = 2;</code>
+       * <code>string sender_id = 1;</code>
        * @return The bytes for senderId.
        */
       public com.google.protobuf.ByteString
@@ -2867,7 +2867,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string sender_id = 2;</code>
+       * <code>string sender_id = 1;</code>
        * @param value The senderId to set.
        * @return This builder for chaining.
        */
@@ -2882,7 +2882,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string sender_id = 2;</code>
+       * <code>string sender_id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearSenderId() {
@@ -2892,7 +2892,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string sender_id = 2;</code>
+       * <code>string sender_id = 1;</code>
        * @param value The bytes for senderId to set.
        * @return This builder for chaining.
        */
@@ -2910,7 +2910,7 @@ public final class MessageProtoBuf {
 
       private java.lang.Object receiverId_ = "";
       /**
-       * <code>string receiver_id = 3;</code>
+       * <code>string receiver_id = 2;</code>
        * @return The receiverId.
        */
       public java.lang.String getReceiverId() {
@@ -2926,7 +2926,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string receiver_id = 3;</code>
+       * <code>string receiver_id = 2;</code>
        * @return The bytes for receiverId.
        */
       public com.google.protobuf.ByteString
@@ -2943,7 +2943,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string receiver_id = 3;</code>
+       * <code>string receiver_id = 2;</code>
        * @param value The receiverId to set.
        * @return This builder for chaining.
        */
@@ -2958,7 +2958,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string receiver_id = 3;</code>
+       * <code>string receiver_id = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearReceiverId() {
@@ -2968,7 +2968,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string receiver_id = 3;</code>
+       * <code>string receiver_id = 2;</code>
        * @param value The bytes for receiverId to set.
        * @return This builder for chaining.
        */
@@ -2986,7 +2986,7 @@ public final class MessageProtoBuf {
 
       private int timestamp_ ;
       /**
-       * <code>uint32 timestamp = 4;</code>
+       * <code>uint32 timestamp = 3;</code>
        * @return The timestamp.
        */
       @java.lang.Override
@@ -2994,7 +2994,7 @@ public final class MessageProtoBuf {
         return timestamp_;
       }
       /**
-       * <code>uint32 timestamp = 4;</code>
+       * <code>uint32 timestamp = 3;</code>
        * @param value The timestamp to set.
        * @return This builder for chaining.
        */
@@ -3005,7 +3005,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>uint32 timestamp = 4;</code>
+       * <code>uint32 timestamp = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearTimestamp() {
@@ -3017,7 +3017,7 @@ public final class MessageProtoBuf {
 
       private com.google.protobuf.ByteString content_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>bytes content = 5;</code>
+       * <code>bytes content = 4;</code>
        * @return The content.
        */
       @java.lang.Override
@@ -3025,7 +3025,7 @@ public final class MessageProtoBuf {
         return content_;
       }
       /**
-       * <code>bytes content = 5;</code>
+       * <code>bytes content = 4;</code>
        * @param value The content to set.
        * @return This builder for chaining.
        */
@@ -3039,7 +3039,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>bytes content = 5;</code>
+       * <code>bytes content = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearContent() {
@@ -3051,14 +3051,14 @@ public final class MessageProtoBuf {
 
       private int dataType_ = 0;
       /**
-       * <code>.SendMessageRequest.DataType data_type = 6;</code>
+       * <code>.SendMessageRequest.DataType data_type = 5;</code>
        * @return The enum numeric value on the wire for dataType.
        */
       @java.lang.Override public int getDataTypeValue() {
         return dataType_;
       }
       /**
-       * <code>.SendMessageRequest.DataType data_type = 6;</code>
+       * <code>.SendMessageRequest.DataType data_type = 5;</code>
        * @param value The enum numeric value on the wire for dataType to set.
        * @return This builder for chaining.
        */
@@ -3069,7 +3069,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>.SendMessageRequest.DataType data_type = 6;</code>
+       * <code>.SendMessageRequest.DataType data_type = 5;</code>
        * @return The dataType.
        */
       @java.lang.Override
@@ -3079,7 +3079,7 @@ public final class MessageProtoBuf {
         return result == null ? MessageProtoBuf.SendMessageRequest.DataType.UNRECOGNIZED : result;
       }
       /**
-       * <code>.SendMessageRequest.DataType data_type = 6;</code>
+       * <code>.SendMessageRequest.DataType data_type = 5;</code>
        * @param value The dataType to set.
        * @return This builder for chaining.
        */
@@ -3093,7 +3093,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>.SendMessageRequest.DataType data_type = 6;</code>
+       * <code>.SendMessageRequest.DataType data_type = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearDataType() {
@@ -3160,35 +3160,35 @@ public final class MessageProtoBuf {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.SendMessageResponse.Status status = 2;</code>
+     * <code>.SendMessageResponse.Status status = 1;</code>
      * @return The enum numeric value on the wire for status.
      */
     int getStatusValue();
     /**
-     * <code>.SendMessageResponse.Status status = 2;</code>
+     * <code>.SendMessageResponse.Status status = 1;</code>
      * @return The status.
      */
     MessageProtoBuf.SendMessageResponse.Status getStatus();
 
     /**
-     * <code>string message = 3;</code>
+     * <code>string message = 2;</code>
      * @return The message.
      */
     java.lang.String getMessage();
     /**
-     * <code>string message = 3;</code>
+     * <code>string message = 2;</code>
      * @return The bytes for message.
      */
     com.google.protobuf.ByteString
         getMessageBytes();
 
     /**
-     * <code>string message_id = 4;</code>
+     * <code>string message_id = 3;</code>
      * @return The messageId.
      */
     java.lang.String getMessageId();
     /**
-     * <code>string message_id = 4;</code>
+     * <code>string message_id = 3;</code>
      * @return The bytes for messageId.
      */
     com.google.protobuf.ByteString
@@ -3246,19 +3246,19 @@ public final class MessageProtoBuf {
             case 0:
               done = true;
               break;
-            case 16: {
+            case 8: {
               int rawValue = input.readEnum();
 
               status_ = rawValue;
               break;
             }
-            case 26: {
+            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               message_ = s;
               break;
             }
-            case 34: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               messageId_ = s;
@@ -3404,17 +3404,17 @@ public final class MessageProtoBuf {
       // @@protoc_insertion_point(enum_scope:SendMessageResponse.Status)
     }
 
-    public static final int STATUS_FIELD_NUMBER = 2;
+    public static final int STATUS_FIELD_NUMBER = 1;
     private int status_;
     /**
-     * <code>.SendMessageResponse.Status status = 2;</code>
+     * <code>.SendMessageResponse.Status status = 1;</code>
      * @return The enum numeric value on the wire for status.
      */
     @java.lang.Override public int getStatusValue() {
       return status_;
     }
     /**
-     * <code>.SendMessageResponse.Status status = 2;</code>
+     * <code>.SendMessageResponse.Status status = 1;</code>
      * @return The status.
      */
     @java.lang.Override public MessageProtoBuf.SendMessageResponse.Status getStatus() {
@@ -3423,10 +3423,10 @@ public final class MessageProtoBuf {
       return result == null ? MessageProtoBuf.SendMessageResponse.Status.UNRECOGNIZED : result;
     }
 
-    public static final int MESSAGE_FIELD_NUMBER = 3;
+    public static final int MESSAGE_FIELD_NUMBER = 2;
     private volatile java.lang.Object message_;
     /**
-     * <code>string message = 3;</code>
+     * <code>string message = 2;</code>
      * @return The message.
      */
     @java.lang.Override
@@ -3443,7 +3443,7 @@ public final class MessageProtoBuf {
       }
     }
     /**
-     * <code>string message = 3;</code>
+     * <code>string message = 2;</code>
      * @return The bytes for message.
      */
     @java.lang.Override
@@ -3461,10 +3461,10 @@ public final class MessageProtoBuf {
       }
     }
 
-    public static final int MESSAGE_ID_FIELD_NUMBER = 4;
+    public static final int MESSAGE_ID_FIELD_NUMBER = 3;
     private volatile java.lang.Object messageId_;
     /**
-     * <code>string message_id = 4;</code>
+     * <code>string message_id = 3;</code>
      * @return The messageId.
      */
     @java.lang.Override
@@ -3481,7 +3481,7 @@ public final class MessageProtoBuf {
       }
     }
     /**
-     * <code>string message_id = 4;</code>
+     * <code>string message_id = 3;</code>
      * @return The bytes for messageId.
      */
     @java.lang.Override
@@ -3514,13 +3514,13 @@ public final class MessageProtoBuf {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (status_ != MessageProtoBuf.SendMessageResponse.Status.SUCCESS.getNumber()) {
-        output.writeEnum(2, status_);
+        output.writeEnum(1, status_);
       }
       if (!getMessageBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, message_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, message_);
       }
       if (!getMessageIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, messageId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, messageId_);
       }
       unknownFields.writeTo(output);
     }
@@ -3533,13 +3533,13 @@ public final class MessageProtoBuf {
       size = 0;
       if (status_ != MessageProtoBuf.SendMessageResponse.Status.SUCCESS.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, status_);
+          .computeEnumSize(1, status_);
       }
       if (!getMessageBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, message_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, message_);
       }
       if (!getMessageIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, messageId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, messageId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3840,14 +3840,14 @@ public final class MessageProtoBuf {
 
       private int status_ = 0;
       /**
-       * <code>.SendMessageResponse.Status status = 2;</code>
+       * <code>.SendMessageResponse.Status status = 1;</code>
        * @return The enum numeric value on the wire for status.
        */
       @java.lang.Override public int getStatusValue() {
         return status_;
       }
       /**
-       * <code>.SendMessageResponse.Status status = 2;</code>
+       * <code>.SendMessageResponse.Status status = 1;</code>
        * @param value The enum numeric value on the wire for status to set.
        * @return This builder for chaining.
        */
@@ -3858,7 +3858,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>.SendMessageResponse.Status status = 2;</code>
+       * <code>.SendMessageResponse.Status status = 1;</code>
        * @return The status.
        */
       @java.lang.Override
@@ -3868,7 +3868,7 @@ public final class MessageProtoBuf {
         return result == null ? MessageProtoBuf.SendMessageResponse.Status.UNRECOGNIZED : result;
       }
       /**
-       * <code>.SendMessageResponse.Status status = 2;</code>
+       * <code>.SendMessageResponse.Status status = 1;</code>
        * @param value The status to set.
        * @return This builder for chaining.
        */
@@ -3882,7 +3882,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>.SendMessageResponse.Status status = 2;</code>
+       * <code>.SendMessageResponse.Status status = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearStatus() {
@@ -3894,7 +3894,7 @@ public final class MessageProtoBuf {
 
       private java.lang.Object message_ = "";
       /**
-       * <code>string message = 3;</code>
+       * <code>string message = 2;</code>
        * @return The message.
        */
       public java.lang.String getMessage() {
@@ -3910,7 +3910,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string message = 3;</code>
+       * <code>string message = 2;</code>
        * @return The bytes for message.
        */
       public com.google.protobuf.ByteString
@@ -3927,7 +3927,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string message = 3;</code>
+       * <code>string message = 2;</code>
        * @param value The message to set.
        * @return This builder for chaining.
        */
@@ -3942,7 +3942,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string message = 3;</code>
+       * <code>string message = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearMessage() {
@@ -3952,7 +3952,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string message = 3;</code>
+       * <code>string message = 2;</code>
        * @param value The bytes for message to set.
        * @return This builder for chaining.
        */
@@ -3970,7 +3970,7 @@ public final class MessageProtoBuf {
 
       private java.lang.Object messageId_ = "";
       /**
-       * <code>string message_id = 4;</code>
+       * <code>string message_id = 3;</code>
        * @return The messageId.
        */
       public java.lang.String getMessageId() {
@@ -3986,7 +3986,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string message_id = 4;</code>
+       * <code>string message_id = 3;</code>
        * @return The bytes for messageId.
        */
       public com.google.protobuf.ByteString
@@ -4003,7 +4003,7 @@ public final class MessageProtoBuf {
         }
       }
       /**
-       * <code>string message_id = 4;</code>
+       * <code>string message_id = 3;</code>
        * @param value The messageId to set.
        * @return This builder for chaining.
        */
@@ -4018,7 +4018,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string message_id = 4;</code>
+       * <code>string message_id = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearMessageId() {
@@ -4028,7 +4028,7 @@ public final class MessageProtoBuf {
         return this;
       }
       /**
-       * <code>string message_id = 4;</code>
+       * <code>string message_id = 3;</code>
        * @param value The bytes for messageId to set.
        * @return This builder for chaining.
        */
@@ -4134,14 +4134,14 @@ public final class MessageProtoBuf {
       "ge_request\030\002 \001(\0132\023.SendMessageRequestH\000\022" +
       "5\n\025send_message_response\030\003 \001(\0132\024.SendMes" +
       "sageResponseH\000B\006\n\004body\"\310\001\n\022SendMessageRe" +
-      "quest\022\021\n\tsender_id\030\002 \001(\t\022\023\n\013receiver_id\030" +
-      "\003 \001(\t\022\021\n\ttimestamp\030\004 \001(\r\022\017\n\007content\030\005 \001(" +
-      "\014\022/\n\tdata_type\030\006 \001(\0162\034.SendMessageReques" +
+      "quest\022\021\n\tsender_id\030\001 \001(\t\022\023\n\013receiver_id\030" +
+      "\002 \001(\t\022\021\n\ttimestamp\030\003 \001(\r\022\017\n\007content\030\004 \001(" +
+      "\014\022/\n\tdata_type\030\005 \001(\0162\034.SendMessageReques" +
       "t.DataType\"5\n\010DataType\022\010\n\004TEXT\020\000\022\t\n\005IMAG" +
       "E\020\001\022\t\n\005AUDIO\020\002\022\t\n\005VIDEO\020\003\"\213\001\n\023SendMessag" +
-      "eResponse\022+\n\006status\030\002 \001(\0162\033.SendMessageR" +
-      "esponse.Status\022\017\n\007message\030\003 \001(\t\022\022\n\nmessa" +
-      "ge_id\030\004 \001(\t\"\"\n\006Status\022\013\n\007SUCCESS\020\000\022\013\n\007FA" +
+      "eResponse\022+\n\006status\030\001 \001(\0162\033.SendMessageR" +
+      "esponse.Status\022\017\n\007message\030\002 \001(\t\022\022\n\nmessa" +
+      "ge_id\030\003 \001(\t\"\"\n\006Status\022\013\n\007SUCCESS\020\000\022\013\n\007FA" +
       "ILURE\020\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

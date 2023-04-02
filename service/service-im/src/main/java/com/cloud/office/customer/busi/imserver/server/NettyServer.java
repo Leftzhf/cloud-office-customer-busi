@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.springframework.stereotype.Component;
 
@@ -53,13 +55,15 @@ public class NettyServer {
                             // 大数据流处理器
                             .addLast(new ChunkedWriteHandler())
                             //Websocket数据压缩处理器
-                            .addLast(new WebSocketServerCompressionHandler())
+//                            .addLast(new WebSocketServerCompressionHandler())
                             //开启Websocket
                             .addLast(new WebSocketServerProtocolHandler("/",null ,true,1024*10))
                             //自定义解码器：把传入的Websocket帧转换成ByteBuf
                             .addLast(new WebSocketProtobufDecoder())
+//                            .addLast(new ProtobufVarint32FrameDecoder())
                             //再把ByteBuf转换成ProtoBuf
                             .addLast(new ProtobufDecoder(MessageProtoBuf.ImMessage.getDefaultInstance()))
+//                            .addLast(new ProtobufVarint32LengthFieldPrepender())
                             //登录校验
 //                            .addLast(new LoginRequestHandler())
                             //登录校验热插拔处理器

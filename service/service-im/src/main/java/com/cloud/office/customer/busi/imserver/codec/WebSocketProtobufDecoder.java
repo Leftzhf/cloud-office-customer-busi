@@ -23,16 +23,9 @@ public class WebSocketProtobufDecoder extends MessageToMessageDecoder<WebSocketF
     private static final Logger log = LoggerFactory.getLogger(WebSocketProtobufDecoder.class);
     @Override
     protected void decode(ChannelHandlerContext ctx, WebSocketFrame frame, List<Object> out) throws Exception {
-//        log.info("打印消息：{}",((TextWebSocketFrame)frame).text());
         ByteBuf buf = frame.content();
-        //魔数判断，如果不符合则拒绝连接
-        int magincNumber = buf.readInt();
-//        if (magincNumber != 0x12345678) {
-//            ctx.channel().close();
-//            return;
-//        }
-        out.add(buf);
         buf.retain();
+        out.add(buf);
     }
 }
 

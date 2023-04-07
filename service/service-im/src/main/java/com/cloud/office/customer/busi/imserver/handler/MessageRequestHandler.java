@@ -23,7 +23,25 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessagePr
 
 
         //TODO 把消息内容存入MongoDB
-
+        MessageProtoBuf.ImMessage imMessageResponse = MessageProtoBuf.ImMessage.newBuilder()
+                            //设置头部字段
+                            .setHeader(MessageProtoBuf.Header.newBuilder()
+                                    .setMagicNumber(0x12345678)
+                                    .setMessageType(MessageProtoBuf.Header.MessageType.SEND_MESSAGE_RESPONSE_VALUE)
+                                    .build())
+                            //设置消息体字段
+                            .setSendMessageResponse(MessageProtoBuf.SendMessageResponse.newBuilder()
+                                .setStatus(MessageProtoBuf.SendMessageResponse.Status.SUCCESS)
+                                .setMessage("发送成功")
+                                .build())
+                            .build();
+        channelHandlerContext.channel().writeAndFlush(imMessageResponse).addListener(future -> {
+            if (future.isSuccess()) {
+                log.info("消息发送成功");
+            }else {
+                log.info("消息发送失败");
+            }
+        });
 //        // 拿到消息接收方的 channel
 //        Channel toUserChannel = SessionUtil.getChannel(ImMessage.getSendMessageRequest().getReceiverId());
 //

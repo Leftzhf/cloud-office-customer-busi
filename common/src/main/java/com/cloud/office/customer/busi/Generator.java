@@ -8,6 +8,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * mybatis-plus 代码生成器
+ *
+ * @author leftleft
+ * @date 2023/04/03
+ */
 public class Generator {
 
     public static void main(String[] args) {

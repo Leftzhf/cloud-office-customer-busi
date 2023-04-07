@@ -1,96 +1,13 @@
 spring:
   application:
-    name: cloud-office-gateway
-#  cloud.config:
-#    name: smart-link-open-api-gateway,management,mongo,datasource,smart-link-busi-portal-service,eureka-client,redis,rabbitmq
-#    uri: http://10.19.223.1:8091/
-#    fail-fast: true
-#    retry:
-#      initial-interval: 2000
-#      max-interval: 10000
-#      multiplier: 2
-#      max-attempts: 10
-server:
-  port: 8081
-
-api-gateway:
-  route-queue:
-    suffix: NO1
-
-spring.cloud.gateway:
-  httpclient:
-    connect-timeout: 1000
-    response-timeout: 30s
-  routes:
-    - id: smart-link-open-portal-static
-      uri: http://10.19.223.1:30005
-      predicates:
-        - Path=/open-portal/**
-      filters:
-        - StripPrefix=0
-    - id: smart-link-busi-portal-static
-      uri: http://10.19.223.1:30006
-      predicates:
-        - Path=/busi-portal/**
-      filters:
-        - StripPrefix=0
-    - id: smart-link-manager-portal-static
-      uri: http://10.19.223.1:30003
-      predicates:
-        - Path=/manager-portal/**
-      filters:
-        - StripPrefix=0
-    - id: smart-link-process-service
-      uri: lb://smart-link-process-service
-      predicates:
-        - Path=/api-process/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-ask-off-service
-      uri: lb://smart-link-ask-off-service
-      predicates:
-        - Path=/api-ask-off/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-busi-portal-service
-      uri: lb://smart-link-busi-portal-service
-      predicates:
-        - Path=/api-portal/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-file-service
-      uri: lb://smart-link-file-service
-      predicates:
-        - Path=/api-file/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-manager-portal-service
-      uri: lb://smart-link-manager-portal-service
-      predicates:
-        - Path=/api-manager-portal/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-open-portal-service
-      uri: lb://smart-link-open-portal-service
-      predicates:
-        - Path=/api-open-portal/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-todo-service
-      uri: lb://smart-link-todo-service
-      predicates:
-        - Path=/api-todo/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-unified-message-acceptor-service
-      uri: lb://smart-link-unified-message-console-service
-      predicates:
-        - Path=/api-unified-message/**
-      filters:
-        - StripPrefix=1
-    - id: smart-link-user-center-service
-      uri: lb://smart-link-user-center-service
-      predicates:
-        - Path=/api-user-center/**
-      filters:
-        - StripPrefix=1
+    name: cloud-office-gateway # 服务名称
+  profiles:
+    active: default #开发环境
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848 # Nacos地址
+        file-extension: yaml # 文件后缀名
+        shared-configs:
+          - data-id: common.yml #通用配置，包括swagger和数据源的配置
+            group: DEFAULT_GROUP

@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: cloud-office-auth # 服务名称
+  profiles:
+    active: default #开发环境
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848 # Nacos地址
+        file-extension: yaml # 文件后缀名
+        shared-configs:
+          - data-id: common.yml #通用配置，包括swagger和数据源的配置
+            group: DEFAULT_GROUP

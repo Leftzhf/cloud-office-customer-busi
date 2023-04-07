@@ -7,6 +7,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * 需改Spring MVC 的消息转换器顺序不一致，解决返回响应为string时的问题
+ *
+ * @author leftleft
+ * @date 2023/04/03
+ */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 

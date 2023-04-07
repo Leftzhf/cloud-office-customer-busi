@@ -2,6 +2,7 @@ package com.cloud.office.customer.busi.handler;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.cloud.office.customer.busi.enums.ResultCodeEnum;
 import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.web.ResponseData;
@@ -71,10 +72,10 @@ public class ControllerAdviceHandler implements ResponseBodyAdvice<Object> {
         }
 
         //如果Controller直接返回String的话，会报错，故我们需要手动转换成json。所以,String类型需要特殊处理 手动转为json字符串
-//        if (o instanceof String) {
-//
-//            return JSON.toJSONString(ResponseData.success(o));
-//        }
+        if (o instanceof String) {
+
+            return JSON.toJSONString(ResponseData.success(o));
+        }
         //如果接口已经做了包装了，这里拦截后就不用再包装
         if (o instanceof ResponseData) {
 //            if( ((ResponseData<?>) o).getData() instanceof Boolean)
@@ -89,9 +90,9 @@ public class ControllerAdviceHandler implements ResponseBodyAdvice<Object> {
             }
         }
         //404时 返回特定信息
-        if (is404(o)) {
-            return ResponseData.failure(ResultCodeEnum.ERROR_404.getCode(), ResultCodeEnum.ERROR_404.getMessage());
-        }
+//        if (is404(o)) {
+//            return ResponseData.failure(ResultCodeEnum.ERROR_404.getCode(), ResultCodeEnum.ERROR_404.getMessage());
+//        }
         return ResponseData.success(o);
     }
 

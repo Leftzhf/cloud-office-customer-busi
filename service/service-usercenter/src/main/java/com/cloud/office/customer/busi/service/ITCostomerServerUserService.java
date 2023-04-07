@@ -1,7 +1,11 @@
-package domain.service;
-
-import domain.entity.TCostomerServerUser;
+package com.cloud.office.customer.busi.service;
+import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerRule;
+import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cloud.office.customer.busi.service_usercenter.domain.vo.RegisterBody;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +17,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITCostomerServerUserService extends IService<TCostomerServerUser> {
 
+    Boolean registerUserInfo( TCostomerServerUser userInfo);
+    TCostomerServerUser getUserByName(String username);
+
+    Map<String, List<TCostomerServerRule>> getRuleByUserId(String userId);
 }

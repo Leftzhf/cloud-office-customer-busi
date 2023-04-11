@@ -5,11 +5,13 @@ message Header {
   enum MessageType {
     SEND_MESSAGE_REQUEST = 0;
     SEND_MESSAGE_RESPONSE = 1;
+    HANDSHAKE = 2;
   }
   uint32 magic_number = 1; // 魔数，用于校验协议是否匹配
   uint32 version = 2; // 协议版本号，用于兼容旧协议
-  uint32 message_type = 3; // 消息类型，用于区分不同类型的消息
+  MessageType message_type = 3; // 消息类型，用于区分不同类型的消息
   uint32 message_length = 4; // 消息体长度，单位为字节
+  bool isVisitors = 5; //  是否是访客的连接
 }
 
 message ImMessage {
@@ -17,6 +19,7 @@ message ImMessage {
   oneof body {
     SendMessageRequest send_message_request = 2;
     SendMessageResponse send_message_response = 3;
+    Handshake handshake = 4;
   }
 }
 
@@ -45,4 +48,8 @@ message SendMessageResponse {
   Status status = 1;
   string message = 2;
   string message_id = 3;
+}
+message Handshake {
+  string client_id = 1; // 客户端ID，用于唯一标识客户端连接
+  bool isVisitors = 2; // 是否是访客的连接
 }

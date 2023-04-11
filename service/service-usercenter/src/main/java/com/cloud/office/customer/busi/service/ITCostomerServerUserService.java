@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public interface ITCostomerServerUserService extends IService<TCostomerServerUser> {
 
-    Boolean registerUserInfo( TCostomerServerUser userInfo);
+    Integer registerUserInfo( TCostomerServerUser userInfo);
     TCostomerServerUser getUserByName(String username);
 
     Map<String, List<TCostomerServerRule>> getRuleByUserId(String userId);

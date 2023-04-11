@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import java.util.Date;
 import java.util.UUID;
 
 public class LoginRequestHandler extends SimpleChannelInboundHandler<MessageProtoBuf.ImMessage> {
@@ -17,15 +16,23 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<MessageProt
     private static final Logger log = LoggerFactory.getLogger(LoginRequestHandler.class);
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MessageProtoBuf.ImMessage imMessage) {
-        //访客登录，直接分配一个userId
-        String userId = randomUserId();
-        log.info("访客{}登录成功", userId);
-        ctx.fireChannelRead(imMessage);
-        //加入session
-//        SessionUtil.bindSession(new Session(userId, imMessage.getUserName()), ctx.channel());
-    }
+    protected void channelRead0(ChannelHandlerContext ctx, MessageProtoBuf.ImMessage imMessage) throws Exception {
+        if (!SessionUtil.hasLogin(ctx.channel())) {
 
+            if (imMessage.getHeader().getIsVisitors()) {
+                //todo 访客直接绑定userId到session
+                SessionUtil.bindSession(new Session(imMessage.getHandshake().getClientId(),"访客"),ctx.channel());
+            } else {
+                //todo 客服校验token，然后绑定userId到session
+                if (valid()){
+                    SessionUtil.bindSession(new Session(imMessage.getHandshake().getClientId(),"客服"),ctx.channel());
+                }
+            }
+        } else {
+            ctx.pipeline().remove(this);
+            super.channelRead(ctx, imMessage);
+        }
+    }
 
 
     private boolean valid() {

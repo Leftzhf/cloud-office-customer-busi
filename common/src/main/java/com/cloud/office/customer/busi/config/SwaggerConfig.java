@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .apiInfo(webApiInfo())
                 .select()
                 //只显示api路径下的页面
-                .paths(PathSelectors.regex("/api/.*"))
+//                .paths(PathSelectors.regex("/api/.*"))
                 .build();
 
     }

@@ -1,12 +1,9 @@
 package com.cloud.office.customer.busi.system;
 
-import cn.hutool.system.UserInfo;
-import com.cloud.office.customer.busi.enums.UserIdEnum;
-import com.cloud.office.customer.busi.exception.ApplicationException;
+import com.cloud.office.customer.busi.common.enums.UserIdEnum;
+import com.cloud.office.customer.busi.common.exception.ApplicationException;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerUser;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Locale;
 
 /**
  * @author ZuoHaoFan

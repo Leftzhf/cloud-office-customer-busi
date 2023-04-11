@@ -6,25 +6,24 @@ import com.cloud.office.customer.busi.service.ITCostomerServerUserService;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerRule;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerUser;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.RegisterBody;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ *  用户中心
  * </p>
  *
  * @author leftleft
  * @since 2023-03-17
  */
 @RestController
+@Api(tags = "用户中心")
 @RequestMapping("/user")
 public class TCostomerServerUserController {
 
@@ -43,8 +42,9 @@ public class TCostomerServerUserController {
     }
 
     @PostMapping("/registerUserInfo")
-    @ApiOperation(value = "根据userID查询用户权限")
-    public boolean registerUserInfo( TCostomerServerUser userinfo){
+    @ApiOperation(value = "注册用户")
+    public Integer registerUserInfo(@RequestBody TCostomerServerUser userinfo){
         return tCostomerServerUser.registerUserInfo(userinfo);
     }
+
 }

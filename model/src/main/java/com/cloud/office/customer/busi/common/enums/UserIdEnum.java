@@ -1,4 +1,4 @@
-package com.cloud.office.customer.busi.enums;
+package com.cloud.office.customer.busi.common.enums;
 
 import org.apache.commons.lang3.StringUtils;
 

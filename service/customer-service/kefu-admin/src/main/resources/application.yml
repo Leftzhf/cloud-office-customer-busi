@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+
+# MyBatis配置
+mybatis-plus:
+  mapper-locations: classpath*:mybatis/**/*.xml
+  type-aliases-package: com.kefu.admin.entity
+  type-enums-package: com.kefu.admin.entity.enums
+
+# JWT配置
+jwt:
+  tokenHeader: Authorization
+  secret: w-eyJleHAiOjE1NDMyMDUyODUsInN1YiI6ImFkbWluIiwiY3JlYXRlZCI6MTU0MDYxMzI4N
+  expiration: 3600000
+  tokenHead: "Bearer "

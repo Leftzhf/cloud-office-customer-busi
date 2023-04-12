@@ -9,9 +9,9 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.dev33.satoken.util.SaTokenConsts;
 import com.cloud.office.customer.busi.constant.Constants;
+import com.cloud.office.customer.busi.domain.vo.LoginBody;
+import com.cloud.office.customer.busi.domain.vo.RegisterBody;
 import com.cloud.office.customer.busi.service.Impl.SysLoginService;
-import com.cloud.office.customer.busi.service_usercenter.domain.vo.LoginBody;
-import com.cloud.office.customer.busi.service_usercenter.domain.vo.RegisterBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
@@ -31,35 +31,13 @@ import java.util.Map;
 @RestController
 public class SaOAuth2ServerController {
 
+    @Bean
+    public StpLogic getStpLogicJwt() {
+        return new StpLogicJwtForSimple();
+    }
 
     @Autowired
     SysLoginService sysLoginService;
-    @Autowired
-    public void setSaOAuth2Config(SaOAuth2Config cfg) {
-        cfg.
-                // 配置：未登录时返回的View
-                        setNotLoginView(() -> {
-                    String msg = "当前会话在OAuth-Server端尚未登录，请先访问"
-                            + "<a href='/oauth2/doLogin?name=sa&pwd=123456' target='_blank'> doLogin登录 </a>"
-                            + "进行登录之后，刷新页面开始授权";
-                    return msg;
-                }).
-                // 配置：登录处理函数
-                        setDoLoginHandle((name, pwd) -> {
-                    if (sysLoginService.login(name, pwd)) {
-                        return SaResult.ok();
-                    } else {
-                        return SaResult.error("账号名或密码错误");
-                    }
-                }). // 配置：确认授权时返回的View
-                setConfirmView((clientId, scope) -> {
-            String msg = "<p>应用 " + clientId + " 请求授权：" + scope + "</p>"
-                    + "<p>请确认：<a href='/oauth2/doConfirm?client_id=" + clientId + "&scope=" + scope + "' target='_blank'> 确认授权 </a></p>"
-                    + "<p>确认之后刷新页面</p>";
-            return msg;
-        })
-        ;
-    }
     // 处理所有OAuth相关请求
     @RequestMapping("/oauth2/*")
     public Object request() {
@@ -67,10 +45,18 @@ public class SaOAuth2ServerController {
         return SaOAuth2Handle.serverRequest();
     }
 
+    @RequestMapping({"/", "/index"})
+    public String index() {
+        String str = "<br />"
+                + "<h1 style='text-align: center;'>资源页 （登录后才可进入本页面） </h1>"
+                + "<hr/>"
+                + "<p style='text-align: center;'> Sa-Token " + SaTokenConsts.VERSION_NO + " </p>";
+        return str;
+    }
     /**
      * 登出方法
      */
-    @DeleteMapping("/logout")
+    @DeleteMapping("logout")
     public boolean logout() {
         sysLoginService.logout();
         return true;
@@ -79,16 +65,23 @@ public class SaOAuth2ServerController {
     /**
      * 用户注册
      */
-    @PostMapping("/register")
+    @PostMapping("register")
     public Boolean register(@RequestBody RegisterBody registerBody) {
         // 用户注册
         sysLoginService.register(registerBody);
         return true;
     }
-    @ExceptionHandler
-    public SaResult handlerException(Exception e) {
-        e.printStackTrace();
-        return SaResult.error(e.getMessage());
+
+    @PostMapping("login")
+    public Map<String, Object> login(@Validated @RequestBody LoginBody form) {
+        // 用户登录
+        String accessToken = sysLoginService.login(form.getUsername(), form.getPassword());
+
+        // 接口返回信息
+        Map<String, Object> rspMap = new HashMap<>();
+        rspMap.put(Constants.ACCESS_TOKEN, accessToken);
+        return rspMap;
     }
+
 }
 

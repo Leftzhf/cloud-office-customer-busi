@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.imserver.server;
 
-
 import com.cloud.office.customer.busi.imserver.codec.WebSocketProtobufDecoder;
 import com.cloud.office.customer.busi.imserver.codec.WebSocketProtobufEncoder;
+import com.cloud.office.customer.busi.imserver.handler.AuthHandler;
 import com.cloud.office.customer.busi.imserver.handler.LoginRequestHandler;
 import com.cloud.office.customer.busi.imserver.handler.MessageRequestHandler;
 import com.cloud.office.customer.busi.imserver.protocol.MessageProtoBuf;
@@ -18,6 +18,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +58,7 @@ public class NettyServer {
                             //Websocket数据压缩处理器
                             .addLast(new WebSocketServerCompressionHandler())
                             //开启Websocket
-                            .addLast(new WebSocketServerProtocolHandler("/websocket",null ,true,1024*10))
+                            .addLast(new WebSocketServerProtocolHandler("/",null ,true,1024*10))
                             //自定义解码器：把传入的Websocket帧转换成ByteBuf
                             .addLast(new WebSocketProtobufDecoder())
 //                            .addLast(new ProtobufVarint32FrameDecoder())
@@ -66,7 +67,7 @@ public class NettyServer {
 //                            .addLast(new ProtobufVarint32LengthFieldPrepender())
                             //登录校验处理器
                             .addLast(new LoginRequestHandler())
-//                            //登录校验热插拔处理器
+                            //登录校验热插拔处理器
 //                            .addLast(new AuthHandler())
                             //消息处理Handler
                             .addLast(new MessageRequestHandler())

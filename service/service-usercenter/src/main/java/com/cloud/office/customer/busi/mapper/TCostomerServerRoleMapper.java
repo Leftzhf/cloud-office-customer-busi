@@ -2,7 +2,6 @@ package com.cloud.office.customer.busi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerRole;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -12,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author leftleft
  * @since 2023-04-03
  */
-@Mapper
 public interface TCostomerServerRoleMapper extends BaseMapper<TCostomerServerRole> {
 
 }

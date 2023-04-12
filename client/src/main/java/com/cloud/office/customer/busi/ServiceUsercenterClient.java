@@ -1,11 +1,11 @@
 package com.cloud.office.customer.busi;
 
-import com.cloud.office.customer.busi.common.ResponseData;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerRule;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.TCostomerServerUser;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.RegisterBody;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -18,11 +18,14 @@ import java.util.Map;
 @FeignClient(name = "service-usercenter")
 public interface ServiceUsercenterClient {
 
-    @PostMapping("/user/getUserByName")
-    ResponseData<TCostomerServerUser> getUserByName(@RequestParam("username") String username);
+    @PostMapping("/getUserByName")
+    @ApiOperation(value = "根据用户名查询用户信息")
+    TCostomerServerUser getUserByName(String username);
 
-    @PostMapping("/user/getRuleByUserId")
-    ResponseData<Map<String, List<TCostomerServerRule>>> getRuleByUserId(@RequestParam("userId") String userId);
-    @PostMapping("/user/registerUserInfo")
-    ResponseData<Integer> registerUserInfo(@RequestBody TCostomerServerUser userInfo);
+    @PostMapping("/getRuleByUserId")
+    @ApiOperation(value = "根据userID查询用户权限")
+    Map<String, List<TCostomerServerRule>> getRuleByUserId(String userId);
+    @PostMapping("/registerUserInfo")
+    @ApiOperation(value = "根据userID查询用户权限")
+    boolean registerUserInfo( TCostomerServerUser userInfor);
 }

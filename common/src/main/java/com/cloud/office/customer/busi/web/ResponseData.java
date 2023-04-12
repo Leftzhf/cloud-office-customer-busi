@@ -1,6 +1,6 @@
-package com.cloud.office.customer.busi.common;
+package com.cloud.office.customer.busi.web;
 
-import com.cloud.office.customer.busi.common.enums.ResultCodeEnum;
+import com.cloud.office.customer.busi.enums.ResultCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

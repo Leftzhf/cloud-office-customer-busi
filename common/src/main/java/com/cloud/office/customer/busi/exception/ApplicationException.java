@@ -1,6 +1,6 @@
-package com.cloud.office.customer.busi.common.exception;
+package com.cloud.office.customer.busi.exception;
 
-import com.cloud.office.customer.busi.common.enums.ResultCodeEnum;
+import com.cloud.office.customer.busi.enums.ResultCodeEnum;
 import lombok.Data;
 
 @Data

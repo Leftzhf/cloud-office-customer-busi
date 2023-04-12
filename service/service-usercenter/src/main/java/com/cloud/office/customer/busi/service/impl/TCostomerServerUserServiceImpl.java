@@ -57,10 +57,8 @@ public class TCostomerServerUserServiceImpl extends ServiceImpl<TCostomerServerU
             //获取每个用户对应的角色
             roleLambda.eq(TCostomerServerRoleRule::getRoleId,item.getRoleId());
             List<TCostomerServerRoleRule> tCostomerServerRoleRules = tCostomerServerRoleRuleMapper.selectList(roleLambda);
-            //获取每个角色对应的权限列表
-            LambdaQueryWrapper<TCostomerServerRule> queryWrapper = new LambdaQueryWrapper<>();
-//            queryWrapper.eq(TCostomerServerRule::getId,tCostomerServerRoleRules.get(0).getRuleId());
-
+            LambdaQueryWrapper<TCostomerServerRule> queryWrapper = new LambdaQueryWrapper<TCostomerServerRule>();
+            queryWrapper.eq(TCostomerServerRule::getId,tCostomerServerRoleRules.get(0).getRuleId());
             List<TCostomerServerRule> ruleList = tCostomerServerRuleMapper.selectList(queryWrapper);
             rulesMap.put(item.getRoleId(),ruleList);
         });
@@ -70,8 +68,8 @@ public class TCostomerServerUserServiceImpl extends ServiceImpl<TCostomerServerU
     }
 
     @Override
-    public Integer registerUserInfo( TCostomerServerUser userInfo) {
+    public Boolean registerUserInfo( TCostomerServerUser userInfo) {
         int insert = tCostomerServerUserMapper.insert(userInfo);
-        return insert;
+        return true;
     }
 }

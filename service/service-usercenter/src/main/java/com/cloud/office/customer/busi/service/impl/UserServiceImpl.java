@@ -8,6 +8,7 @@ import com.cloud.office.customer.busi.common.db.util.PageUtils;
 import com.cloud.office.customer.busi.common.exception.user.UserExistsException;
 import com.cloud.office.customer.busi.common.exception.user.UserNotExistsException;
 import com.cloud.office.customer.busi.common.vo.PageVo;
+import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.mapper.UserMapper;
 import com.cloud.office.customer.busi.service.PermissionService;
 import com.cloud.office.customer.busi.service.RoleService;
@@ -18,17 +19,17 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Permission;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
-import com.cloud.office.customer.busi.service_usercenter.domain.enums.PermissionTypeEnum;
+import com.cloud.office.customer.busi.common.enums.PermissionTypeEnum;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.ButtonVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.MenuVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
 import com.cloud.office.customer.busi.tree.TreeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +46,6 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    @Autowired
-    private JwtUserServiceImpl userDetailsService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenUtils jwtTokenUtils;
 
     @Autowired
     private PermissionService permissionService;
@@ -76,13 +69,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void register(User user) throws UserExistsException {
 
-        if (!StringUtils.isEmpty(user.getUsername()) && baseMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getUsername, user.getUsername())) != null) {
+        if (!StringUtils.isBlank(user.getUsername()) && baseMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getUsername, user.getUsername())) != null) {
             throw new UserExistsException(String.format("【%s】用户名已存在", user.getUsername()));
         }
-        if (!StringUtils.isEmpty(user.getEmail()) && baseMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getEmail, user.getEmail())) != null) {
+        if (!StringUtils.isBlank(user.getEmail()) && baseMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getEmail, user.getEmail())) != null) {
             throw new UserExistsException(String.format("【%s】邮箱已存在", user.getEmail()));
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         // 新增用户
         baseMapper.insert(user);
 
@@ -97,39 +89,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateUserRoleRelation(user.getId(), roleIds);
     }
 
-    /**
-     * 登录
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 登录成功返回token
-     * @throws AuthenticationException
-     */
-    @Override
-    public String login(String username, String password) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
-        // TODO: 后面将jwtUser加入Redis缓存
-        return jwtTokenUtils.generateToken(jwtUser);
-    }
-
-    /**
-     * 刷新token
-     *
-     * @param oldToken 旧token
-     * @return
-     */
-    @Override
-    public String refreshToken(String oldToken) {
-        if (!StringUtils.isEmpty(oldToken)) {
-            String token = oldToken.substring(jwtTokenUtils.getTokenHead().length());
-            return jwtTokenUtils.refreshToken(token);
-        }
-        return null;
-    }
 
     /**
      * 根据用户名查询用户
@@ -139,7 +98,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public User findByUsername(String username) {
-        return baseMapper.selectByUsername(username);
+        User user = baseMapper.selectByUsername(username);
+        return  user;
     }
 
     /**
@@ -163,7 +123,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserVo findUserInfoByUsername(String username) {
         User user = findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("【%s】用户不存在", username));
+            throw new ApplicationException(String.format("【%s】用户不存在", username));
         }
         UserVo userVo = new UserVo(user);
         List<Permission> permissions = permissionService.findAllByUserId(user.getId());

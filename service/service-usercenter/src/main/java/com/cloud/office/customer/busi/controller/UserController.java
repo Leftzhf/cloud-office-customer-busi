@@ -7,10 +7,8 @@ import com.cloud.office.customer.busi.service.UserService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
-import com.kefu.admin.common.jwt.JwtUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,19 +23,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 获取当前用户详细信息
-     *
-     * @return
-     */
-    @GetMapping("/info")
-    public ResultVo getUserInfo() {
-        log.info("获取用户信息");
-        // 在 com.kefu.admin.common.jwt.JwtAuthenticationTokenFilter 里设置了principal为jwtUser
-        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserVo userVo = userService.findUserInfoByUsername(jwtUser.getUsername());
-        return ResultVo.success(userVo);
-    }
 
     /**
      * 新增用户 userDto={"roleIds":[1],"userInfo":{"email":"18727365789@163.com","gender":"2","nickname":"dfdfdfdf","username":"dsfadf"}}

@@ -19,12 +19,12 @@
 
   <!-- 扩展团队属性 -->
   <resultMap id="ExtUserTeamResultMap" type="com.cloud.office.customer.busi.service_usercenter.domain.entity.User" extends="UserResultMap">
-    <association property="team" column="team_id" select="com.kefu.admin.mapper.TeamMapper.selectById" />
+    <association property="team" column="team_id" select="com.cloud.office.customer.busi.mapper.TeamMapper.selectById" />
   </resultMap>
 
   <!-- 扩展角色集合属性 -->
   <resultMap id="ExtUserRoleResultMap" type="com.cloud.office.customer.busi.service_usercenter.domain.entity.User" extends="ExtUserTeamResultMap">
-    <collection property="roles" column="id" select="com.kefu.admin.mapper.RoleMapper.selectListByUserId" />
+    <collection property="roles" column="id" select="com.cloud.office.customer.busi.mapper.RoleMapper.selectListByUserId" />
   </resultMap>
 
   <sql id="Base_Column_List">

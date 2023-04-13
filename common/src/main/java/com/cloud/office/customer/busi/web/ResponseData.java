@@ -18,6 +18,7 @@ public class ResponseData<T> {
     private T data;
 
 
+
     public static <T> ResponseData<T> failure() {
         ResponseData<T> responseData = new ResponseData<>();
        responseData.setCode(ResultCodeEnum.FAIL.getCode());

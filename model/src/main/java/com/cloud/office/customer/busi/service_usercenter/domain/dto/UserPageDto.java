@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.cloud.office.customer.busi.common.db.dto.PageDto;
 import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
-import com.cloud.office.customer.busi.service_usercenter.domain.enums.UserStatusEnum;
+import com.cloud.office.customer.busi.common.enums.UserStatusEnum;
 import lombok.Data;
 import lombok.ToString;
 

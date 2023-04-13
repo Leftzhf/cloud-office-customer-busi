@@ -2,36 +2,31 @@ package com.cloud.office.customer.busi.common.enums;
 
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.baomidou.mybatisplus.core.enums.IEnum;
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
 import lombok.Getter;
 
-/**
- * 排序方式
- *
- * @author feng
- * @date 2019-05-23
- */
+
 @Getter
 @JSONType(deserializer = EnumValueDeserializer.class, serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
-public enum Order implements IEnum {
+public enum MessageTypeEnum {
     /**
-     * 按指定列升序排序
+     * 消息类型 [1.文字 2.图片]
      */
-    ASC("ASC"),
-    /**
-     * 按指定列降序排序
-     */
-    DESC("DESC");
+    TEXT(1, "文字"),
+    IMAGE(2, "图片");
 
-    private String value;
+    @EnumValue
+    private final int value;
+    private final String type;
 
-    Order(String value) {
+    MessageTypeEnum(int value, String type) {
         this.value = value;
+        this.type = type;
     }
 
     @Override
     public String toString() {
-        return value;
+        return String.valueOf(value);
     }
 }

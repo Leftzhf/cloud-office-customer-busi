@@ -1,14 +1,14 @@
 package com.cloud.office.customer.busi.service_openportal.domain.dto;
 
+import com.cloud.office.customer.busi.common.db.dto.PageDto;
 import com.cloud.office.customer.busi.service_openportal.domain.entity.Faq;
 import lombok.Data;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 
 import java.io.Serializable;
 
 
 @Data
-public class FaqPageDto extends SpringDataJaxb.PageDto<Faq> implements Serializable {
+public class FaqPageDto extends PageDto<Faq> implements Serializable {
     private static final long serialVersionUID = -8559844664209546046L;
 
     /**

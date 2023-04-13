@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
 import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
-import com.cloud.office.customer.busi.service_usercenter.domain.enums.PermissionTypeEnum;
+import com.cloud.office.customer.busi.common.enums.PermissionTypeEnum;
 import com.cloud.office.customer.busi.tree.ITree;
 import lombok.Data;
 import lombok.ToString;

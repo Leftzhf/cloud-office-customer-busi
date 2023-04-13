@@ -8,7 +8,6 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
 
-import javax.security.sasl.AuthenticationException;
 import java.util.List;
 
 
@@ -29,23 +28,6 @@ public interface UserService extends IService<User> {
      */
     void register(User user) throws UserExistsException;
 
-    /**
-     * 登录
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return
-     * @throws AuthenticationException
-     */
-    String login(String username, String password) throws AuthenticationException;
-
-    /**
-     * 刷新token
-     *
-     * @param oldToken 旧token
-     * @return
-     */
-    String refreshToken(String oldToken);
 
     /**
      * 根据用户名查询用户

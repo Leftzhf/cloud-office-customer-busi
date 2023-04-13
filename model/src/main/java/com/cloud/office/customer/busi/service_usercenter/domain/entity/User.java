@@ -1,12 +1,12 @@
 package com.cloud.office.customer.busi.service_usercenter.domain.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
-import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
-import com.cloud.office.customer.busi.service_usercenter.domain.enums.GenderEnum;
-import com.cloud.office.customer.busi.service_usercenter.domain.enums.UserStatusEnum;
+import com.cloud.office.customer.busi.common.enums.GenderEnum;
+import com.cloud.office.customer.busi.common.enums.UserStatusEnum;
 import lombok.Data;
 import lombok.ToString;
 
@@ -49,14 +49,16 @@ public class User extends BaseEntity implements Serializable {
      * 性别 [0.女 1.男 2.未知]
      */
     @TableField(value = "gender")
-    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
+    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+//    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
     private GenderEnum gender;
 
     /**
      * 状态 [0.禁用 1.正常 2.已删除]
      */
     @TableField(value = "status")
-    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
+    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+//    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
     private UserStatusEnum status;
 
     /**

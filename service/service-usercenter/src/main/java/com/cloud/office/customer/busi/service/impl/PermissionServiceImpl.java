@@ -7,7 +7,7 @@ import com.cloud.office.customer.busi.tree.TreeUtils;
 import com.cloud.office.customer.busi.mapper.PermissionMapper;
 import com.cloud.office.customer.busi.service.PermissionService;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Permission;
-import com.cloud.office.customer.busi.service_usercenter.domain.enums.PermissionTypeEnum;
+import com.cloud.office.customer.busi.common.enums.PermissionTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

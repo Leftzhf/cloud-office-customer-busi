@@ -2,12 +2,10 @@ package com.cloud.office.customer.busi.common.db.dto;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloud.office.customer.busi.common.enums.Order;
-
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-
-import lombok.Data;
 
 /**
  * 分页查询vo，暂时这样写，后面会封装基类和枚举，并处理一些约束

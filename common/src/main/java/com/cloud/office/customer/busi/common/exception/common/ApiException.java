@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.common.exception.common;
 
-import com.kefu.common.constant.CommonConstants;
 
+import com.cloud.office.customer.busi.common.constant.CommonConstants;
 import lombok.Getter;
 import lombok.Setter;
 

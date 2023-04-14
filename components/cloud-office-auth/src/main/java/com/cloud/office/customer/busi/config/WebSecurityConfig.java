@@ -77,7 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //配置允许所有的 HTTP OPTIONS 请求访问任何路径，用于处理 CORS 预检请求。
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 //以下路径配置放行
-                .antMatchers("/auth/open/**",
+                .antMatchers("/open/auth/**",
+                        "/auth/**",
+                        "/oauth/**",
                         "/actuator/**",
                         "/common/**",
                         "/images/**",
@@ -92,10 +94,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v3/api-docs/**",
                         "/swagger-resources/configuration/ui",
                         "/swagge‌​r-ui.html").permitAll()
-                //
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 //其他请求需要认证
                 .anyRequest().authenticated()
+                //放行表单提交
+//                .and().formLogin().permitAll()
                 //配置 HTTP 响应头的缓存
                 .and().headers().cacheControl();
 

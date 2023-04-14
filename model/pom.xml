@@ -28,12 +28,12 @@
         <!--            <scope>provided </scope>-->
         <!--        </dependency>-->
 
-        <!--knife4j-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <scope>provided </scope>
-        </dependency>
+<!--        &lt;!&ndash;knife4j&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-spring-boot-starter</artifactId>-->
+<!--            <scope>provided </scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.alibaba</groupId>

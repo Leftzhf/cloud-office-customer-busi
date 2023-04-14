@@ -4,9 +4,10 @@ import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.common.vo.ResultVo;
 import com.cloud.office.customer.busi.service.AuthService;
 import com.cloud.office.customer.busi.service.Impl.JwtUser;
+import com.cloud.office.customer.busi.service_usercenter.domain.dto.RegisterUserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,27 +20,21 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@Api(tags = "授权接口")
-@RequestMapping("/auth")
+@Tag(name = "AuthController",description = "授权接口")
+@RequestMapping("/open/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;
 
     @Autowired
     private ServiceUsercenterClient usercenterClient;
-    @PostMapping("/refresh")
-    @ApiOperation(value = "刷新token")
-    public ResultVo refresh(@RequestHeader("${jwt.tokenHeader}") String token) {
-        log.info("刷新token:{}", token);
-        return ResultVo.success(authService.refreshToken(token));
-    }
     /**
      * 获取当前用户详细信息
      *
      * @return
      */
     @GetMapping("/info")
-    @ApiOperation(value = "获取当前登录用户的权限信息")
+    @Operation(description = "获取当前登录用户的权限信息")
     public ResultVo getUserInfo() {
         log.info("获取当前认证的用户权限信息");
         // 在 com.kefu.admin.common.jwt.JwtAuthenticationTokenFilter 里设置了principal为jwtUser
@@ -47,5 +42,11 @@ public class AuthController {
         JwtUser jwtUser = (JwtUser) principal;
         UserVo userVo = usercenterClient.findUserInfoByUsername(jwtUser.getUsername());
         return ResultVo.success(userVo);
+    }
+    @PostMapping("/jwtAuthorize")
+    @Operation(description = "jwt校验")
+    public ResultVo jwtAuthorize(@RequestBody RegisterUserDto registerUserDto) {
+        log.info("校验成功用户:{}", registerUserDto.toString());
+        return ResultVo.success();
     }
 }

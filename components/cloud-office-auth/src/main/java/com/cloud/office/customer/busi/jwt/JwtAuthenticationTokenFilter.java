@@ -49,6 +49,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
                 if (jwtTokenUtils.validateToken(token, jwtUser)) {
                     log.info("token有效");
+                    //如果token有效，就加入authentication，代表已经认证过了
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtUser, null, jwtUser.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);

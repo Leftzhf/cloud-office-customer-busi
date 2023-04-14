@@ -13,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Aspect
@@ -49,7 +50,9 @@ public class WebLogAspect {
         log.info(">>>{}", getIpAddr(request));
 
         if (args != null && args.length != 0) {
-            log.info(">>>{}", JSON.toJSONString(args[0]));
+            if (!(args[0] instanceof HttpServletRequest || args[0] instanceof HttpServletResponse)) {
+                log.info(">>>{}", JSON.toJSONString(args[0]));
+            }
         }
 
         long beginTime = System.currentTimeMillis();

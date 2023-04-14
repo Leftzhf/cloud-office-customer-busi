@@ -6,6 +6,7 @@ import com.cloud.office.customer.busi.jwt.JwtTokenUtils;
 import com.cloud.office.customer.busi.jwt.JwtUserServiceImpl;
 import com.cloud.office.customer.busi.service.AuthService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RegisterUserDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +15,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ZuoHaoFan
  * @Description: new java files header..
  * @date 2023/4/12 15:11
  */
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
@@ -77,5 +82,30 @@ public class AuthServiceImpl implements AuthService {
             return jwtTokenUtils.refreshToken(token);
         }
         return null;
+    }
+
+    @Override
+    public boolean validateToken(HttpServletRequest request) {
+        // 获取请求头中的token值
+        String authHeader = request.getHeader(jwtTokenUtils.getTokenHeader());
+        // 获取token
+        String token = authHeader.substring(jwtTokenUtils.getTokenHead().length());
+        log.info("token:{}", token);
+        // 获取用户名
+        String username = jwtTokenUtils.getUsernameFromToken(token);
+        // 校验token
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // TODO: 后面从Redis缓存中获取，不然每次请求都会去查询用户
+            JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
+            if (jwtTokenUtils.validateToken(token, jwtUser)) {
+                log.info("token有效");
+                //如果token有效，就加入authentication，代表已经认证过了
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtUser, null, jwtUser.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                return true;
+            }
+        }
+        return false;
     }
 }

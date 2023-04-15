@@ -41,7 +41,7 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
             String authHeader = exchange.getRequest().getHeaders().getFirst(AUTHORIZATION_HEADER);
             // 判断是否携带token,如果有则比对redis
             if (!StringUtils.isEmpty(authHeader) && authHeader.startsWith(BEARER_TOKEN_TYPE)) {
-                //TODO 比对redis，通过则放到header里并放行
+                //比对redis，通过则放到header里并放行
                 String token = authHeader.substring(jwtTokenUtils.getTokenHead().length());
                 String key = REDIS_TOKEN_KEY + token;
                 if (stringRedisTemplate.hasKey(key)) {
@@ -49,13 +49,16 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
                     String username = (String) claimsToken.get("user_name");
                     ServerHttpRequest modifiedRequest = exchange.getRequest().mutate().header("User-Agent", username).build();
                     return chain.filter(exchange.mutate().request(modifiedRequest).build());
+                }else {
+                    //token 无效或已过期，拒接访问
+                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    return response.setComplete();
                 }
             } else {
-                // 抛出访问拒绝异常
+                // 没有携带token，抛出访问拒绝异常
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 return response.setComplete();
             }
-            return chain.filter(exchange);
         };
     }
 

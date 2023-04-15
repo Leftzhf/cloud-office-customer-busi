@@ -4,12 +4,14 @@ import com.cloud.office.customer.busi.common.vo.ResultVo;
 import com.cloud.office.customer.busi.service.TeamService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
 @RequestMapping("/team")
 @RestController
+@Tag(name = "TeamController", description = "团队接口")
 public class TeamController {
 
     @Autowired

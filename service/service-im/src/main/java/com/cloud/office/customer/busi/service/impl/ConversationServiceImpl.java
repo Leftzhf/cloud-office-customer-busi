@@ -1,16 +1,14 @@
 package com.cloud.office.customer.busi.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.kefu.admin.entity.Conversation;
-import com.kefu.admin.mapper.ConversationMapper;
-import com.kefu.admin.service.ConversationService;
-
+import com.cloud.office.customer.busi.mapper.ConversationMapper;
+import com.cloud.office.customer.busi.service.ConversationService;
+import com.cloud.office.customer.busi.service_im.entity.Conversation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author feng

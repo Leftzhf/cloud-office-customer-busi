@@ -10,9 +10,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+
 /**
- * @author feng
- * @date 2019-05-23
+ * jwt用户服务impl
+ *
+ * @author leftleft
+ * @date 2023/04/16
  */
 @Service
 public class JwtUserServiceImpl implements UserDetailsService {

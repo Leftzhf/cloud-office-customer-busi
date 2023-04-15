@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ServiceUsercenterClient {
 
 
-    @PostMapping("/findUserByUsername")
+    @PostMapping("/user/findUserByUsername")
     User findByUsername(@RequestParam String username);
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     void register(@RequestBody RegisterUserDto registerUserDto);
 
-    @GetMapping("/info")
+    @GetMapping("/user/info")
     UserVo findUserInfoByUsername(@RequestParam String username);
 }

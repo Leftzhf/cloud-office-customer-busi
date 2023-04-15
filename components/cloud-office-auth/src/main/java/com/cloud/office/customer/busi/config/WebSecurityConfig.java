@@ -1,11 +1,11 @@
 package com.cloud.office.customer.busi.config;
 
 import com.cloud.office.customer.busi.jwt.JwtAuthenticationEntryPoint;
-import com.cloud.office.customer.busi.jwt.JwtAuthenticationTokenFilter;
 import com.cloud.office.customer.busi.jwt.JwtUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -17,8 +17,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.web.cors.CorsUtils;
+
+import javax.annotation.Resource;
 
 
 @Configuration
@@ -29,8 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtUserServiceImpl userDetailsService;
 
-    @Autowired
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    // 注入 Redis 连接工厂
+    @Resource
+    private RedisConnectionFactory redisConnectionFactory;
+//    @Autowired
+//    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -46,7 +51,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+    @Bean
+    public RedisTokenStore redisTokenStore() {
+        RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
+        redisTokenStore.setPrefix("TOKEN:"); // 设置key的层级前缀，方便查询
+        return redisTokenStore;
+    }
     /**
      * 用户登录密码加密
      *
@@ -103,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().headers().cacheControl();
 
         // 注入jwt过滤器,在UsernamePasswordAuthenticationFilter之前进行jwt校验认证
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }

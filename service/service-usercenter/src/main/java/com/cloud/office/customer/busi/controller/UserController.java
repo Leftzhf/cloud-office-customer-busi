@@ -117,4 +117,10 @@ public class UserController {
     public ResultVo roleInfo(@PathVariable Integer userId) {
         return ResultVo.success();
     }
+    @GetMapping("/info")
+    public ResultVo getUserInfo(@RequestHeader("User-Agent") String userName) {
+        log.info("获取请求头用户信息,userName:{}",userName);
+        UserVo userVo = userService.findUserInfoByUsername(userName);
+        return ResultVo.success(userVo);
+    }
 }

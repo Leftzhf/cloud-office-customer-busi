@@ -1,52 +1,53 @@
 package com.cloud.office.customer.busi.controller;
 
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
+import com.cloud.office.customer.busi.common.util.JwtTokenUtils;
 import com.cloud.office.customer.busi.common.vo.ResultVo;
 import com.cloud.office.customer.busi.service.AuthService;
-import com.cloud.office.customer.busi.service.Impl.JwtUser;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RegisterUserDto;
-import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author ZuoHaoFan
- * @Description: new java files header..
- * @date 2023/4/13 12:01
- */
+
 @Slf4j
 @RestController
-@Tag(name = "AuthController",description = "授权接口")
-@RequestMapping("/open/auth")
+@Tag(name = "AuthOpenController", description = "开放认证接口")
+@RequestMapping("/auth")
 public class AuthController {
+
     @Autowired
     private AuthService authService;
+    @Autowired
+    JwtTokenUtils jwtTokenUtils;
 
     @Autowired
     private ServiceUsercenterClient usercenterClient;
-    /**
-     * 获取当前用户详细信息
-     *
-     * @return
-     */
-    @GetMapping("/info")
-    @Operation(description = "获取当前登录用户的权限信息")
-    public ResultVo getUserInfo() {
-        log.info("获取当前认证的用户权限信息");
-        // 在 com.kefu.admin.common.jwt.JwtAuthenticationTokenFilter 里设置了principal为jwtUser
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        JwtUser jwtUser = (JwtUser) principal;
-        UserVo userVo = usercenterClient.findUserInfoByUsername(jwtUser.getUsername());
-        return ResultVo.success(userVo);
-    }
-    @PostMapping("/jwtAuthorize")
-    @Operation(description = "jwt校验")
-    public ResultVo jwtAuthorize(@RequestBody RegisterUserDto registerUserDto) {
-        log.info("校验成功用户:{}", registerUserDto.toString());
+//    @PostMapping("/login")
+//    @Operation(description = "登录")
+//    public ResultVo login(@RequestBody LoginUserDto loginUserDto) {
+//        log.info("登录用户:{}", loginUserDto.toString());
+//        String token = authService.login(loginUserDto.getUsername(), loginUserDto.getPassword());
+//        return ResultVo.success(token);
+//    }
+
+    @PostMapping("/register")
+    @Operation(description = "注册")
+    public ResultVo register(@RequestBody RegisterUserDto registerUserDto) {
+        log.info("注册用户:{}", registerUserDto.toString());
+        authService.register(registerUserDto);
         return ResultVo.success();
     }
+//
+//    @PostMapping("/refresh")
+//    @Operation(description = "刷新token")
+//    public ResultVo refresh(@RequestHeader("${jwt.tokenHeader}") String token) {
+//        log.info("刷新token:{}", token);
+//        return ResultVo.success(authService.refreshToken(token));
+//    }
 }

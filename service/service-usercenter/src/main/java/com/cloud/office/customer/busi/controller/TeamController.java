@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi.controller;
 
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.TeamService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;

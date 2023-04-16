@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.jwt;
 
 import com.alibaba.fastjson.JSON;
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;

@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.controller;
 
 
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.ConversationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

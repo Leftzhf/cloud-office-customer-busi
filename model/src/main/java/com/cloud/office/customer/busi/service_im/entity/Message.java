@@ -4,9 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
-import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
-import com.cloud.office.customer.busi.common.enums.MessageStatusEnum;
-import com.cloud.office.customer.busi.common.enums.MessageTypeEnum;
+import com.cloud.office.customer.busi.util.EnumValueDeserializer;
+import com.cloud.office.customer.busi.enums.MessageStatusEnum;
+import com.cloud.office.customer.busi.enums.MessageTypeEnum;
 import lombok.Data;
 import lombok.ToString;
 

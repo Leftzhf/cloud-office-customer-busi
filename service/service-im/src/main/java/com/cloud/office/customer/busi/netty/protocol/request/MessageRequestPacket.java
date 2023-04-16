@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.netty.protocol.request;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cloud.office.customer.busi.common.enums.MessageTypeEnum;
-import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
+import com.cloud.office.customer.busi.enums.MessageTypeEnum;
+import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.netty.protocol.Packet;
 import com.cloud.office.customer.busi.netty.protocol.command.Command;
 import lombok.Data;

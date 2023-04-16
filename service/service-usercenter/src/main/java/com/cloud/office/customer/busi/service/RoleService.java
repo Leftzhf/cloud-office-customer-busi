@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.office.customer.busi.common.vo.PageVo;
+import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RoleDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RolePageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;

@@ -12,9 +12,9 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
 
-  <resultMap id="ExtFaqResultMap" type="com.cloud.office.customer.busi.service_openportal.domain.entity.Faq" extends="BaseResultMap">
-    <association property="user" column="user_id" select="com.cloud.office.customer.busi.mapper.UserMapper.selectById" />
-  </resultMap>
+<!--  <resultMap id="ExtFaqResultMap" type="com.cloud.office.customer.busi.service_openportal.domain.entity.Faq" extends="BaseResultMap">-->
+<!--    <association property="user" column="user_id" select="com.cloud.office.customer.busi.mapper.UserMapper.selectById" />-->
+<!--  </resultMap>-->
 
   <sql id="Base_Column_List">
     <!--@sql select -->
@@ -22,7 +22,7 @@
     <!--@sql from tb_faq-->
   </sql>
 
-  <select id="selectPageList" resultMap="ExtFaqResultMap">
+  <select id="selectPageList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_faq

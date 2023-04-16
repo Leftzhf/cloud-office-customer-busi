@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.service.Impl;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
-import com.cloud.office.customer.busi.common.enums.UserStatusEnum;
+import com.cloud.office.customer.busi.util.EnumValueDeserializer;
+import com.cloud.office.customer.busi.enums.UserStatusEnum;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

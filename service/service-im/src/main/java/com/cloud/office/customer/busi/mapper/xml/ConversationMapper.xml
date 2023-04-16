@@ -12,16 +12,16 @@
   </resultMap>
 
   <resultMap id="ExtMessageResultMap" type="com.cloud.office.customer.busi.service_im.entity.Conversation" extends="BaseResultMap">
-    <association property="lastMessage" column="last_message_id" select="com.kefu.admin.mapper.MessageMapper.selectById" />
+    <association property="lastMessage" column="last_message_id" select="com.cloud.office.customer.busi.mapper.MessageMapper.selectById" />
   </resultMap>
 
-  <resultMap id="ExtToUserResultMap" type="com.cloud.office.customer.busi.service_im.entity.Conversation" extends="ExtMessageResultMap">
-    <association property="toUser" column="to_user_id" select="com.kefu.admin.mapper.UserMapper.selectById" />
-  </resultMap>
+<!--  <resultMap id="ExtToUserResultMap" type="com.cloud.office.customer.busi.service_im.entity.Conversation" extends="ExtMessageResultMap">-->
+<!--    <association property="toUser" column="to_user_id" select="com.cloud.office.customer.busi.mapper.UserMapper.selectById" />-->
+<!--  </resultMap>-->
 
-  <resultMap id="ExtFromUserResultMap" type="com.cloud.office.customer.busi.service_im.entity.Conversation" extends="ExtToUserResultMap">
-    <association property="fromUser" column="from_user_id" select="com.kefu.admin.mapper.UserMapper.selectById" />
-  </resultMap>
+<!--  <resultMap id="ExtFromUserResultMap" type="com.cloud.office.customer.busi.service_im.entity.Conversation" extends="ExtToUserResultMap">-->
+<!--    <association property="fromUser" column="from_user_id" select="com.cloud.office.customer.busi.mapper.UserMapper.selectById" />-->
+<!--  </resultMap>-->
 
   <sql id="Base_Column_List">
     <!--@sql select -->
@@ -29,7 +29,7 @@
     <!--@sql from tb_conversation-->
   </sql>
 
-  <select id="selectListByUserId" resultMap="ExtFromUserResultMap">
+  <select id="selectListByUserId" resultMap="ExtMessageResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_conversation

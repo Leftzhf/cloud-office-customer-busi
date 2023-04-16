@@ -2,7 +2,7 @@ package com.cloud.office.customer.busi.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.UserService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RegisterUserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
@@ -44,6 +44,12 @@ public class UserController {
         user.setEmail(registerUserDto.getEmail());
         user.setNickname(registerUserDto.getNickname());
         userService.register(user);
+    }
+    @GetMapping("/getUserById/{userId}")
+    public User getUserById(@PathVariable Integer userId) {
+        log.info("获取用户信息,userId={}", userId);
+        User user = userService.getUserById(userId);
+        return user;
     }
     /**
      * 新增用户 userDto={"roleIds":[1],"userInfo":{"email":"18727365789@163.com","gender":"2","nickname":"dfdfdfdf","username":"dsfadf"}}
@@ -110,7 +116,7 @@ public class UserController {
      */
     @PostMapping("/list")
     public ResultVo getUserPageList(@RequestBody UserPageDto userPageDto) {
-        log.info("获取用户分页数据,{}", JSON.toJSONString(userPageDto));
+//        log.info("获取用户分页数据,{}", JSON.toJSONString(userPageDto));
         return ResultVo.success(userService.findUserPageList(userPageDto));
     }
 

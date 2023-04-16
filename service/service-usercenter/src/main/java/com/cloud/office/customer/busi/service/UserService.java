@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.office.customer.busi.common.exception.user.UserExistsException;
-import com.cloud.office.customer.busi.common.vo.PageVo;
+import com.cloud.office.customer.busi.exception.user.UserExistsException;
+import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
@@ -60,6 +60,8 @@ public interface UserService extends IService<User> {
      * @return
      */
     UserVo findUserInfoById(Integer userId);
+
+    User getUserById(Integer userId);
 
     /**
      * 分页查询所有用户详细信息

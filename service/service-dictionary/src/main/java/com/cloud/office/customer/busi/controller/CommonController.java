@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.cloud.office.customer.busi.common.util.LocalJsonUtils;
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.util.LocalJsonUtils;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

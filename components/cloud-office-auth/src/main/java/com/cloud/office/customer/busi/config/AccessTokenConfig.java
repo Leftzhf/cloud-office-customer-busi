@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi.config;
 
-import com.cloud.office.customer.busi.common.util.JwtTokenUtils;
+import com.cloud.office.customer.busi.util.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

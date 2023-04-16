@@ -1,15 +1,20 @@
 package com.cloud.office.customer.busi.service.Impl;
 
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
-import com.cloud.office.customer.busi.common.exception.user.UserExistsException;
+import com.cloud.office.customer.busi.exception.user.UserExistsException;
 import com.cloud.office.customer.busi.jwt.JwtUserServiceImpl;
 import com.cloud.office.customer.busi.service.AuthService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author ZuoHaoFan
@@ -47,31 +52,38 @@ public class AuthServiceImpl implements AuthService {
      * @param password 密码
      * @return 登录成功返回token
      */
-//    @Override
-//    public String login(String username, String password)throws AuthenticationException {
+    @Override
+    public OAuth2AccessToken  login(String username, String password) {
 //        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 //        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
-//        // TODO: 后面将jwtUser加入Redis缓存
-//        return jwtTokenUtils.generateToken(jwtUser);
-//    }
 
-//    /**
-//     * 刷新token
-//     *
-//     * @param oldToken 旧token
-//     * @return
-//     */
-//    @Override
-//    public String refreshToken(String oldToken) {
+//        JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
+          RestTemplate restTemplate=new RestTemplate();
+        MultiValueMap<String,Object> paramsMap=new LinkedMultiValueMap<>();
+        paramsMap.set("username",username);
+        paramsMap.set("password",password);
+        paramsMap.set("grant_type","password");
+        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("client","111111"));
+        OAuth2AccessToken token=restTemplate.postForObject("http://localhost:8902/oauth/token",paramsMap,OAuth2AccessToken.class);
+//        return jwtTokenUtils.generateToken(jwtUser);
+        return token;
+    }
+
+    /**
+     * 刷新token
+     *
+     * @param oldToken 旧token
+     * @return
+     */
+    @Override
+    public String refreshToken(String oldToken) {
 //        if (!StringUtils.isEmpty(oldToken)) {
 //            String token = oldToken.substring(jwtTokenUtils.getTokenHead().length());
 //            return jwtTokenUtils.refreshToken(token);
 //        }
-//        return null;
-//    }
+        return null;
+    }
 //
 //    @Override
 //    public boolean validateToken(HttpServletRequest request) {

@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.RoleService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RoleDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RolePageDto;

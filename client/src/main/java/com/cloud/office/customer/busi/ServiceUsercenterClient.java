@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi;
 
-import com.cloud.office.customer.busi.common.vo.PageVo;
+import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RegisterUserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "service-usercenter")
 public interface ServiceUsercenterClient {
 
-
+    @GetMapping("/user/getUserById/{userId}")
+    User getUserById(@PathVariable Integer userId);
     @PostMapping("/user/findUserByUsername")
     User findByUsername(@RequestParam String username);
     @PostMapping("/user/register")

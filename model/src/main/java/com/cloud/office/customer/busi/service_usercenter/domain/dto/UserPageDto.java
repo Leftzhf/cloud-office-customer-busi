@@ -1,10 +1,10 @@
 package com.cloud.office.customer.busi.service_usercenter.domain.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cloud.office.customer.busi.common.db.dto.PageDto;
-import com.cloud.office.customer.busi.common.util.EnumValueDeserializer;
+import com.cloud.office.customer.busi.db.dto.PageDto;
+import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
-import com.cloud.office.customer.busi.common.enums.UserStatusEnum;
+import com.cloud.office.customer.busi.enums.UserStatusEnum;
 import lombok.Data;
 import lombok.ToString;
 

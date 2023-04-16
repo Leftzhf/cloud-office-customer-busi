@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.MessageService;
 import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
 import lombok.extern.slf4j.Slf4j;

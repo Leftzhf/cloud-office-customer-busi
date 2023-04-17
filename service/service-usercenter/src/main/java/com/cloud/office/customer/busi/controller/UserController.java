@@ -27,7 +27,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/getById")
+    @PostMapping ("/getById")
     User getByIdUser(@RequestParam Integer id){
         return userService.getById(id);
     }

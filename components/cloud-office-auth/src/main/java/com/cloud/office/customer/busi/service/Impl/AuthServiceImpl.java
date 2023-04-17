@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
 //        JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(username);
-          RestTemplate restTemplate=new RestTemplate();
+        RestTemplate restTemplate=new RestTemplate();
         MultiValueMap<String,Object> paramsMap=new LinkedMultiValueMap<>();
         paramsMap.set("username",username);
         paramsMap.set("password",password);

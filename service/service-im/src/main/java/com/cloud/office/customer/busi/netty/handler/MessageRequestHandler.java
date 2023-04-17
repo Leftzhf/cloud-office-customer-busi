@@ -64,7 +64,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         // 发送给消息发送方，用于判断消息是否发送成功
         ctx.channel().writeAndFlush(messageResponsePacket);
 
-        // 消息接收方
+        // 消息接收方 todo 改成rest接口请求
         User toUser = userService.getById(msg.getToUserId());
         if (toUser == null) {
             log.info("userId={}用户不存在，消息发送失败!", msg.getToUserId());

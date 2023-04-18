@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 消息
  *
- * @author feng
- * @date 2019-06-08
+ * @author leftleft
  */
 @Slf4j
 @RestController
@@ -30,4 +29,5 @@ public class MessageController {
         log.info("获取消息数据,{}", JSON.toJSONString(messageListDto));
         return ResultVo.success(messageService.findMessageList(messageListDto));
     }
+    //todo 获取秘钥接口
 }

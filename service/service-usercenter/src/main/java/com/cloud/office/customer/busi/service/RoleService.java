@@ -12,8 +12,6 @@ import java.util.List;
 /**
  * 角色服务
  *
- * @author feng
- * @date 2019-05-20
  */
 public interface RoleService extends IService<Role> {
 

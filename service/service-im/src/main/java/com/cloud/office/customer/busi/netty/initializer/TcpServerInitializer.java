@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 /**
  * tcp连接初始化Channel，给Channel关联的pipeline添加handler
  *
- * @author feng
- * @date 2019-04-22
  */
 @Component
 public class TcpServerInitializer extends ChannelInitializer<NioSocketChannel> {

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.cloud.office.customer.busi.util.EnumValueDeserializer;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 
@@ -17,6 +18,7 @@ public enum MessageTypeEnum {
     IMAGE(2, "图片");
 
     @EnumValue
+    @JsonValue
     private final int value;
     private final String type;
 

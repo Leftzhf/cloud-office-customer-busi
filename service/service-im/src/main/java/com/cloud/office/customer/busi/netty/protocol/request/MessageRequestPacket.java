@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 /**
  * 客户端发送至服务端的消息数据包
  *
- * @author feng
- * @date 2019-04-20
  */
 @Data
 @NoArgsConstructor

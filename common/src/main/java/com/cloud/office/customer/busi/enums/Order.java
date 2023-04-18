@@ -6,8 +6,6 @@ import lombok.Getter;
 /**
  * 排序方式
  *
- * @author feng
- * @date 2019-05-23
  */
 @Getter
 //@JSONType(deserializer = EnumValueDeserializer.class, serialzeFeatures = SerializerFeature.WriteEnumUsingToString)

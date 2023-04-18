@@ -139,8 +139,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                                 .anyMatch(role -> !"ROLE_VISITOR".equals(role.getNameEn())))
                         .collect(Collectors.toList());
                 log.info("过滤访客userList={}", JSON.toJSONString(userList));
-
-                // 分配客服 TODO:暂时写死,后期改成动态分配
+                // 通过动态客服分配器来分配客服
                 User contact = ServerDistributionUtil.getServerByPolling(userList);
 
                 // 创建会话

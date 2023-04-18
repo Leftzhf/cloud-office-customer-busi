@@ -6,8 +6,8 @@ import com.cloud.office.customer.busi.service_openportal.domain.dto.FaqPageDto;
 import com.cloud.office.customer.busi.service_openportal.domain.entity.Faq;
 
 /**
- * @author feng
- * @date 2019-06-03
+ * @author leftleft
+ * @date 2023-06-03
  */
 public interface FaqService extends IService<Faq> {
 

@@ -10,8 +10,6 @@ import javax.annotation.PostConstruct;
 /**
  * NettyServer启动器
  *
- * @author feng
- * @date 2019-04-22
  */
 @Component
 public class NettyBooter {

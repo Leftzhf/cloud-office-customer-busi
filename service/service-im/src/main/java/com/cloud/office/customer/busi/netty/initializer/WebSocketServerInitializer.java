@@ -15,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
+ * 网络套接字服务器初始化
+ * <p>
  * websocket连接初始化Channel，给Channel关联的pipeline添加handler
  *
- * @author feng
- * @date 2019-04-22
+ * @author leftleft
+ * @date 2023/04/18
  */
 @Component
 public class WebSocketServerInitializer extends ChannelInitializer<NioSocketChannel> {
@@ -39,6 +41,11 @@ public class WebSocketServerInitializer extends ChannelInitializer<NioSocketChan
      */
     private int maxContentLength;
 
+    /**
+     * websocketn网关初始化器
+     *
+     * @param nettyProperties 网状属性
+     */
     public WebSocketServerInitializer(NettyProperties nettyProperties) {
         this.websocketPath = nettyProperties.getWebsocket().getPath();
         this.maxContentLength = nettyProperties.getWebsocket().getHttpObjectArrgregator().getMaxContentLength();

@@ -1,10 +1,8 @@
 package com.cloud.office.customer.busi.service_im.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
-import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.enums.MessageStatusEnum;
 import com.cloud.office.customer.busi.enums.MessageTypeEnum;
 import lombok.Data;
@@ -39,14 +37,14 @@ public class Message extends BaseEntity implements Serializable {
      * 消息类型 [1.文字 2.图片]
      */
     @TableField(value = "type")
-    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
+//    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
     private MessageTypeEnum type;
 
     /**
      * 消息状态 [1.未读 2.已读]
      */
     @TableField(value = "status")
-    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
+//    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
     private MessageStatusEnum status;
 
     private static final long serialVersionUID = 1L;

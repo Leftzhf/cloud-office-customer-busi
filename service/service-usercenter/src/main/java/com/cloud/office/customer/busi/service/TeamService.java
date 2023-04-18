@@ -6,8 +6,6 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
 
 /**
- * @author feng
- * @date 2019-05-28
  */
 public interface TeamService extends IService<Team> {
 

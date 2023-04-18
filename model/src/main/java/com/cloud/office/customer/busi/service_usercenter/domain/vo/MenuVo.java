@@ -10,8 +10,6 @@ import java.util.List;
 /**
  * 菜单VO
  *
- * @author feng
- * @date 2019-05-20
  */
 @Data
 @NoArgsConstructor

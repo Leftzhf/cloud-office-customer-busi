@@ -22,8 +22,6 @@ import java.util.List;
 /**
  * 一些全局配置
  *
- * @author feng
- * @date 2019-05-20
  */
 @Configuration
 public class GlobalConfig {

@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author feng
- * @date 2019-06-08
  */
 @Slf4j
 @RestController

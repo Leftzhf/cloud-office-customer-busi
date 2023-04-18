@@ -7,8 +7,6 @@ import com.cloud.office.customer.busi.service_usercenter.domain.entity.Permissio
 import java.util.List;
 
 /**
- * @author feng
- * @date 2019-05-20
  */
 public interface PermissionService extends IService<Permission> {
 

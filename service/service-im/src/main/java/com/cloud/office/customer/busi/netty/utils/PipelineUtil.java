@@ -14,8 +14,8 @@ import io.netty.channel.ChannelPipeline;
 /**
  * ChannelPipeline工具类
  *
- * @author feng
- * @date 2019-04-22
+ * @author leftleft
+ * @date 2023-04-22
  */
 @Component
 public class PipelineUtil {

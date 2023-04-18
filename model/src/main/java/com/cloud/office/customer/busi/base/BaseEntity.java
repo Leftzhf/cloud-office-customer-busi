@@ -10,8 +10,6 @@ import java.io.Serializable;
 /**
  * 实体基类
  *
- * @author feng
- * @date 2019-05-20
  */
 @Data
 @ToString(callSuper = true)

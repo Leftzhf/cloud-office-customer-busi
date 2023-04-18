@@ -6,8 +6,6 @@ import java.util.List;
  * 树结构接口
  * 实现这个接口后，可以调用TreeUtils构建树结构
  *
- * @author feng
- * @date 2019-05-30
  */
 public interface ITree<T extends ITree> {
 

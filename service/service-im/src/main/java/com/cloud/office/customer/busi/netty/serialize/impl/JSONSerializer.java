@@ -7,8 +7,8 @@ import com.cloud.office.customer.busi.netty.serialize.SerializerAlgorithm;
 /**
  * json 序列化器
  *
- * @author feng
- * @date 2019-04-20
+ * @author leftleft
+ * @date 2023-04-20
  */
 public class JSONSerializer implements Serializer {
 

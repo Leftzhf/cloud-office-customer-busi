@@ -14,8 +14,8 @@ import java.util.Date;
 /**
  * 服务端发送至客户端的消息数据包
  *
- * @author feng
- * @date 2019-04-20
+ * @author leftleft
+ * @date 2023-04-20
  */
 @Data
 @NoArgsConstructor

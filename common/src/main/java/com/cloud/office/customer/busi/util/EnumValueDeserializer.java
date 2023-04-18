@@ -13,8 +13,6 @@ import java.lang.reflect.Type;
 /**
  * 枚举值序列化/反序列化器
  *
- * @author feng
- * @date 2019-05-23
  */
 public class EnumValueDeserializer implements ObjectDeserializer, ObjectSerializer {
 

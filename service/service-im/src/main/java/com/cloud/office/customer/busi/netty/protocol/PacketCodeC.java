@@ -23,8 +23,6 @@ import java.util.Map;
  * 自定义协议规则:
  * magic4字节 + 版本1字节 + 序列化算法1字节 + 指令1字节 + 数据长度4字节 + 数据内容
  *
- * @author feng
- * @date 2019-04-20
  */
 @Slf4j
 @Component

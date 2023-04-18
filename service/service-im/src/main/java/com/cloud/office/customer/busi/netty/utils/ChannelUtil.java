@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * channel工具类
  *
- * @author feng
- * @date 2019-04-21
+ * @author leftleft
+ * @date 2023-04-21
  */
 @Slf4j
 public class ChannelUtil {

@@ -8,10 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 空闲检查
+ * 空闲检测器
  *
- * @author feng
- * @date 2019-04-21
  */
 @Slf4j
 public class MyIdleStateHandler extends IdleStateHandler {

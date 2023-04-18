@@ -6,8 +6,8 @@ import com.cloud.office.customer.busi.netty.serialize.impl.JSONSerializer;
 /**
  * 序列化接口
  *
- * @author feng
- * @date 2019-04-20
+ * @author leftleft
+ * @date 2023-04-20
  */
 public interface Serializer {
 

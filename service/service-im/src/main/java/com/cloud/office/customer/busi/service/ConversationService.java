@@ -18,4 +18,5 @@ public interface ConversationService extends IService<Conversation> {
      * @return
      */
     List<Conversation> selectListByUserId(Integer userId);
+    List<Conversation> selectListByUserIdRes(Integer userId);
 }

@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kefu.admin.dto.MessageListDto;
-import com.kefu.admin.entity.Message;
+import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
+import com.cloud.office.customer.busi.service_im.entity.Message;
 
 import java.util.List;
 

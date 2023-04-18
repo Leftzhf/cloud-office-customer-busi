@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.office.customer.busi.common.db.util.PageUtils;
-import com.cloud.office.customer.busi.common.exception.user.UserExistsException;
-import com.cloud.office.customer.busi.common.exception.user.UserNotExistsException;
-import com.cloud.office.customer.busi.common.vo.PageVo;
+import com.cloud.office.customer.busi.db.util.PageUtils;
+import com.cloud.office.customer.busi.exception.user.UserExistsException;
+import com.cloud.office.customer.busi.exception.user.UserNotExistsException;
+import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.mapper.UserMapper;
 import com.cloud.office.customer.busi.service.PermissionService;
@@ -19,7 +19,7 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Permission;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
-import com.cloud.office.customer.busi.common.enums.PermissionTypeEnum;
+import com.cloud.office.customer.busi.enums.PermissionTypeEnum;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.ButtonVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.MenuVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
@@ -181,6 +181,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userVo.setRoles(roleService.findRoleListByUserId(userId));
         log.info("用户信息,{}", userVo);
         return userVo;
+    }
+
+    @Override
+    public User getUserById(Integer userId) {
+        User user = baseMapper.selectById(userId);
+        if (user == null) {
+            throw new UserNotExistsException("用户不存在");
+        }
+        log.info("用户User信息,{}", user);
+        return user;
     }
 
     /**

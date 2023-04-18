@@ -1,10 +1,11 @@
 package com.cloud.office.customer.busi.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.RoleService;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RoleDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.RolePageDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/role")
+@Tag(name = "RoleController", description = "角色接口")
 public class RoleController {
 
     @Autowired

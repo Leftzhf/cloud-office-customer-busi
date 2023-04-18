@@ -5,8 +5,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
-import com.cloud.office.customer.busi.common.enums.GenderEnum;
-import com.cloud.office.customer.busi.common.enums.UserStatusEnum;
+import com.cloud.office.customer.busi.enums.GenderEnum;
+import com.cloud.office.customer.busi.enums.UserStatusEnum;
 import lombok.Data;
 import lombok.ToString;
 

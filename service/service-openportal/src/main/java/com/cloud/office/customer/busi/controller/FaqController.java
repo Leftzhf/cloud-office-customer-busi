@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi.controller;
 
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.FaqService;
 import com.cloud.office.customer.busi.service_openportal.domain.dto.FaqPageDto;
 import com.cloud.office.customer.busi.service_openportal.domain.entity.Faq;

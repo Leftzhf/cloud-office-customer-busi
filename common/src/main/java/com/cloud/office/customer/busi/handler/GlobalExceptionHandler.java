@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi.handler;
 
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResultVo globalException(Exception e) {
+        e.printStackTrace();
         log.error("捕捉其他所有异常,{}", e.getMessage());
         return ResultVo.error500(e.getMessage(), e.getCause().toString());
     }

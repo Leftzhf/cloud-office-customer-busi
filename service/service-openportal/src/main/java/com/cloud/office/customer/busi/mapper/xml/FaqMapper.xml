@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kefu.admin.mapper.FaqMapper">
-  <resultMap id="BaseResultMap" type="com.kefu.admin.entity.Faq">
+<mapper namespace="com.cloud.office.customer.busi.mapper.FaqMapper">
+  <resultMap id="BaseResultMap" type="com.cloud.office.customer.busi.service_openportal.domain.entity.Faq">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
@@ -12,9 +12,9 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
 
-  <resultMap id="ExtFaqResultMap" type="com.kefu.admin.entity.Faq" extends="BaseResultMap">
-    <association property="user" column="user_id" select="com.kefu.admin.mapper.UserMapper.selectById" />
-  </resultMap>
+<!--  <resultMap id="ExtFaqResultMap" type="com.cloud.office.customer.busi.service_openportal.domain.entity.Faq" extends="BaseResultMap">-->
+<!--    <association property="user" column="user_id" select="com.cloud.office.customer.busi.mapper.UserMapper.selectById" />-->
+<!--  </resultMap>-->
 
   <sql id="Base_Column_List">
     <!--@sql select -->
@@ -22,7 +22,7 @@
     <!--@sql from tb_faq-->
   </sql>
 
-  <select id="selectPageList" resultMap="ExtFaqResultMap">
+  <select id="selectPageList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_faq

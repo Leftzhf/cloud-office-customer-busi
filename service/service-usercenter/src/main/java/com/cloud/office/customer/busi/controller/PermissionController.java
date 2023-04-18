@@ -1,15 +1,17 @@
 package com.cloud.office.customer.busi.controller;
 
 
-import com.cloud.office.customer.busi.common.vo.ResultVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import com.cloud.office.customer.busi.service.PermissionService;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Permission;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/permission")
+@Tag(name = "PermissionController", description = "权限接口")
 public class PermissionController {
 
     @Autowired

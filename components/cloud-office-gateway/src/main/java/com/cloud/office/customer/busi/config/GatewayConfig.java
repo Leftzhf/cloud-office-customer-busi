@@ -46,7 +46,15 @@ public class GatewayConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange()
-                .pathMatchers("/actuator/**","/auth/**","/user/**").permitAll()
+                .pathMatchers(
+                        "/actuator/**"
+                        ,"/api-auth/**"
+                        ,"/api-im/**"
+                        ,"/api-management/**"
+                        ,"/api-usercenter/**"
+                        ,"/api-open-portal/**"
+                        ,"/api-dictionary/**"
+                ).permitAll()
                 .anyExchange().authenticated().and().csrf().disable();
         return http.build();
     }

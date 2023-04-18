@@ -13,6 +13,7 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.utils.RestTemplateUtil;
+import com.cloud.office.customer.busi.utils.ServerDistributionUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -140,7 +141,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                 log.info("过滤访客userList={}", JSON.toJSONString(userList));
 
                 // 分配客服 TODO:暂时写死,后期改成动态分配
-                User contact = userList.get(0);
+                User contact = ServerDistributionUtil.getServerByPolling(userList);
 
                 // 创建会话
                 Conversation conversation = new Conversation();

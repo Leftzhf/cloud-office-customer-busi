@@ -8,6 +8,7 @@ import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.MessageService;
 import com.cloud.office.customer.busi.service_im.entity.Message;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
+import com.cloud.office.customer.busi.utils.RestTemplateUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,6 +32,8 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
     @Autowired
     private ServiceUsercenterClient userService;
+  @Autowired
+    private RestTemplateUtil restTemplateUtil;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket msg) throws Exception {
@@ -44,6 +47,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         message.setContent(msg.getContent());
         message.setFromUserId(fromUser.getId());
         message.setToUserId(msg.getToUserId());
+        //todo 后续改成mongo
         boolean result = messageService.save(message);
         if (!result) {
             log.info("消息存入数据库失败,message={}", JSON.toJSONString(message));
@@ -65,7 +69,8 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         ctx.channel().writeAndFlush(messageResponsePacket);
 
         // 消息接收方 todo 改成rest接口请求
-        User toUser = userService.getById(msg.getToUserId());
+        User toUser = restTemplateUtil.getById(msg.getToUserId());
+//        User toUser = userService.getById(msg.getToUserId());
         if (toUser == null) {
             log.info("userId={}用户不存在，消息发送失败!", msg.getToUserId());
             return;

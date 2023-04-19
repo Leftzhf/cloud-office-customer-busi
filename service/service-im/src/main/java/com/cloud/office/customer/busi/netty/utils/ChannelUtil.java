@@ -20,7 +20,7 @@ public class ChannelUtil {
     /**
      * username -> Channel 的映射集合
      */
-    private static final Map<String, Channel> USER_ID_CHANNEL_MAP = new ConcurrentHashMap<>();
+    public static final Map<String, Channel> USER_ID_CHANNEL_MAP = new ConcurrentHashMap<>();
 
     /**
      * 登录成功后缓存【用户 -> 用户连接】的映射关系

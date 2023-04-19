@@ -3,6 +3,7 @@ package com.cloud.office.customer.busi.service_im.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
+import com.cloud.office.customer.busi.enums.ConversationStatusEnum;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import lombok.Data;
 import lombok.ToString;
@@ -39,7 +40,7 @@ public class Conversation extends BaseEntity implements Serializable {
     private Integer lastMessageId;
 
     @TableField(value = "status")
-    private Integer status;
+    private ConversationStatusEnum status;
 
     private static final long serialVersionUID = 1L;
 

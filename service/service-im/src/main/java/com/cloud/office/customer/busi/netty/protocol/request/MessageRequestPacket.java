@@ -21,6 +21,8 @@ public class MessageRequestPacket extends Packet {
      */
     private String content;
 
+    private Integer conversationId;
+
     /**
      * 消息类型 [1.文字 2.图片]
      */

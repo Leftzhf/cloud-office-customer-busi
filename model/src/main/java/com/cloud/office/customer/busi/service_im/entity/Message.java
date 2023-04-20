@@ -48,6 +48,9 @@ public class Message extends BaseEntity implements Serializable {
 //    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
     private MessageStatusEnum status;
 
+    @TableField(value = "conversation_id")
+    private Integer conversationId;
+
     @TableLogic
     @TableField("is_delete")
     private Integer isDelete;

@@ -24,6 +24,8 @@ public class LoginResponsePacket extends Packet {
      */
     private User contact;
 
+    private Integer conversationId;
+
     private Boolean success;
 
     @Override

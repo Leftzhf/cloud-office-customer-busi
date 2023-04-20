@@ -1,11 +1,10 @@
 package com.cloud.office.customer.busi.netty.protocol.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cloud.office.customer.busi.enums.MessageStatusEnum;
 import com.cloud.office.customer.busi.enums.MessageTypeEnum;
-import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.netty.protocol.Packet;
 import com.cloud.office.customer.busi.netty.protocol.command.Command;
+import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -50,8 +49,8 @@ public class MessageResponsePacket extends Packet {
     /**
      * 消息状态 [1.未读 2.已读]
      */
-    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
-    private MessageStatusEnum status;
+//    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
+    private Integer status;
 
     /**
      * 创建时间

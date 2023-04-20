@@ -40,7 +40,7 @@
      and
         is_delete=0
       order by id desc
-      limit 20
+--       limit 20
     </where>
   </select>
 

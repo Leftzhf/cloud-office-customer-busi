@@ -32,7 +32,7 @@ public interface ServiceUsercenterClient {
     @PostMapping("/user")
     void addUser(@RequestBody UserDto userDto);
 
-    @PostMapping("/getById")
+    @PostMapping("/user/getById")
     User getById(@RequestParam Integer id);
 
     @PostMapping("/list")

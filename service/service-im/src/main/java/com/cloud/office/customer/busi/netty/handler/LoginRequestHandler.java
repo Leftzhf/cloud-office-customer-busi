@@ -99,7 +99,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             List<Conversation> conversations = conversationService.selectListByUserIdRes(user.getId());
             //如果有会话则直接从会话获取联系人
             if (conversations != null && conversations.size() > 0) {
-                // 时间排序
+                // 时间排序,取最新的会话
                 conversations.sort(Comparator.comparing(TimeEntity::getUpdatedAt));
                 Conversation conversation = conversations.get(0);
                 Integer contactUserId = 0;
@@ -111,6 +111,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                 }
                 // 获取会话联系人
                 User contact = restTemplateRemote.getById(contactUserId);
+                loginResponsePacket.setConversationId(conversation.getId());
                 loginResponsePacket.setContact(contact);
             } else {
                 //如果没有会话，则需要转接客服，从团队里面转接
@@ -148,6 +149,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                 conversation.setFromUserId(user.getId());
                 conversation.setToUserId(contact.getId());
                 conversationService.save(conversation);
+                //todo 设置会话id
 
                 //设置响应消息
                 loginResponsePacket.setContact(contact);
@@ -156,12 +158,11 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         log.info("登录成功,user={}", JSON.toJSONString(user));
         // 保存用户信息和channel对应关系
-        ChannelUtil.bindUser(user, ctx.channel());
+        ChannelUtil.bindUser(user, ctx.channel(),loginResponsePacket.getConversationId());
 
         loginResponsePacket.setUser(user);
         loginResponsePacket.setSuccess(true);
         //返回握手响应
         ctx.channel().writeAndFlush(loginResponsePacket);
     }
-
 }

@@ -1,12 +1,15 @@
 package com.cloud.office.customer.busi.netty.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.enums.MessageStatusEnum;
 import com.cloud.office.customer.busi.netty.protocol.request.MessageRequestPacket;
 import com.cloud.office.customer.busi.netty.protocol.response.MessageResponsePacket;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
+import com.cloud.office.customer.busi.service.ConversationService;
 import com.cloud.office.customer.busi.service.MessageService;
+import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_im.entity.Message;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.utils.RestTemplateUtil;
@@ -18,10 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * 消息转发请求逻辑处理器
- *
- *
  */
 @Slf4j
 @ChannelHandler.Sharable
@@ -32,10 +35,15 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
     private MessageService messageService;
 
     @Autowired
+    private ConversationService conversationService;
+
+    @Autowired
     private ServiceUsercenterClient userService;
-  @Autowired
+    @Autowired
     private RestTemplateUtil restTemplateUtil;
 
+    private Integer unReadCount;
+    private Integer lastMessageId;
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket msg) throws Exception {
 
@@ -48,6 +56,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         message.setContent(msg.getContent());
         message.setFromUserId(fromUser.getId());
         message.setToUserId(msg.getToUserId());
+        message.setConversationId(msg.getConversationId());
 
         // 消息响应数据包
         MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
@@ -56,9 +65,9 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         messageResponsePacket.setContent(message.getContent());
         messageResponsePacket.setFromUserId(message.getFromUserId());
         messageResponsePacket.setToUserId(message.getToUserId());
-        messageResponsePacket.setStatus(message.getStatus());
-        messageResponsePacket.setCreatedAt(message.getCreatedAt());
-        messageResponsePacket.setUpdatedAt(message.getUpdatedAt());
+//        messageResponsePacket.setStatus(message.getStatus().getValue());
+        messageResponsePacket.setCreatedAt(new Date());
+        messageResponsePacket.setUpdatedAt(new Date());
 
 
         // 消息接收方
@@ -74,7 +83,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         if (toChannel != null && ChannelUtil.hasLogin(toChannel)) {
             // 发送给消息接收方
             message.setStatus(MessageStatusEnum.READ);
-            messageResponsePacket.setStatus(MessageStatusEnum.READ);
+            messageResponsePacket.setStatus(MessageStatusEnum.READ.getValue());
             toChannel.writeAndFlush(messageResponsePacket);
             // 发送给消息发送方，用于判断消息是否发送成功
             ctx.channel().writeAndFlush(messageResponsePacket);
@@ -82,7 +91,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
             log.info("username={}不在线!", toUser.getUsername());
             // 发送给消息发送方，用于判断消息是否发送成功
             message.setStatus(MessageStatusEnum.UNREAD);
-            messageResponsePacket.setStatus(MessageStatusEnum.UNREAD);
+            messageResponsePacket.setStatus(MessageStatusEnum.UNREAD.getValue());
             ctx.channel().writeAndFlush(messageResponsePacket);
         }
         //todo 后续改成mongo
@@ -91,5 +100,22 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         if (!result) {
             log.info("消息存入数据库失败,message={}", JSON.toJSONString(message));
         }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        log.info("断开连接");
+        //关闭会话
+        Integer conversationId = ChannelUtil.getConversationId(ctx.channel());
+        ChannelUtil.unBindUser(ctx.channel());
+        //更新最后一条消息id
+        QueryWrapper<Message> wrapper = new QueryWrapper<>();
+        wrapper.select("max(id) as id");
+        wrapper.eq("conversation_id", conversationId);
+        Integer lastMessageId = messageService.getOne(wrapper).getId();
+        Conversation conversation = new Conversation();
+        conversation.setId(conversationId);
+        conversation.setLastMessageId(lastMessageId);
+        conversationService.updateById(conversation);
     }
 }

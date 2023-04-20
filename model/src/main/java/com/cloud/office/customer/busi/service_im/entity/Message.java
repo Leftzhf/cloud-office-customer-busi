@@ -1,6 +1,7 @@
 package com.cloud.office.customer.busi.service_im.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
 import com.cloud.office.customer.busi.enums.MessageStatusEnum;
@@ -46,6 +47,10 @@ public class Message extends BaseEntity implements Serializable {
     @TableField(value = "status")
 //    @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
     private MessageStatusEnum status;
+
+    @TableLogic
+    @TableField("is_delete")
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 

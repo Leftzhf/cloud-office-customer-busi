@@ -29,4 +29,10 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     public List<Message> findMessageList(MessageListDto messageListDto) {
         return baseMapper.selectMessageList(messageListDto);
     }
+
+    @Override
+    public Integer deleteMessage(Integer messageId) {
+        int i = baseMapper.deleteById(messageId);
+        return i;
+    }
 }

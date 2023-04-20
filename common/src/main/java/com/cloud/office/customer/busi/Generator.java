@@ -31,7 +31,7 @@ public class Generator {
                         .entityBuilder().enableLombok().addTableFills(
                                 new Column("gmt_create", FieldFill.INSERT),
                                 new Column("gmt_modify", FieldFill.INSERT),
-                                new Column("is_deleted", FieldFill.INSERT)
+                                new Column("is_delete", FieldFill.INSERT)
                         ).build())
                 /*
                     模板引擎配置，默认 Velocity 可选模板引擎 Beetl 或 Freemarker

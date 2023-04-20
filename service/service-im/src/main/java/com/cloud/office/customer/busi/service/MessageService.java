@@ -17,4 +17,6 @@ public interface MessageService extends IService<Message> {
      * @return
      */
     List<Message> findMessageList(MessageListDto messageListDto);
+
+    Integer deleteMessage(Integer messageId);
 }

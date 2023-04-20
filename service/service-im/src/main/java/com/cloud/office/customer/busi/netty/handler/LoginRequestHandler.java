@@ -67,6 +67,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 如果没有用户，则新建
         if (user == null) {
             user = new User();
+            user.setNickname("访客");
             user.setUsername(msg.getUsername());
             user.setTeamId(msg.getTeamId());
             user.setPassword("123456");

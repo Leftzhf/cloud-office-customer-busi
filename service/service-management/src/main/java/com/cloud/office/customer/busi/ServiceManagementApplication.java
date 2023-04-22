@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @author ZuoHaoFan
  * @Description: new java files header..
- * @date 2023/3/16 10:59
+ * @date 2023/3/16 11:00
  */
 @SpringBootApplication
 @EnableDiscoveryClient

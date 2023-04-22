@@ -43,7 +43,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //拉取消息数据
         List<Message> messages = baseMapper.selectMessageList(messageListDto);
         //把对方发送的消息状态更新为已读
-        //todo 通知对方客户端更新消息状态
+        //通知对方客户端更新消息状态
        return makeReaded(messages,messageListDto.getContactUserId(),messageListDto.getUserId());
     }
 
@@ -67,8 +67,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             User currentUser = serviceUsercenterClient.getById(toUserId);
             Channel toChannel = ChannelUtil.getChannel(currentUser.getUsername());
             if (toChannel != null && ChannelUtil.hasLogin(toChannel)) {
-                //todo 如果对方在线，通知它消息已读,更新消息状态
-                // 最后一条消息id之前的，他发的，数据，都设置为已读
+                // 如果对方在线，通知它消息已读,更新消息状态
                 //注意这里的userId是指的对方，contract指的是我方，方便前端
                 ReadResponsePacket readResponsePacket = new ReadResponsePacket();
                 readResponsePacket.setReadedList(readedList);

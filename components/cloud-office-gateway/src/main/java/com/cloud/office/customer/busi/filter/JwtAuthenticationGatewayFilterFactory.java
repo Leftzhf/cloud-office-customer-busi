@@ -2,6 +2,7 @@ package com.cloud.office.customer.busi.filter;
 
 import com.cloud.office.customer.busi.util.JwtTokenUtils;
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -13,6 +14,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+@Slf4j
 public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
 
     @Autowired
@@ -48,14 +50,17 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
                     Claims claimsToken = jwtTokenUtils.getClaimsToken(token);
                     String username = (String) claimsToken.get("user_name");
                     ServerHttpRequest modifiedRequest = exchange.getRequest().mutate().header("User-Agent", username).build();
+                    log.info("放行请求{},{}", modifiedRequest.getURI().getPath());
                     return chain.filter(exchange.mutate().request(modifiedRequest).build());
                 }else {
                     //token 无效或已过期，拒接访问
+                    log.info("token 无效或已过期，拒接访问");
                     response.setStatusCode(HttpStatus.UNAUTHORIZED);
                     return response.setComplete();
                 }
             } else {
                 // 没有携带token，抛出访问拒绝异常
+                log.info("未携带token，拒绝访问");
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 return response.setComplete();
             }

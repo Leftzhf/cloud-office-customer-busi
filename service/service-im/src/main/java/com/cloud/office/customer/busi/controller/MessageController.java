@@ -3,6 +3,7 @@ package com.cloud.office.customer.busi.controller;
 import com.alibaba.fastjson.JSON;
 import com.cloud.office.customer.busi.service.MessageService;
 import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
+import com.cloud.office.customer.busi.service_im.dto.RecallMessageDto;
 import com.cloud.office.customer.busi.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,10 +34,10 @@ public class MessageController {
     }
     //todo 获取秘钥接口
 
-    @DeleteMapping("/delete/{messageId}")
+    @PostMapping("/recall")
     @ApiOperation(value = "撤回(删除)消息")
-    public ResultVo deleteMessage(@PathVariable Integer messageId) {
-        log.info("删除消息数据,{}",messageId);
-        return ResultVo.success(messageService.deleteMessage(messageId));
+    public ResultVo RecallMessage(@RequestBody RecallMessageDto messageListDto) {
+        log.info("撤回消息数据,{}",messageListDto);
+        return ResultVo.success(messageService.RecallMessage(messageListDto));
     }
 }

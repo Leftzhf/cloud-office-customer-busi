@@ -20,4 +20,6 @@ public interface Command {
 
     Short READ_RESPONSE = 4000;
 
+    Short RECALL_RESPONSE = 5000;
+
 }

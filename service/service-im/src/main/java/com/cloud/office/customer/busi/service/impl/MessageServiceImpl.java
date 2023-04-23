@@ -4,15 +4,19 @@ package com.cloud.office.customer.busi.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.enums.MessageStatusEnum;
+import com.cloud.office.customer.busi.enums.MessageTypeEnum;
 import com.cloud.office.customer.busi.mapper.MessageMapper;
 import com.cloud.office.customer.busi.netty.protocol.response.ReadResponsePacket;
+import com.cloud.office.customer.busi.netty.protocol.response.RecallResponsePacket;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.MessageService;
 import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
+import com.cloud.office.customer.busi.service_im.dto.RecallMessageDto;
 import com.cloud.office.customer.busi.service_im.entity.Message;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +52,22 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public Integer deleteMessage(Integer messageId) {
-        int i = baseMapper.deleteById(messageId);
-        return i;
+    public Boolean RecallMessage(RecallMessageDto messageDto) {
+        Message message = new Message();
+        message.setType(MessageTypeEnum.SYSTEM);
+        message.setId(messageDto.getMessageId());
+        User user = serviceUsercenterClient.getById(messageDto.getUserId());
+        message.setContent(user.getNickname()+"撤回了一条消息");
+        int i = baseMapper.updateById(message);
+        //todo 这里用户名改成让前端携带过来吧
+        User currentUser = serviceUsercenterClient.getById(messageDto.getContactUserId());
+        Channel toChannel = ChannelUtil.getChannel(currentUser.getUsername());
+        if (toChannel != null && ChannelUtil.hasLogin(toChannel)){
+            RecallResponsePacket recallResponsePacket = new RecallResponsePacket();
+            BeanUtils.copyProperties(messageDto,recallResponsePacket);
+            toChannel.writeAndFlush(recallResponsePacket);
+        }
+        return i > 0;
     }
     private List<Message> makeReaded(List<Message> messageList,Integer toUserId,Integer userId){
         ArrayList<Integer> readedList = new ArrayList<>();
@@ -79,4 +96,5 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
         return messageList;
     }
+
 }

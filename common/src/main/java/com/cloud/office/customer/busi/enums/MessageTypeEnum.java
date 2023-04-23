@@ -14,8 +14,10 @@ public enum MessageTypeEnum {
     /**
      * 消息类型 [1.文字 2.图片]
      */
+    SYSTEM(10000, "系统提示"),
     TEXT(1, "文字"),
     IMAGE(2, "图片");
+
 
     @EnumValue
     @JsonValue

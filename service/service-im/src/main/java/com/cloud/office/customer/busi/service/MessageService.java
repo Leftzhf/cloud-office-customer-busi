@@ -2,6 +2,7 @@ package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
+import com.cloud.office.customer.busi.service_im.dto.RecallMessageDto;
 import com.cloud.office.customer.busi.service_im.entity.Message;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface MessageService extends IService<Message> {
      */
     List<Message> findMessageList(MessageListDto messageListDto);
 
-    Integer deleteMessage(Integer messageId);
+    Boolean RecallMessage(RecallMessageDto messageListDto);
 }

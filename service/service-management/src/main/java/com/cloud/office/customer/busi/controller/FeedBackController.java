@@ -2,8 +2,8 @@ package com.cloud.office.customer.busi.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.cloud.office.customer.busi.service.ITbFeedbackService;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.FeedBackDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbFeedback;
+import com.cloud.office.customer.busi.service_management.dto.FeedBackDto;
+import com.cloud.office.customer.busi.service_management.entity.TbFeedback;
 import com.cloud.office.customer.busi.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

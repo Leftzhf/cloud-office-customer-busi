@@ -1,14 +1,12 @@
 package com.cloud.office.customer.busi.enums;
 
-import com.alibaba.fastjson.annotation.JSONType;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.cloud.office.customer.busi.util.EnumValueDeserializer;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 
 @Getter
-@JSONType(deserializer = EnumValueDeserializer.class, serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
+//@JSONType(deserializer = EnumValueDeserializer.class, serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
 public enum PermissionTypeEnum {
     /**
      *
@@ -17,6 +15,7 @@ public enum PermissionTypeEnum {
     BUTTON("button", "按钮");
 
     @EnumValue
+    @JsonValue
     private final String value;
     private final String typeName;
 

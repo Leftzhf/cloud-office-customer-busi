@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi.service_usercenter.domain.dto;
 
-import com.cloud.office.customer.busi.db.dto.PageDto;
+import com.cloud.office.customer.busi.base.PageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
 import lombok.Data;
 import lombok.ToString;

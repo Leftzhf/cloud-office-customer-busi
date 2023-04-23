@@ -1,6 +1,6 @@
 package com.cloud.office.customer.busi.mapper;
 
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbLeaveInfo;
+import com.cloud.office.customer.busi.service_management.entity.TbLeaveInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,4 +1,4 @@
-package com.cloud.office.customer.busi.db.dto;
+package com.cloud.office.customer.busi.base;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloud.office.customer.busi.enums.Order;

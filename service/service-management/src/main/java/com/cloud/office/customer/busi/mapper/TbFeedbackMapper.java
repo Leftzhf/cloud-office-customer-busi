@@ -2,7 +2,7 @@ package com.cloud.office.customer.busi.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbFeedback;
+import com.cloud.office.customer.busi.service_management.entity.TbFeedback;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

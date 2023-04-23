@@ -2,8 +2,8 @@ package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloud.office.customer.busi.vo.PageVo;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.FaqPageDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.Faq;
+import com.cloud.office.customer.busi.service_management.dto.FaqPageDto;
+import com.cloud.office.customer.busi.service_management.entity.Faq;
 
 /**
  * @author leftleft

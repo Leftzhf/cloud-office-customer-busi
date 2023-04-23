@@ -1,4 +1,4 @@
-package com.cloud.office.customer.busi.db.util;
+package com.cloud.office.customer.busi.util;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.cloud.office.customer.busi.vo.PageVo;
@@ -22,7 +22,7 @@ public class PageUtils {
         return pageVo;
     }
 
-    public static <T> PageVo<T> getPageVo(IPage<T> page, List<T> list) {
+    public static <T,E> PageVo<T> getPageVo(IPage<E> page, List<T> list) {
         PageVo<T> pageVo = new PageVo<>();
         pageVo.setList(list);
         pageVo.setTotalCount(page.getTotal());

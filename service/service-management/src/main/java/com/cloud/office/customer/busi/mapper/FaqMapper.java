@@ -2,8 +2,8 @@ package com.cloud.office.customer.busi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.FaqPageDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.Faq;
+import com.cloud.office.customer.busi.service_management.dto.FaqPageDto;
+import com.cloud.office.customer.busi.service_management.entity.Faq;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

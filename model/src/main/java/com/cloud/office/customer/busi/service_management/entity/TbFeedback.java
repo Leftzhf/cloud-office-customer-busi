@@ -1,4 +1,4 @@
-package com.cloud.office.customer.busi.service_openportal.domain.entity;
+package com.cloud.office.customer.busi.service_management.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;

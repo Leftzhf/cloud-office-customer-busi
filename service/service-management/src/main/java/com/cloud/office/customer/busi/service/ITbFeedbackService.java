@@ -1,9 +1,10 @@
 package com.cloud.office.customer.busi.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.FeedBackDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbFeedback;
+import com.cloud.office.customer.busi.service_management.dto.FeedBackDto;
+import com.cloud.office.customer.busi.service_management.entity.TbFeedback;
+import com.cloud.office.customer.busi.service_management.vo.FeedBackVo;
+import com.cloud.office.customer.busi.vo.PageVo;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import com.cloud.office.customer.busi.service_openportal.domain.entity.TbFeedbac
  */
 public interface ITbFeedbackService extends IService<TbFeedback> {
 
-    IPage<TbFeedback> getFeedBackPageList(FeedBackDto feedBackQuery);
+    PageVo<FeedBackVo> getFeedBackPageList(FeedBackDto feedBackQuery);
 
     Boolean  addFeedBack(TbFeedback feedBack);
 

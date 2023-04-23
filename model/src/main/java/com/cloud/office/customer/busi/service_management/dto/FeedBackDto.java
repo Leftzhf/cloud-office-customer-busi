@@ -1,7 +1,7 @@
-package com.cloud.office.customer.busi.service_openportal.domain.dto;
+package com.cloud.office.customer.busi.service_management.dto;
 
 import com.cloud.office.customer.busi.base.PageDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbFeedback;
+import com.cloud.office.customer.busi.service_management.entity.TbFeedback;
 import lombok.Data;
 
 /**

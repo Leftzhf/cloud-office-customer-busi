@@ -2,8 +2,8 @@ package com.cloud.office.customer.busi.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.cloud.office.customer.busi.service.ITbLeaveInfoService;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.LeaveInfoDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbLeaveInfo;
+import com.cloud.office.customer.busi.service_management.dto.LeaveInfoDto;
+import com.cloud.office.customer.busi.service_management.entity.TbLeaveInfo;
 import com.cloud.office.customer.busi.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,14 +1,19 @@
 package com.cloud.office.customer.busi.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.office.customer.busi.mapper.TbLeaveInfoMapper;
 import com.cloud.office.customer.busi.service.ITbLeaveInfoService;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.LeaveInfoDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbLeaveInfo;
+import com.cloud.office.customer.busi.service_management.dto.LeaveInfoDto;
+import com.cloud.office.customer.busi.service_management.entity.TbLeaveInfo;
+import com.cloud.office.customer.busi.service_management.vo.LeaveInfoVo;
+import com.cloud.office.customer.busi.util.PageUtils;
+import com.cloud.office.customer.busi.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -25,12 +30,22 @@ public class TbLeaveInfoServiceImpl extends ServiceImpl<TbLeaveInfoMapper, TbLea
     private TbLeaveInfoMapper tbLeaveInfoMapper;
 
     @Override
-    public IPage<TbLeaveInfo> getLeaveInfoPageList(LeaveInfoDto leaveInfoDto) {
+    public PageVo<LeaveInfoVo> getLeaveInfoPageList(LeaveInfoDto leaveInfoDto) {
         LambdaQueryWrapper<TbLeaveInfo> lambdaQuery = new LambdaQueryWrapper<>();
         if (leaveInfoDto.getConversationId()!=null){
            lambdaQuery.eq(TbLeaveInfo::getConversationId,leaveInfoDto.getConversationId());
         }
-        return  tbLeaveInfoMapper.selectPage(leaveInfoDto, lambdaQuery);
+        LeaveInfoDto leavePages = tbLeaveInfoMapper.selectPage(leaveInfoDto, lambdaQuery);
+        List<LeaveInfoVo> collect = leavePages.getRecords().stream().map(item -> {
+            LeaveInfoVo leaveInfoVo = new LeaveInfoVo();
+            leaveInfoVo.setId(item.getId());
+            leaveInfoVo.setContent(item.getContent());
+            leaveInfoVo.setEmail(item.getEmail());
+            leaveInfoVo.setPhoneNumber(item.getPhoneNumber());
+            leaveInfoVo.setCreateAt(item.getCreatedAt());
+            return leaveInfoVo;
+        }).collect(Collectors.toList());
+        return PageUtils.getPageVo(leavePages,collect);
     }
 
     @Override

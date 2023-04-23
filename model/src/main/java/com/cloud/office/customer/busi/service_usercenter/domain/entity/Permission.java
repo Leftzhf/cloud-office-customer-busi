@@ -4,9 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
-import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.enums.PermissionTypeEnum;
 import com.cloud.office.customer.busi.tree.ITree;
+import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import lombok.Data;
 import lombok.ToString;
 
@@ -58,6 +58,7 @@ public class Permission extends BaseEntity implements Serializable, ITree<Permis
      */
     @TableField(value = "type")
     @JSONField(serializeUsing = EnumValueDeserializer.class, deserializeUsing = EnumValueDeserializer.class)
+//    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
     private PermissionTypeEnum type;
 
     /**

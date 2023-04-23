@@ -1,8 +1,8 @@
 package com.cloud.office.customer.busi.controller;
 
 import com.cloud.office.customer.busi.service.FaqService;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.FaqPageDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.Faq;
+import com.cloud.office.customer.busi.service_management.dto.FaqPageDto;
+import com.cloud.office.customer.busi.service_management.entity.Faq;
 import com.cloud.office.customer.busi.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

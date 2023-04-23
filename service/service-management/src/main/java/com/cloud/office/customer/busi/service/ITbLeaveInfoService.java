@@ -1,9 +1,10 @@
 package com.cloud.office.customer.busi.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.cloud.office.customer.busi.service_openportal.domain.dto.LeaveInfoDto;
-import com.cloud.office.customer.busi.service_openportal.domain.entity.TbLeaveInfo;
+import com.cloud.office.customer.busi.service_management.dto.LeaveInfoDto;
+import com.cloud.office.customer.busi.service_management.entity.TbLeaveInfo;
+import com.cloud.office.customer.busi.service_management.vo.LeaveInfoVo;
+import com.cloud.office.customer.busi.vo.PageVo;
 
 /**
  * <p>
@@ -15,7 +16,7 @@ import com.cloud.office.customer.busi.service_openportal.domain.entity.TbLeaveIn
  */
 public interface ITbLeaveInfoService extends IService<TbLeaveInfo> {
 
-    IPage<TbLeaveInfo> getLeaveInfoPageList(LeaveInfoDto leaveInfoDto);
+    PageVo<LeaveInfoVo> getLeaveInfoPageList(LeaveInfoDto leaveInfoDto);
 
     Boolean  addLeaveInfo(TbLeaveInfo leaveInfo);
 

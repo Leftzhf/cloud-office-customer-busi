@@ -8,8 +8,6 @@ import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * 服务端发送至客户端的消息数据包
  *
@@ -55,14 +53,14 @@ public class MessageResponsePacket extends Packet {
     /**
      * 创建时间
      */
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    private Date createdAt;
+//    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Long createdAt;
 
     /**
      * 修改时间
      */
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    private Date updatedAt;
+//    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    private Long updatedAt;
 
     @Override
     public Short getCommand() {

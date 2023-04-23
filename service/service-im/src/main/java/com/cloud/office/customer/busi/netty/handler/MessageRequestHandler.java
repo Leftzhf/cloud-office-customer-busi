@@ -21,8 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 /**
  * 消息转发请求逻辑处理器
  */
@@ -66,8 +64,9 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         messageResponsePacket.setFromUserId(message.getFromUserId());
         messageResponsePacket.setToUserId(message.getToUserId());
 //        messageResponsePacket.setStatus(message.getStatus().getValue());
-        messageResponsePacket.setCreatedAt(new Date());
-        messageResponsePacket.setUpdatedAt(new Date());
+        //这里使用时间戳方便前端转换
+        messageResponsePacket.setCreatedAt(System.currentTimeMillis());
+        messageResponsePacket.setUpdatedAt(System.currentTimeMillis());
 
 
         // 消息接收方
@@ -84,6 +83,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
             // 发送给消息接收方
             message.setStatus(MessageStatusEnum.READ);
             messageResponsePacket.setStatus(MessageStatusEnum.READ.getValue());
+            //转发给消息接收方
             toChannel.writeAndFlush(messageResponsePacket);
             // 发送给消息发送方，用于判断消息是否发送成功
             ctx.channel().writeAndFlush(messageResponsePacket);

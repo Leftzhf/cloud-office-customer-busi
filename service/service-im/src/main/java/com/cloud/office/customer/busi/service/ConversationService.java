@@ -1,13 +1,13 @@
 package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cloud.office.customer.busi.service_im.dto.ConversationDTO;
 import com.cloud.office.customer.busi.service_im.entity.Conversation;
+import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 
 import java.util.List;
 
 /**
- * @author feng
- * @date 2019-06-08
  */
 public interface ConversationService extends IService<Conversation> {
 
@@ -19,4 +19,10 @@ public interface ConversationService extends IService<Conversation> {
      */
     List<Conversation> selectListByUserId(Integer userId);
     List<Conversation> selectListByUserIdRes(Integer userId);
+
+    Boolean createConversation(ConversationDTO conversationDTO);
+    List<User> getListOnlineServer();
+
+    List<User> getListOnlineCustomer();
+
 }

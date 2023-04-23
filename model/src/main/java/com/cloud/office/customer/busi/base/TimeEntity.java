@@ -10,8 +10,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author feng
- * @date 2019-05-23
  */
 @Data
 @ToString(callSuper = true)

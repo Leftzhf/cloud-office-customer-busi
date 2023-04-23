@@ -3,8 +3,6 @@ package com.cloud.office.customer.busi.netty.protocol.command;
 /**
  * 指令
  *
- * @author feng
- * @date 2019-04-20
  */
 public interface Command {
 
@@ -19,5 +17,7 @@ public interface Command {
 
     Short MESSAGE_REQUEST = 3000;
     Short MESSAGE_RESPONSE = 3001;
+
+    Short READ_RESPONSE = 4000;
 
 }

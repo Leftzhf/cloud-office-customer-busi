@@ -1,6 +1,7 @@
 package com.cloud.office.customer.busi.service_im.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cloud.office.customer.busi.base.BaseEntity;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
@@ -37,6 +38,10 @@ public class Conversation extends BaseEntity implements Serializable {
      */
     @TableField(value = "last_message_id")
     private Integer lastMessageId;
+
+    @TableLogic
+    @TableField("is_delete")
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 

@@ -3,8 +3,8 @@ package com.cloud.office.customer.busi.netty.serialize;
 /**
  * 序列化算法
  *
- * @author feng
- * @date 2019-04-20
+ * @author leftleft
+ * @date 2023-04-20
  */
 public interface SerializerAlgorithm {
 

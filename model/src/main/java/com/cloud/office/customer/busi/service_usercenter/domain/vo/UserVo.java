@@ -11,8 +11,6 @@ import java.util.List;
 /**
  * 用户VO
  *
- * @author feng
- * @date 2019-05-20
  */
 @Data
 @NoArgsConstructor

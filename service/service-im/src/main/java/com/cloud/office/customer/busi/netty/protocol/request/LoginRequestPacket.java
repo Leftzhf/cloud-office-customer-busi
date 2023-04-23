@@ -7,8 +7,6 @@ import lombok.Data;
 /**
  * 登录请求数据包
  *
- * @author feng
- * @date 2019-04-20
  */
 @Data
 public class LoginRequestPacket extends Packet {

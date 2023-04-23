@@ -8,8 +8,8 @@ import lombok.Data;
 /**
  * 登录响应数据包
  *
- * @author feng
- * @date 2019-04-20
+ * @author leftleft
+ * @date 2023-04-20
  */
 @Data
 public class LoginResponsePacket extends Packet {
@@ -23,6 +23,8 @@ public class LoginResponsePacket extends Packet {
      * 联系人用户对象，这个字段只有访客才会有值，用于分配一个客服
      */
     private User contact;
+
+    private Integer conversationId;
 
     private Boolean success;
 

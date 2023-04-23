@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 /**
  * 客户端发送至服务端的消息数据包
  *
- * @author feng
- * @date 2019-04-20
  */
 @Data
 @NoArgsConstructor
@@ -22,6 +20,8 @@ public class MessageRequestPacket extends Packet {
      * 消息内容
      */
     private String content;
+
+    private Integer conversationId;
 
     /**
      * 消息类型 [1.文字 2.图片]

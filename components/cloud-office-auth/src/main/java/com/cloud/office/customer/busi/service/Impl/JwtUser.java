@@ -12,8 +12,6 @@ import java.util.Collection;
 /**
  * Spring Security需要的用户对象，实现UserDetails接口
  *
- * @author feng
- * @date 2019-05-20
  */
 @Data
 public class JwtUser implements UserDetails {

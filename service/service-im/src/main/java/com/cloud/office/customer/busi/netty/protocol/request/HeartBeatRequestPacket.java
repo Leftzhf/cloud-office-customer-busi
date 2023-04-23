@@ -5,8 +5,6 @@ import com.cloud.office.customer.busi.netty.protocol.command.Command;
 import lombok.Data;
 
 /**
- * @author feng
- * @date 2019-04-21
  */
 @Data
 public class HeartBeatRequestPacket extends Packet {

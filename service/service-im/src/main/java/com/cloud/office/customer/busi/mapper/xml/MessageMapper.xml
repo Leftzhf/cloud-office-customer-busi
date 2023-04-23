@@ -37,8 +37,10 @@
       ((from_user_id=#{userId,jdbcType=INTEGER} and to_user_id=#{contactUserId,jdbcType=INTEGER})
       or
       (to_user_id=#{userId,jdbcType=INTEGER} and from_user_id=#{contactUserId,jdbcType=INTEGER}))
+     and
+        is_delete=0
       order by id desc
-      limit 20
+--       limit 20
     </where>
   </select>
 

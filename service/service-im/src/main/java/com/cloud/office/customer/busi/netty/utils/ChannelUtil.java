@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * channel工具类
  *
- * @author feng
- * @date 2019-04-21
+ * @author leftleft
+ * @date 2023-04-21
  */
 @Slf4j
 public class ChannelUtil {
@@ -20,17 +20,17 @@ public class ChannelUtil {
     /**
      * username -> Channel 的映射集合
      */
-    private static final Map<String, Channel> USER_ID_CHANNEL_MAP = new ConcurrentHashMap<>();
-
+    public static final Map<String, Channel> USER_ID_CHANNEL_MAP = new ConcurrentHashMap<>();
     /**
      * 登录成功后缓存【用户 -> 用户连接】的映射关系
      *
      * @param user    用户对象
      * @param channel 连接
      */
-    public static void bindUser(User user, Channel channel) {
-        log.info("缓存【username:channel】映射,username={},channel={}", user.getUsername(), channel.toString());
+    public static void bindUser(User user, Channel channel,Integer conversationId) {
+        log.info("缓存【username:channel】映射,username={},channel={},会话id={}", user.getUsername(), channel.toString(),conversationId);
         USER_ID_CHANNEL_MAP.put(user.getUsername(), channel);
+        channel.attr(Attributes.CONVERSATION_ATTRIBUTE_KEY).set(conversationId);
         channel.attr(Attributes.USER_ATTRIBUTE_KEY).set(user);
     }
 
@@ -44,6 +44,7 @@ public class ChannelUtil {
             log.info("移除【username:channel】映射,username={},channel={}", getUser(channel).getUsername(), channel.toString());
             USER_ID_CHANNEL_MAP.remove(getUser(channel).getUsername());
             channel.attr(Attributes.USER_ATTRIBUTE_KEY).set(null);
+            channel.attr(Attributes.CONVERSATION_ATTRIBUTE_KEY).set(null);
         }
     }
 
@@ -67,6 +68,9 @@ public class ChannelUtil {
         return channel.attr(Attributes.USER_ATTRIBUTE_KEY).get();
     }
 
+    public static Integer getConversationId(Channel channel) {
+        return channel.attr(Attributes.CONVERSATION_ATTRIBUTE_KEY).get();
+    }
     /**
      * 根据username获取连接
      *

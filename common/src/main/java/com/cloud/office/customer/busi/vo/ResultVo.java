@@ -2,16 +2,13 @@ package com.cloud.office.customer.busi.vo;
 
 import com.cloud.office.customer.busi.constant.CommonConstants;
 import com.cloud.office.customer.busi.exception.common.ApiException;
+import lombok.Data;
 
 import java.io.Serializable;
-
-import lombok.Data;
 
 /**
  * 统一请求响应的格式
  *
- * @author feng
- * @date 2019-05-17
  */
 @Data
 public class ResultVo<T> implements Serializable {

@@ -8,8 +8,6 @@ import java.io.Serializable;
 /**
  * 按钮VO
  *
- * @author feng
- * @date 2019-05-20
  */
 @Data
 @NoArgsConstructor

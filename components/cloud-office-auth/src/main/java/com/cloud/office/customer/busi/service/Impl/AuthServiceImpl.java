@@ -71,17 +71,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     /**
-     * 刷新token
+     * 刷新token todo 调Oauth2刷新token
      *
      * @param oldToken 旧token
      * @return
      */
     @Override
     public String refreshToken(String oldToken) {
-//        if (!StringUtils.isEmpty(oldToken)) {
-//            String token = oldToken.substring(jwtTokenUtils.getTokenHead().length());
-//            return jwtTokenUtils.refreshToken(token);
-//        }
+//        RestTemplate restTemplate=new RestTemplate();
+//        MultiValueMap<String,Object> paramsMap=new LinkedMultiValueMap<>();
+//        paramsMap.set("username",username);
+//        paramsMap.set("password",password);
+//        paramsMap.set("grant_type","password");
+//        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("client","111111"));
+//        OAuth2AccessToken token=restTemplate.postForObject("http://localhost:8902/oauth/token",paramsMap,OAuth2AccessToken.class);
         return null;
     }
 //

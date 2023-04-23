@@ -28,7 +28,6 @@ public class ServerDistributionUtil {
         if (userList == null || userList.isEmpty()) {
             return null;
         }
-
         User currentPoint = current_point.get();
         if (currentPoint == null) {
             // 第一次调用，将current_point指向链表头

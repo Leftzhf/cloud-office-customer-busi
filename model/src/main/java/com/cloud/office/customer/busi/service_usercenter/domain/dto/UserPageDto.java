@@ -1,7 +1,7 @@
 package com.cloud.office.customer.busi.service_usercenter.domain.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cloud.office.customer.busi.db.dto.PageDto;
+import com.cloud.office.customer.busi.base.PageDto;
 import com.cloud.office.customer.busi.util.EnumValueDeserializer;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.enums.UserStatusEnum;

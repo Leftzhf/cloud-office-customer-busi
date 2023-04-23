@@ -9,7 +9,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import org.springframework.stereotype.Component;
 
 /**
- * @date 2019-04-21
  */
 @ChannelHandler.Sharable
 @Component

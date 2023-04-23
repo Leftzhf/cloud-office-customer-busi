@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.office.customer.busi.db.util.PageUtils;
+import com.cloud.office.customer.busi.util.PageUtils;
 import com.cloud.office.customer.busi.exception.user.UserExistsException;
 import com.cloud.office.customer.busi.exception.user.UserNotExistsException;
 import com.cloud.office.customer.busi.vo.PageVo;
@@ -38,8 +38,6 @@ import java.util.stream.Collectors;
 /**
  * 用户服务接口实现
  *
- * @author feng
- * @date 2019-05-18
  */
 @Slf4j
 @Service

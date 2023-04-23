@@ -38,10 +38,12 @@ public class RestTemplateUtil {
 //    }
 //
     public User findByUsername(String username){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("username", username);
-        User user= restTemplate.postForObject(USERCENTER_URL+"/user/findUserByUsername", requestBody, User.class);
-        return user;
+//        User user= restTemplate.postForObject(USERCENTER_URL+"/user/findUserByUsername", requestBody, User.class);
+       return restTemplate.exchange(USERCENTER_URL+"/user/findUserByUsername?username="+username,  HttpMethod.POST, new HttpEntity<>(headers), User.class).getBody();
     }
 
     public void addUser(@RequestBody UserDto userDto){

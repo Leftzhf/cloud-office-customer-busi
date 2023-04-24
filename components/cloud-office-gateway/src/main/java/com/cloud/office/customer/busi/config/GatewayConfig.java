@@ -2,6 +2,8 @@ package com.cloud.office.customer.busi.config;
 
 import com.cloud.office.customer.busi.filter.JwtAuthenticationGatewayFilterFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -30,7 +32,14 @@ public class GatewayConfig {
         return new JwtAuthenticationGatewayFilterFactory();
     }
 
-
+    @Bean
+    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route(r -> r.path("/api-usercenter/team/listinfo")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://service-usercenter"))
+                .build();
+    }
 
     @Bean
     public CorsWebFilter corsFilter() {

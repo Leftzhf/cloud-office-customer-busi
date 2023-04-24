@@ -22,7 +22,10 @@ public interface ConversationService extends IService<Conversation> {
 
     Boolean createConversation(ConversationDTO conversationDTO);
     List<User> getListOnlineServer();
+    List<User> getListOnlineServerByTeamId(Integer teamId);
 
     List<User> getListOnlineCustomer();
+
+    Boolean updateConversationEnd(Integer conversationId);
 
 }

@@ -43,6 +43,9 @@ public class Conversation extends BaseEntity implements Serializable {
     @TableField("is_delete")
     private Integer isDelete;
 
+    @TableField("status")
+    private Integer status;
+
     private static final long serialVersionUID = 1L;
 
     public static final String COL_FROM_USER_ID = "from_user_id";

@@ -1,9 +1,8 @@
 package com.cloud.office.customer.busi.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.office.customer.busi.util.PageUtils;
-import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.mapper.TeamMapper;
 import com.cloud.office.customer.busi.service.TeamService;
 import com.cloud.office.customer.busi.service.UserService;
@@ -11,11 +10,15 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
+import com.cloud.office.customer.busi.util.PageUtils;
+import com.cloud.office.customer.busi.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  */
@@ -63,4 +66,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
         return PageUtils.getPageVo(page);
     }
 
+    @Override
+    public List<Team> getTeamList() {
+        List<Team> teams = baseMapper.selectList(new LambdaQueryWrapper<>());
+        return teams;
+    }
 }

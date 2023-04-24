@@ -149,8 +149,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                 conversation.setFromUserId(user.getId());
                 conversation.setToUserId(contact.getId());
                 conversationService.save(conversation);
-                //todo 设置会话id
-
+                //设置会话id
+                loginResponsePacket.setConversationId(conversation.getId());
                 //设置响应消息
                 loginResponsePacket.setContact(contact);
             }

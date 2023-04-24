@@ -10,7 +10,6 @@ import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
-import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
 import com.cloud.office.customer.busi.utils.RestTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +107,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     public Boolean createConversation(ConversationDTO conversationDTO) {
         Conversation conversation = new Conversation();
         //先判读发送用户是否存在，如果不存在则创建用户
-        User user = usercenterClient.getById(conversationDTO.getFromUserId());
+        User user = usercenterClient.findByUsername(conversationDTO.getFromUserName());
         if (user == null) {
             user = new User();
             user.setUsername(conversationDTO.getFromUserName());
@@ -122,18 +121,27 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
             userDto.setRoleNameEns(roleNameEns);
             // 新增用户
             usercenterClient.addUser(userDto);
-
-            UserVo userInfoByUsername = usercenterClient.findUserInfoByUsername(conversationDTO.getFromUserName());
-            conversation.setFromUserId(userInfoByUsername.getUserInfo().getId());
+            //获取用户关联权限信息
+            User userInfo = usercenterClient.findByUsername(conversationDTO.getFromUserName());
+            conversation.setFromUserId(userInfo.getId());
         }else {
-            conversation.setFromUserId(conversationDTO.getFromUserId());
+            conversation.setFromUserId(user.getId());
         }
         conversation.setToUserId(conversationDTO.getToUserId());
         int insert = baseMapper.insert(conversation);
-        if (insert>0){
-            return true;
-        }else {
-            return false;
-        }
+        return insert>0;
+    }
+
+    @Override
+    public List<User> getListOnlineServerByTeamId(Integer teamId) {
+        List<User> listOnlineServer = this.getListOnlineServer();
+        List<User> onliseServer = listOnlineServer.stream().filter(item -> {
+            if (item.getTeamId().equals(teamId)) {
+                return true;
+            } else {
+                return false;
+            }
+        }).collect(Collectors.toList());
+        return onliseServer;
     }
 }

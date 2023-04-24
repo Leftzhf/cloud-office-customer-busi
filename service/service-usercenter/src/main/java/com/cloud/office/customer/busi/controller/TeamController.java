@@ -74,5 +74,8 @@ public class TeamController {
     public ResultVo getTeamList(@RequestBody TeamPageDto teamPageDto) {
         return ResultVo.success(teamService.getTeamPageList(teamPageDto));
     }
-
+    @PostMapping("/listinfo")
+    public ResultVo getTeamList() {
+        return ResultVo.success(teamService.getTeamList());
+    }
 }

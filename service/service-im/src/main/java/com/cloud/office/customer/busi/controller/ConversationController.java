@@ -23,7 +23,7 @@ public class ConversationController {
     @Autowired
     private ConversationService conversationService;
 
-    @PutMapping("/conversation")
+    @PutMapping("/create")
     @ApiOperation(value = "创建会话")
     public ResultVo createConversation(ConversationDTO conversationDTO) {
         log.info("创建会话,userId={}", conversationDTO);
@@ -39,6 +39,11 @@ public class ConversationController {
     @ApiOperation(value = "获取在线客服")
     public ResultVo getListOnlineServer() {
         return ResultVo.success(conversationService.getListOnlineServer());
+    }
+    @GetMapping("/list/online/server/{teamId}")
+    @ApiOperation(value = "根据团队id获取在线客服")
+    public ResultVo getListOnlineServerByTeamId(@PathVariable Integer teamId) {
+        return ResultVo.success(conversationService.getListOnlineServerByTeamId(teamId));
     }
     @GetMapping("/list/online/user")
     @ApiOperation(value = "获取在线访客")

@@ -5,6 +5,8 @@ import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
 
+import java.util.List;
+
 /**
  */
 public interface TeamService extends IService<Team> {
@@ -24,4 +26,6 @@ public interface TeamService extends IService<Team> {
      * @return
      */
     PageVo<Team> getTeamPageList(TeamPageDto teamPageDto);
+
+    List<Team> getTeamList();
 }

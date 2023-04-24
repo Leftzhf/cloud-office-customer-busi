@@ -2,6 +2,7 @@ package com.cloud.office.customer.busi.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
+import com.cloud.office.customer.busi.enums.ConversationStatusEnum;
 import com.cloud.office.customer.busi.mapper.ConversationMapper;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.ConversationService;
@@ -143,5 +144,14 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
             }
         }).collect(Collectors.toList());
         return onliseServer;
+    }
+
+    @Override
+    public Boolean updateConversationEnd(Integer conversationId) {
+        Conversation conversation = new Conversation();
+        conversation.setId(conversationId);
+        conversation.setStatus(ConversationStatusEnum.DELETE.getValue());
+        int i = baseMapper.updateById(conversation);
+        return i>0;
     }
 }

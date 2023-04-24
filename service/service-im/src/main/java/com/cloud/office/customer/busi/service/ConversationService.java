@@ -26,4 +26,6 @@ public interface ConversationService extends IService<Conversation> {
 
     List<User> getListOnlineCustomer();
 
+    Boolean updateConversationEnd(Integer conversationId);
+
 }

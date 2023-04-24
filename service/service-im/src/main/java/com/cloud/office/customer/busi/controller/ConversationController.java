@@ -50,4 +50,10 @@ public class ConversationController {
     public ResultVo getListOnlineCustomer() {
         return ResultVo.success(conversationService.getListOnlineCustomer());
     }
+
+    @PostMapping("/update/end/{conversationId}")
+    @ApiOperation(value = "更新会话状态为结束")
+    public ResultVo updateConversationEnd(@PathVariable Integer conversationId) {
+        return ResultVo.success(conversationService.updateConversationEnd(conversationId));
+    }
 }

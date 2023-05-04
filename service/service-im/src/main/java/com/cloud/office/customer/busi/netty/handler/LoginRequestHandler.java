@@ -71,6 +71,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             user.setUsername(msg.getUsername());
             user.setTeamId(msg.getTeamId());
             user.setPassword("123456");
+            user.setAvatar("https://leftelft-picgo-1312794111.cos.ap-guangzhou.myqcloud.com/img/u=699796558,3208220781&fm=253&fmt=auto&app=138&f=JPEG.webp");
             // TODO:访客权限暂时写死，后面需要抽到配置文件里
             List<String> roleNameEns = new ArrayList<>();
             roleNameEns.add("ROLE_VISITOR");
@@ -123,6 +124,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                 }
                 UserPageDto userPageDto = new UserPageDto();
                 userPageDto.setTeamId(user.getTeamId());
+                userPageDto.setPageSize(100);
                 //找到对应团队的客服
                 List<User> userList = restTemplateRemote.findUserPageList(userPageDto);
                 if (userList == null || userList.size() == 0) {

@@ -24,7 +24,7 @@ public class PageDto<T> extends Page<T> implements Serializable {
     /**
      * 每页数量
      */
-    private Integer pageSize = 10;
+    private Integer pageSize = 30;
 
     /**
      * 排序字段

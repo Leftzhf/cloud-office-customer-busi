@@ -159,7 +159,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     /**
      * 向下递归查找
-     * TODO:理清带返回值的递归调用原理
+     *
      *
      * @param permissionId 权限编号
      * @return

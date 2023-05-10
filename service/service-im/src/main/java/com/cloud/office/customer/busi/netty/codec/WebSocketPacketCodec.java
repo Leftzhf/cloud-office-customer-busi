@@ -28,7 +28,7 @@ public class WebSocketPacketCodec extends MessageToMessageCodec<WebSocketFrame, 
     @Override
     protected void encode(ChannelHandlerContext ctx, Packet msg, List<Object> out) throws Exception {
         ByteBuf byteBuf = ctx.channel().alloc().ioBuffer();
-        packetCodeC.encode(byteBuf, msg);
+        packetCodeC.encode(byteBuf, msg, ctx.channel());
         out.add(new BinaryWebSocketFrame(byteBuf));
     }
 

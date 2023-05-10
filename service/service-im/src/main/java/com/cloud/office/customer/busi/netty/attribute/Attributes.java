@@ -10,4 +10,6 @@ public interface Attributes {
     AttributeKey<User> USER_ATTRIBUTE_KEY = AttributeKey.newInstance("user");
 
     AttributeKey<Integer> CONVERSATION_ATTRIBUTE_KEY = AttributeKey.newInstance("conversationId");
+
+    AttributeKey<String> SECRET_KEY = AttributeKey.newInstance("secretKey");
 }

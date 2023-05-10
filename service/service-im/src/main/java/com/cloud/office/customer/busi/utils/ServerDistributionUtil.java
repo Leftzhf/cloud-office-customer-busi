@@ -19,7 +19,7 @@ public class ServerDistributionUtil {
     private static ThreadLocal<User> current_point = new ThreadLocal<>();
 
     /**
-     * 轮询分配
+     * 轮询分配-循环链表
      *
      * @param userList 用户列表
      * @return {@link User}

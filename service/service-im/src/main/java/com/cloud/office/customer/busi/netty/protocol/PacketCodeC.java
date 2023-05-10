@@ -11,7 +11,10 @@ import com.cloud.office.customer.busi.netty.protocol.response.LogoutResponsePack
 import com.cloud.office.customer.busi.netty.protocol.response.MessageResponsePacket;
 import com.cloud.office.customer.busi.netty.serialize.Serializer;
 import com.cloud.office.customer.busi.netty.serialize.impl.JSONSerializer;
+import com.cloud.office.customer.busi.netty.utils.AesEncryptUtil;
+import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -58,10 +61,15 @@ public class PacketCodeC {
      * @param packet  Packet数据包
      * @return ByteBuf字节码
      */
-    public void encode(ByteBuf byteBuf, Packet packet) {
+    public void encode(ByteBuf byteBuf, Packet packet, Channel channel) {
+        if (packet.getCommand().equals(Command.MESSAGE_RESPONSE)) {
+            String secretKey = ChannelUtil.getSecretKey(channel);
+            String content = ((MessageResponsePacket) packet).getContent();
+            String encryptContent = AesEncryptUtil.encrypt(content, secretKey);
+            ((MessageResponsePacket) packet).setContent(encryptContent);
+        }
         // 序列化 Java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
-
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
         byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());

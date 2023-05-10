@@ -5,6 +5,7 @@ import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.base.TimeEntity;
 import com.cloud.office.customer.busi.netty.protocol.request.LoginRequestPacket;
 import com.cloud.office.customer.busi.netty.protocol.response.LoginResponsePacket;
+import com.cloud.office.customer.busi.netty.utils.AesEncryptUtil;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.ConversationService;
 import com.cloud.office.customer.busi.service_im.entity.Conversation;
@@ -159,9 +160,10 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         }
 
         log.info("登录成功,user={}", JSON.toJSONString(user));
+        String secretKey = AesEncryptUtil.generateKeyAndIv();
         // 保存用户信息和channel对应关系
-        ChannelUtil.bindUser(user, ctx.channel(),loginResponsePacket.getConversationId());
-
+        ChannelUtil.bindUser(user, ctx.channel(),loginResponsePacket.getConversationId(),secretKey);
+        loginResponsePacket.setSecretKey(secretKey);
         loginResponsePacket.setUser(user);
         loginResponsePacket.setSuccess(true);
         //返回握手响应

@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * channel工具类
+ * TODO 后期改成存到Redis里面
  *
  * @author leftleft
  * @date 2023-04-21
@@ -27,9 +28,10 @@ public class ChannelUtil {
      * @param user    用户对象
      * @param channel 连接
      */
-    public static void bindUser(User user, Channel channel,Integer conversationId) {
+    public static void bindUser(User user, Channel channel,Integer conversationId,String secretKey) {
         log.info("缓存【username:channel】映射,username={},channel={},会话id={}", user.getUsername(), channel.toString(),conversationId);
         USER_ID_CHANNEL_MAP.put(user.getUsername(), channel);
+        channel.attr(Attributes.SECRET_KEY).set(secretKey);
         channel.attr(Attributes.CONVERSATION_ATTRIBUTE_KEY).set(conversationId);
         channel.attr(Attributes.USER_ATTRIBUTE_KEY).set(user);
     }
@@ -45,6 +47,7 @@ public class ChannelUtil {
             USER_ID_CHANNEL_MAP.remove(getUser(channel).getUsername());
             channel.attr(Attributes.USER_ATTRIBUTE_KEY).set(null);
             channel.attr(Attributes.CONVERSATION_ATTRIBUTE_KEY).set(null);
+            channel.attr(Attributes.SECRET_KEY).set(null);
         }
     }
 
@@ -81,4 +84,13 @@ public class ChannelUtil {
         return USER_ID_CHANNEL_MAP.get(username);
     }
 
+    /**
+     * 根据连接获取密钥
+     *
+     * @param channel 通道
+     * @return {@link String}
+     */
+    public static String getSecretKey(Channel channel) {
+        return channel.attr(Attributes.SECRET_KEY).get();
+    }
 }

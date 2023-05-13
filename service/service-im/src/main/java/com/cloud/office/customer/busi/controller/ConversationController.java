@@ -25,7 +25,7 @@ public class ConversationController {
 
     @PutMapping("/create")
     @ApiOperation(value = "创建会话")
-    public ResultVo createConversation(ConversationDTO conversationDTO) {
+    public ResultVo createConversation(@RequestBody ConversationDTO conversationDTO) {
         log.info("创建会话,userId={}", conversationDTO);
         return ResultVo.success(conversationService.createConversation(conversationDTO));
     }

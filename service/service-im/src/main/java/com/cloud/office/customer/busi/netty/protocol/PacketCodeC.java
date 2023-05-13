@@ -1,10 +1,7 @@
 package com.cloud.office.customer.busi.netty.protocol;
 
 import com.cloud.office.customer.busi.netty.protocol.command.Command;
-import com.cloud.office.customer.busi.netty.protocol.request.HeartBeatRequestPacket;
-import com.cloud.office.customer.busi.netty.protocol.request.LoginRequestPacket;
-import com.cloud.office.customer.busi.netty.protocol.request.LogoutRequestPacket;
-import com.cloud.office.customer.busi.netty.protocol.request.MessageRequestPacket;
+import com.cloud.office.customer.busi.netty.protocol.request.*;
 import com.cloud.office.customer.busi.netty.protocol.response.HeartBeatResponsePacket;
 import com.cloud.office.customer.busi.netty.protocol.response.LoginResponsePacket;
 import com.cloud.office.customer.busi.netty.protocol.response.LogoutResponsePacket;
@@ -46,6 +43,7 @@ public class PacketCodeC {
         PACKET_TYPE_MAP.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
         PACKET_TYPE_MAP.put(Command.HEART_BEAT_REQUEST, HeartBeatRequestPacket.class);
         PACKET_TYPE_MAP.put(Command.HEART_BEAT_RESPONSE, HeartBeatResponsePacket.class);
+        PACKET_TYPE_MAP.put(Command.SECOND_HAND_SHAKE_REQUEST, SecondHandShakeRequestPacket.class);
 
         SERIALIZER_MAP = new HashMap<>();
         Serializer serializer = new JSONSerializer();
@@ -86,6 +84,48 @@ public class PacketCodeC {
      * @param byteBuf ByteBuf字节码
      * @return Packet数据包
      */
+    public Packet decode(ByteBuf byteBuf,Channel channel) {
+        // 跳过 magic number
+        byteBuf.skipBytes(4);
+
+        // 跳过版本号
+        byteBuf.skipBytes(1);
+
+        // 序列化算法标识
+        byte serializeAlgorithm = byteBuf.readByte();
+
+        // 指令
+        short command = byteBuf.readShort();
+
+        // 数据包长度
+        int lenght = byteBuf.readInt();
+
+        byte[] bytes = new byte[lenght];
+        // 数据包
+        byteBuf.readBytes(bytes);
+
+        // 根据指令获取数据的原类型
+        Class<? extends Packet> requestType = PACKET_TYPE_MAP.get(command);
+        // 根据序列化算法获取序列化器
+        Serializer serializer = SERIALIZER_MAP.get(serializeAlgorithm);
+
+        if (requestType != null && serializer != null) {
+            // 将数据包反序列化成 java 对象
+            Packet packet = serializer.deserialize(requestType, bytes);
+            if (!packet.getCommand().equals(Command.HEART_BEAT_REQUEST)) {
+                log.info("解码完成,packet={}", packet);
+            }
+            //根据密钥解密消息数据内容
+            if (packet.getCommand().equals(Command.MESSAGE_REQUEST)) {
+                String secretKey = ChannelUtil.getSecretKey(channel);
+                String content = ((MessageRequestPacket) packet).getContent();
+                String decryptContent = AesEncryptUtil.desEncrypt(content, secretKey);
+                ((MessageRequestPacket) packet).setContent(decryptContent);
+            }
+            return packet;
+        }
+        return null;
+    }
     public Packet decode(ByteBuf byteBuf) {
         // 跳过 magic number
         byteBuf.skipBytes(4);
@@ -117,9 +157,15 @@ public class PacketCodeC {
             if (!packet.getCommand().equals(Command.HEART_BEAT_REQUEST)) {
                 log.info("解码完成,packet={}", packet);
             }
+            //根据密钥解密消息数据内容
+//            if (packet.getCommand().equals(Command.MESSAGE_REQUEST)) {
+//                String secretKey = ChannelUtil.getSecretKey(channel);
+//                String content = ((MessageRequestPacket) packet).getContent();
+//                String decryptContent = AesEncryptUtil.desEncrypt(content, secretKey);
+//                ((MessageRequestPacket) packet).setContent(decryptContent);
+//            }
             return packet;
         }
         return null;
     }
-
 }

@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 登录握手请求逻辑处理器,使用feign调用失败，所以这里使用RestTemplate调用
+ * 第一次握手请求逻辑处理器,使用feign调用失败，所以这里使用RestTemplate进行远程调用
+ *主要绑定用户在线状态信息和颁发密钥
  *
  *
  */
@@ -56,7 +57,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 处理登录请求握手响应数据包
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
 
-        log.info("websocket网关: 登录用户{}",msg.getUsername());
+        log.info("收到第一次握手: 用户名{}",msg.getUsername());
         // 用户名不能为空
         if (StringUtils.isEmpty(msg.getUsername())) {
             log.info("登录失败,username不能为空");
@@ -66,6 +67,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         }
         User user = restTemplateRemote.findByUsername(msg.getUsername());
         // 如果没有用户，则新建
+        Integer userId = null;
         if (user == null) {
             user = new User();
             user.setNickname("访客");
@@ -81,10 +83,12 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             userDto.setUserInfo(user);
             userDto.setRoleNameEns(roleNameEns);
             // 新增用户
-            restTemplateRemote.addUser(userDto);
+            userId = restTemplateRemote.addUser(userDto);
+        }else {
+            userId = user.getId();
         }
 
-        // 是否是访客
+        // 判断是否是访客
         boolean isVisitor = false;
         if (user.getRoles() != null && user.getRoles().size() > 0) {
             for (Role role : user.getRoles()) {
@@ -95,8 +99,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             }
         }
 
-        // 去查会话表，如果有访客的会话则直接使用
-        //客服的话已经存有会话了，不需要再创建
+        //查询会话表，如果有访客的会话则直接使用，没有则新建一个会话
         if (isVisitor) {
             List<Conversation> conversations = conversationService.selectListByUserIdRes(user.getId());
             //如果有会话则直接从会话获取联系人
@@ -134,8 +137,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                     ctx.channel().writeAndFlush(loginResponsePacket);
                     return;
                 }
-
-                // 过滤掉带有访客的用户,获取客服列表
+                // todo 过滤掉带有访客的用户,获取在线客服列表
                 userList = userList
                         .stream()
                         .filter(user1 -> user1
@@ -144,13 +146,14 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                                 .anyMatch(role -> !"ROLE_VISITOR".equals(role.getNameEn())))
                         .collect(Collectors.toList());
                 log.info("过滤访客userList={}", JSON.toJSONString(userList));
-                // 通过动态客服分配器来分配客服
+                // 通过动态客服分配器来分配在线的客服
                 User contact = ServerDistributionUtil.getServerByPolling(userList);
 
                 // 创建会话
                 Conversation conversation = new Conversation();
                 conversation.setFromUserId(user.getId());
                 conversation.setToUserId(contact.getId());
+                conversation.setStatus(1);
                 conversationService.save(conversation);
                 //设置会话id
                 loginResponsePacket.setConversationId(conversation.getId());
@@ -160,6 +163,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         }
 
         log.info("登录成功,user={}", JSON.toJSONString(user));
+        //生成密钥
         String secretKey = AesEncryptUtil.generateKeyAndIv();
         // 保存用户信息和channel对应关系
         ChannelUtil.bindUser(user, ctx.channel(),loginResponsePacket.getConversationId(),secretKey);

@@ -18,8 +18,11 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 消息转发请求逻辑处理器
@@ -78,15 +81,17 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         }
 
         // 消息接收方的Channel
-        Channel toChannel = ChannelUtil.getChannel(toUser.getUsername());
+        Channel toChannel = ChannelUtil.getChannel(toUser.getId());
         if (toChannel != null && ChannelUtil.hasLogin(toChannel)) {
             // 发送给消息接收方
             message.setStatus(MessageStatusEnum.READ);
             messageResponsePacket.setStatus(MessageStatusEnum.READ.getValue());
-            //转发给消息接收方
+            MessageResponsePacket toUserResponse = new MessageResponsePacket();
+            BeanUtils.copyProperties(messageResponsePacket, toUserResponse);
+            //转发给消息接收方-编码，编码后就变了
             toChannel.writeAndFlush(messageResponsePacket);
             // 发送给消息发送方，用于判断消息是否发送成功
-            ctx.channel().writeAndFlush(messageResponsePacket);
+            ctx.channel().writeAndFlush(toUserResponse);
         } else {
             log.info("username={}不在线!", toUser.getUsername());
             // 发送给消息发送方，用于判断消息是否发送成功
@@ -106,16 +111,18 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
     public void channelInactive(ChannelHandlerContext ctx) {
         log.info("断开连接");
         //关闭会话
-        Integer conversationId = ChannelUtil.getConversationId(ctx.channel());
-        ChannelUtil.unBindUser(ctx.channel());
-        //更新最后一条消息id
-        QueryWrapper<Message> wrapper = new QueryWrapper<>();
-        wrapper.select("max(id) as id");
-        wrapper.eq("conversation_id", conversationId);
-        Integer lastMessageId = messageService.getOne(wrapper).getId();
-        Conversation conversation = new Conversation();
-        conversation.setId(conversationId);
-        conversation.setLastMessageId(lastMessageId);
-        conversationService.updateById(conversation);
+        List<Integer> conversationIdList = ChannelUtil.getConversationId(ctx.channel());
+        conversationIdList.forEach(conversationId->{
+            ChannelUtil.unBindUser(ctx.channel());
+            //更新最后一条消息id
+            QueryWrapper<Message> wrapper = new QueryWrapper<>();
+            wrapper.select("max(id) as id");
+            wrapper.eq("conversation_id", conversationId);
+            Integer lastMessageId = messageService.getOne(wrapper).getId();
+            Conversation conversation = new Conversation();
+            conversation.setId(conversationId);
+            conversation.setLastMessageId(lastMessageId);
+            conversationService.updateById(conversation);
+        });
     }
 }

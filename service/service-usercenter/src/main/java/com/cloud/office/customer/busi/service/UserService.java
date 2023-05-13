@@ -89,7 +89,7 @@ public interface UserService extends IService<User> {
      *
      * @param userDto 用户信息
      */
-    void addUser(UserDto userDto);
+    Integer addUser(UserDto userDto);
 
     /**
      * 删除指定角色与用户的关联关系

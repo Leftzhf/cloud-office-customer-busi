@@ -10,7 +10,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- * 心跳检测
+ * 心跳检测,每5s一次
  *
  *
  */

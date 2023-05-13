@@ -33,46 +33,53 @@ public class RestTemplateUtil {
 
     String USERCENTER_URL = "http://localhost:8904";
     RestTemplate restTemplate = new RestTemplate();
-//    T RemoteClient(MultiValueMap<String, String> requestBody,String url){
+
+    //    T RemoteClient(MultiValueMap<String, String> requestBody,String url){
 //        User user= restTemplate.postForObject(url, requestBody,T.class);
 //    }
 //
-    public User findByUsername(String username){
+    public User findByUsername(String username) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("username", username);
 //        User user= restTemplate.postForObject(USERCENTER_URL+"/user/findUserByUsername", requestBody, User.class);
-       return restTemplate.exchange(USERCENTER_URL+"/user/findUserByUsername?username="+username,  HttpMethod.POST, new HttpEntity<>(headers), User.class).getBody();
+        return restTemplate.exchange(USERCENTER_URL + "/user/findUserByUsername?username=" + username, HttpMethod.POST, new HttpEntity<>(headers), User.class).getBody();
     }
 
-    public void addUser(@RequestBody UserDto userDto){
+    public Integer addUser(@RequestBody UserDto userDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 //        restTemplate.postForObject(USERCENTER_URL+"/user", userDto,null);
-        restTemplate.exchange(USERCENTER_URL+"/user",  HttpMethod.POST, new HttpEntity<>(userDto,headers), Void.class);
+        Map<String, Object> body = restTemplate.exchange(USERCENTER_URL + "/user", HttpMethod.POST, new HttpEntity<>(userDto, headers), Map.class).getBody();
+        LinkedHashMap<String, Object> data = (LinkedHashMap) body.get("data");
+        Integer id = (Integer) data.get("id");
+        return id;
     }
-    public User getById( Integer id){
+
+    public User getById(Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return restTemplate.exchange(USERCENTER_URL+"/user/getById?id="+id,  HttpMethod.POST, new HttpEntity<>(headers), User.class).getBody();
+        return restTemplate.exchange(USERCENTER_URL + "/user/getById?id=" + id, HttpMethod.POST, new HttpEntity<>(headers), User.class).getBody();
     }
-    public List<User> findUserPageList(UserPageDto userPageDto){
+
+    public List<User> findUserPageList(UserPageDto userPageDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String,Object> body = restTemplate.exchange(USERCENTER_URL + "/user/list", HttpMethod.POST, new HttpEntity<>(userPageDto, headers), Map.class).getBody();
+        Map<String, Object> body = restTemplate.exchange(USERCENTER_URL + "/user/list", HttpMethod.POST, new HttpEntity<>(userPageDto, headers), Map.class).getBody();
         PageVo<User> objectPageVo = new PageVo();
-        LinkedHashMap<String,Object> data =(LinkedHashMap) body.get("data");
+        LinkedHashMap<String, Object> data = (LinkedHashMap) body.get("data");
         ArrayList<Object> objects = new ArrayList<>();
         List list1 = (List) data.get("list");
 
-        List<User> collect = (List<User>)list1.stream().map(item -> {
+        List<User> collect = (List<User>) list1.stream().map(item -> {
             User user = objectMapper.convertValue(item, User.class);
             return user;
         }).collect(Collectors.toList());
         return collect;
     }
-    public  User getUserById(Integer id){
+
+    public User getUserById(Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         User body = restTemplate.exchange(USERCENTER_URL + "/user/getUserById/" + id, HttpMethod.GET, new HttpEntity<>(headers), User.class).getBody();

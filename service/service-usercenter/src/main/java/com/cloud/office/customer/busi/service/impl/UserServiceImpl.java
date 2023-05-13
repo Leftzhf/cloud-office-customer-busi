@@ -246,7 +246,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param userDto 用户信息
      */
     @Override
-    public void addUser(UserDto userDto) {
+    public Integer addUser(UserDto userDto) {
         log.info("新增用户,{}", JSON.toJSONString(userDto));
         if (userDto.getUserInfo() == null) {
             throw new RuntimeException("新增用户失败,user=" + userDto.getUserInfo());
@@ -267,6 +267,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info("新增用户成功,开始更新角色{}", JSON.toJSONString(userDto));
             updateUserRoleRelation(userDto.getUserInfo().getId(), userDto.getRoleIds());
         }
+        return userDto.getUserInfo().getId();
     }
 
     /**

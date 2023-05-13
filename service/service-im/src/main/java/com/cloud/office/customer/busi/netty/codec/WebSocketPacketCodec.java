@@ -34,7 +34,7 @@ public class WebSocketPacketCodec extends MessageToMessageCodec<WebSocketFrame, 
 
     @Override
     protected void decode(ChannelHandlerContext ctx, WebSocketFrame msg, List<Object> out) throws Exception {
-        out.add(packetCodeC.decode(msg.content()));
+        out.add(packetCodeC.decode(msg.content(), ctx.channel()));
     }
 
 }

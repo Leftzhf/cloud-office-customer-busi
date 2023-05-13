@@ -1,5 +1,6 @@
 package com.cloud.office.customer.busi.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.enums.ConversationStatusEnum;
@@ -66,7 +67,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     private List<User> getListOnlineUser() {
         ArrayList<User> onlineUser = new ArrayList<>();
         ChannelUtil.USER_ID_CHANNEL_MAP.forEach((k,v)->{
-            User byUsername = restTemplate.findByUsername(k);
+            User byUsername = restTemplate.getUserById(k);
             onlineUser.add(byUsername);
         });
         return onlineUser;
@@ -106,6 +107,9 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
 
     @Override
     public Boolean createConversation(ConversationDTO conversationDTO) {
+        LambdaQueryWrapper<Conversation> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Conversation::getFromUserId,conversationDTO.getFromUserName());
+        queryWrapper.eq(Conversation::getToUserId,conversationDTO.getToUserId());
         Conversation conversation = new Conversation();
         //先判读发送用户是否存在，如果不存在则创建用户
         User user = usercenterClient.findByUsername(conversationDTO.getFromUserName());

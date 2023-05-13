@@ -61,7 +61,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         int i = baseMapper.updateById(message);
         //todo 这里用户名改成让前端携带过来吧
         User currentUser = serviceUsercenterClient.getById(messageDto.getContactUserId());
-        Channel toChannel = ChannelUtil.getChannel(currentUser.getUsername());
+        Channel toChannel = ChannelUtil.getChannel(currentUser.getId());
         if (toChannel != null && ChannelUtil.hasLogin(toChannel)){
             RecallResponsePacket recallResponsePacket = new RecallResponsePacket();
             BeanUtils.copyProperties(messageDto,recallResponsePacket);
@@ -82,7 +82,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             saveOrUpdateBatch(messageList);
             //通知对方已读
             User currentUser = serviceUsercenterClient.getById(toUserId);
-            Channel toChannel = ChannelUtil.getChannel(currentUser.getUsername());
+            Channel toChannel = ChannelUtil.getChannel(currentUser.getId());
             if (toChannel != null && ChannelUtil.hasLogin(toChannel)) {
                 // 如果对方在线，通知它消息已读,更新消息状态
                 //注意这里的userId是指的对方，contract指的是我方，方便前端

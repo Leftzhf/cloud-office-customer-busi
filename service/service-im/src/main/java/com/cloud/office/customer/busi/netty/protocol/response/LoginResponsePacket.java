@@ -26,6 +26,8 @@ public class LoginResponsePacket extends Packet {
 
     private Integer conversationId;
 
+    private String secretKey;
+
     private Boolean success;
 
     @Override

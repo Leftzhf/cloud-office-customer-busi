@@ -1,10 +1,6 @@
 package com.cloud.office.customer.busi.netty.utils;
 
-import com.cloud.office.customer.busi.netty.handler.AuthHandler;
-import com.cloud.office.customer.busi.netty.handler.HeartBeatRequestHandler;
-import com.cloud.office.customer.busi.netty.handler.LoginRequestHandler;
-import com.cloud.office.customer.busi.netty.handler.LogoutRequestHandler;
-import com.cloud.office.customer.busi.netty.handler.MessageRequestHandler;
+import com.cloud.office.customer.busi.netty.handler.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,6 +46,9 @@ public class PipelineUtil {
     @Autowired
     private MessageRequestHandler messageRequestHandler;
 
+    @Autowired
+    private SecondHandShakeHandler secondHandShakeHandler;
+
     /**
      * 添加websocket/tcp通用handler
      *
@@ -58,6 +57,7 @@ public class PipelineUtil {
     public void addHandler(ChannelPipeline pipeline) {
         pipeline.addLast(
                 heartBeatRequestHandler,
+                secondHandShakeHandler,
                 loginRequestHandler,
                 authHandler,
                 logoutRequestHandler,

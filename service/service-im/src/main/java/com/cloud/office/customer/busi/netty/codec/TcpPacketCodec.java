@@ -22,12 +22,12 @@ public class TcpPacketCodec extends MessageToMessageCodec<ByteBuf, Packet> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Packet msg, List<Object> out) throws Exception {
         ByteBuf byteBuf = ctx.channel().alloc().ioBuffer();
-        packetCodeC.encode(byteBuf, msg);
+        packetCodeC.encode(byteBuf, msg, ctx.channel());
         out.add(byteBuf);
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
-        out.add(packetCodeC.decode(msg));
+        out.add(packetCodeC.decode(msg, ctx.channel()));
     }
 }

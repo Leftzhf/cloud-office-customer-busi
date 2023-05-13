@@ -22,4 +22,8 @@ public interface Command {
 
     Short RECALL_RESPONSE = 5000;
 
+    Short SECOND_HAND_SHAKE_REQUEST = 6000;
+
+    Short SECOND_HAND_SHAKE_RESPONSE = 6001;
+
 }

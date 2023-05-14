@@ -57,4 +57,9 @@ public class SessionManager {
     public boolean hasSession(Integer sessionId) {
         return sessionMap.containsKey(sessionId);
     }
+
+    //获取所有的Session
+    public Map<Integer, Session> getAllSession(){
+        return sessionMap;
+    }
 }

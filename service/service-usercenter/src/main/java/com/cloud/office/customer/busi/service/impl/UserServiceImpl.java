@@ -4,11 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cloud.office.customer.busi.util.PageUtils;
+import com.cloud.office.customer.busi.enums.PermissionTypeEnum;
+import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.exception.user.UserExistsException;
 import com.cloud.office.customer.busi.exception.user.UserNotExistsException;
-import com.cloud.office.customer.busi.vo.PageVo;
-import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.mapper.UserMapper;
 import com.cloud.office.customer.busi.service.PermissionService;
 import com.cloud.office.customer.busi.service.RoleService;
@@ -19,11 +18,12 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Permission;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
-import com.cloud.office.customer.busi.enums.PermissionTypeEnum;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.ButtonVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.MenuVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
 import com.cloud.office.customer.busi.tree.TreeUtils;
+import com.cloud.office.customer.busi.util.PageUtils;
+import com.cloud.office.customer.busi.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +56,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 注册
@@ -278,5 +281,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void deleteUserRoleRelation(Integer roleId) {
         baseMapper.deleteUserRoleByRoleId(roleId);
+    }
+
+    @Override
+    public List<User> getUserByRole(Integer level) {
+        List<User> users = userMapper.selectALLUserByRole(level);
+        return users;
     }
 }

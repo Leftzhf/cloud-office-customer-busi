@@ -3,6 +3,7 @@ package com.cloud.office.customer.busi.controller;
 import com.alibaba.fastjson.JSON;
 import com.cloud.office.customer.busi.service.MessageService;
 import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
+import com.cloud.office.customer.busi.service_im.dto.MessageListPageDTO;
 import com.cloud.office.customer.busi.service_im.dto.RecallMessageDto;
 import com.cloud.office.customer.busi.vo.ResultVo;
 import io.swagger.annotations.Api;
@@ -26,13 +27,18 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    @PostMapping("/listPage")
+    @ApiOperation(value = "获取消息历史-分页")
+    public ResultVo getMessagePage(@RequestBody MessageListPageDTO messageListDto) {
+        log.info("获取消息数据,{}", JSON.toJSONString(messageListDto));
+        return ResultVo.success(messageService.findMessagePage(messageListDto));
+    }
     @PostMapping("/list")
     @ApiOperation(value = "获取消息历史")
     public ResultVo getMessagePageList(@RequestBody MessageListDto messageListDto) {
         log.info("获取消息数据,{}", JSON.toJSONString(messageListDto));
         return ResultVo.success(messageService.findMessageList(messageListDto));
     }
-    //todo 获取秘钥接口
 
     @PostMapping("/recall")
     @ApiOperation(value = "撤回(删除)消息")

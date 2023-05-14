@@ -1,6 +1,7 @@
 package com.cloud.office.customer.busi.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.enums.MessageStatusEnum;
@@ -11,9 +12,12 @@ import com.cloud.office.customer.busi.netty.protocol.response.RecallResponsePack
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.MessageService;
 import com.cloud.office.customer.busi.service_im.dto.MessageListDto;
+import com.cloud.office.customer.busi.service_im.dto.MessageListPageDTO;
 import com.cloud.office.customer.busi.service_im.dto.RecallMessageDto;
 import com.cloud.office.customer.busi.service_im.entity.Message;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
+import com.cloud.office.customer.busi.util.PageUtils;
+import com.cloud.office.customer.busi.vo.PageVo;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -97,4 +101,18 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         return messageList;
     }
 
+    @Override
+    public PageVo<Message> findMessagePage(MessageListPageDTO messageListDto) {
+
+        LambdaQueryWrapper<Message> messageLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        messageLambdaQueryWrapper
+                .eq(Message::getFromUserId,messageListDto.getContactUserId())
+                .or()
+                .eq(Message::getToUserId,messageListDto.getContactUserId())
+                .orderByDesc(Message::getCreatedAt);
+        MessageListPageDTO messageListPageDTO = messageMapper.selectPage(messageListDto, messageLambdaQueryWrapper);
+
+        PageVo<Message> pageVo = PageUtils.getPageVo(messageListPageDTO);
+        return pageVo;
+    }
 }

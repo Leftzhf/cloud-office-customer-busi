@@ -14,33 +14,26 @@ import java.util.List;
 public class ServerDistributionUtil {
 
     /**
-     * 保证异步情况下是唯一的,确保线程安全
+     * 当前轮询客服编号
      */
-    private static ThreadLocal<User> current_point = new ThreadLocal<>();
+    private static int currentServerIndex = 0;
 
     /**
      * 轮询分配-循环链表
      *
-     * @param userList 用户列表
+     * @param userList 在线客服列表
      * @return {@link User}
      */
     public static User getServerByPolling(List<User> userList) {
         if (userList == null || userList.isEmpty()) {
             return null;
         }
-        User currentPoint = current_point.get();
-        if (currentPoint == null) {
-            // 第一次调用，将current_point指向链表头
-            currentPoint = userList.get(0);
-            current_point.set(currentPoint);
-        } else {
-            // 将current_point移动到下一个元素
-            int currentIndex = userList.indexOf(currentPoint);
-            currentIndex = (currentIndex + 1) % userList.size();
-            currentPoint = userList.get(currentIndex);
-            current_point.set(currentPoint);
-        }
-
-        return currentPoint;
+        // 计算下一个客服的编号
+        int nextServerIndex = (currentServerIndex + 1) % userList.size();
+        // 获取下一个客服
+        User nextServer = userList.get(nextServerIndex);
+        // 更新当前轮询客服编号
+        currentServerIndex = nextServerIndex;
+        return nextServer;
     }
 }

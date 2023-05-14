@@ -10,7 +10,6 @@ import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.ConversationService;
 import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
-import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.utils.RestTemplateUtil;
@@ -22,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -126,28 +126,20 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
                     ctx.channel().writeAndFlush(loginResponsePacket);
                     return;
                 }
-                UserPageDto userPageDto = new UserPageDto();
-                userPageDto.setTeamId(user.getTeamId());
-                userPageDto.setPageSize(100);
-                //找到对应团队的客服
-                List<User> userList = restTemplateRemote.findUserPageList(userPageDto);
-                if (userList == null || userList.size() == 0) {
-                    log.info("登录失败,teamId={}团队没有客服", user.getTeamId());
+                // 获取在线客服列表,过滤掉访客用户,
+                List<User> listOnlineServer = conversationService.getListOnlineServer();
+                //根据teamId获取对应产品线客服列表
+                List<User> teamServer = listOnlineServer.stream().filter(item -> {
+                    return item.getTeamId().equals(msg.getTeamId());
+                }).collect(Collectors.toList());
+                if (CollectionUtils.isEmpty(teamServer)){
+                    log.info("登录失败,teamId={}的团队没有在线客服",user.getTeamId());
                     loginResponsePacket.setSuccess(false);
                     ctx.channel().writeAndFlush(loginResponsePacket);
                     return;
                 }
-                // todo 过滤掉带有访客的用户,获取在线客服列表
-                userList = userList
-                        .stream()
-                        .filter(user1 -> user1
-                                .getRoles()
-                                .stream()
-                                .anyMatch(role -> !"ROLE_VISITOR".equals(role.getNameEn())))
-                        .collect(Collectors.toList());
-                log.info("过滤访客userList={}", JSON.toJSONString(userList));
                 // 通过动态客服分配器来分配在线的客服
-                User contact = ServerDistributionUtil.getServerByPolling(userList);
+                User contact = ServerDistributionUtil.getServerByPolling(teamServer);
 
                 // 创建会话
                 Conversation conversation = new Conversation();

@@ -150,4 +150,11 @@ public class UserController {
         UserVo userVo = userService.findUserInfoByUsername(userName);
         return ResultVo.success(userVo);
     }
+
+    @PostMapping("/getUserByRole")
+    public ResultVo getUserByRole(@RequestParam Integer level) {
+        log.info("获取角色用户,level:{}",level);
+        List<User> userByRole = userService.getUserByRole(level);
+        return ResultVo.success(userByRole);
+    }
 }

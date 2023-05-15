@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.enums.ConversationStatusEnum;
 import com.cloud.office.customer.busi.enums.RoleEnum;
+import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.mapper.ConversationMapper;
+import com.cloud.office.customer.busi.netty.protocol.response.endConversationResponsePacket;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.netty.utils.SessionManager;
 import com.cloud.office.customer.busi.service.ConversationService;
@@ -34,6 +36,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ *
  */
 @Slf4j
 @Service
@@ -48,6 +51,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
 
     @Autowired
     private ConversationMapper conversationMapper;
+
     /**
      * 查询会话列表
      *
@@ -57,7 +61,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public List<Conversation> selectListByUserId(Integer userId) {
         List<Conversation> conversations = baseMapper.selectListByUserId(userId);
-        conversations.forEach(item->{
+        conversations.forEach(item -> {
             User fromUser = usercenterClient.getUserById(item.getFromUserId());
             item.setFromUser(fromUser);
             User toUser = usercenterClient.getUserById(item.getToUserId());
@@ -65,10 +69,11 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         });
         return conversations;
     }
+
     @Override
     public List<Conversation> selectListByUserIdRes(Integer userId) {
         List<Conversation> conversations = baseMapper.selectListByUserId(userId);
-        conversations.forEach(item->{
+        conversations.forEach(item -> {
             //todo 改成resttemplate请求
             User fromUser = restTemplate.getUserById(item.getFromUserId());
             item.setFromUser(fromUser);
@@ -81,7 +86,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public List<User> getListOnlineUser() {
         ArrayList<User> onlineUser = new ArrayList<>();
-        ChannelUtil.USER_ID_CHANNEL_MAP.forEach((k,v)->{
+        ChannelUtil.USER_ID_CHANNEL_MAP.forEach((k, v) -> {
             User byUsername = restTemplate.getUserById(k);
             onlineUser.add(byUsername);
         });
@@ -94,8 +99,8 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         List<User> listOnlineServer = listOnlineUser.stream().filter(user -> {
             List<Role> roles = user.getRoles();
             Boolean isServer = false;
-            for (Role role: roles) {
-                if (role.getLevel()==3){
+            for (Role role : roles) {
+                if (role.getLevel() == 3) {
                     isServer = true;
                 }
             }
@@ -110,8 +115,8 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         List<User> listOnlineCustomer = listOnlineUser.stream().filter(user -> {
             List<Role> roles = user.getRoles();
             Boolean isCustomer = false;
-            for (Role role: roles) {
-                if (role.getLevel()==4){
+            for (Role role : roles) {
+                if (role.getLevel() == 4) {
                     isCustomer = true;
                 }
             }
@@ -123,8 +128,8 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public Boolean createConversation(ConversationDTO conversationDTO) {
         LambdaQueryWrapper<Conversation> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Conversation::getFromUserId,conversationDTO.getFromUserName());
-        queryWrapper.eq(Conversation::getToUserId,conversationDTO.getToUserId());
+        queryWrapper.eq(Conversation::getFromUserId, conversationDTO.getFromUserName());
+        queryWrapper.eq(Conversation::getToUserId, conversationDTO.getToUserId());
         Conversation conversation = new Conversation();
         //先判读发送用户是否存在，如果不存在则创建用户
         User user = usercenterClient.findByUsername(conversationDTO.getFromUserName());
@@ -144,12 +149,13 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
             //获取用户关联权限信息
             User userInfo = usercenterClient.findByUsername(conversationDTO.getFromUserName());
             conversation.setFromUserId(userInfo.getId());
-        }else {
+        } else {
             conversation.setFromUserId(user.getId());
         }
         conversation.setToUserId(conversationDTO.getToUserId());
+        conversation.setStatus(ConversationStatusEnum.NORMAL.getValue());
         int insert = baseMapper.insert(conversation);
-        return insert>0;
+        return insert > 0;
     }
 
     @Override
@@ -171,7 +177,18 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         conversation.setId(conversationId);
         conversation.setStatus(ConversationStatusEnum.DELETE.getValue());
         int i = baseMapper.updateById(conversation);
-        return i>0;
+        SessionManager sessionManager = SessionManager.getInstance();
+        Session session = sessionManager.getSession(conversationId);
+        try {
+            if (session != null) {
+                Integer visitorId = session.getVisitorId();
+                //通知访客会话已结束
+                ChannelUtil.getChannel(visitorId).writeAndFlush(new endConversationResponsePacket(conversationId, true));
+            }
+        } catch (Exception e) {
+            new ApplicationException("访客不在线");
+        }
+        return i > 0;
     }
 
     @Override
@@ -182,7 +199,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         Map<Integer, Session> allSession = sessionManager.getAllSession();
         onlineSessionVO.setCountSession(allSession.size());
         //把 allSession 组合成onlineSessionVos
-        allSession.forEach((k,v)->{
+        allSession.forEach((k, v) -> {
             ServerToCustomersVO serverToCustomersVO = new ServerToCustomersVO();
             User visitor = usercenterClient.getById(v.getVisitorId());
             User server = usercenterClient.getById(v.getServerId());
@@ -208,13 +225,13 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public  List<ConversationStateVO>  getConversationStateVO(TimeQuery timeQuery) {
+    public List<ConversationStateVO> getConversationStateVO(TimeQuery timeQuery) {
         LambdaQueryWrapper<Conversation> conversationLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        conversationLambdaQueryWrapper.le(Conversation::getCreatedAt,timeQuery.getEndTime());
-        conversationLambdaQueryWrapper.ge(Conversation::getCreatedAt,timeQuery.getStartTime());
+        conversationLambdaQueryWrapper.le(Conversation::getCreatedAt, timeQuery.getEndTime());
+        conversationLambdaQueryWrapper.ge(Conversation::getCreatedAt, timeQuery.getStartTime());
         List<Conversation> conversations = conversationMapper.selectList(conversationLambdaQueryWrapper);
         ResultVo response = usercenterClient.getUserByRole(RoleEnum.SERVER.getLevel());
-        List<User> userServer = (List<User>)response.getData();
+        List<User> userServer = (List<User>) response.getData();
 
         //把userServer转成按照id为键的map
         Map<Integer, User> userServerMap = userServer.stream().collect(Collectors.toMap(User::getId, user -> user));
@@ -222,11 +239,11 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         //把conversations按照to_user_id和created_at分组
         Map<String, Map<Integer, Long>> collect = conversations.stream()
                 .collect(Collectors.groupingBy(item -> DateToolUtil.getWeekStringByDate(item.getCreatedAt()),
-                Collectors.groupingBy(item -> item.getToUserId(), Collectors.counting())));
-        collect.forEach((k,v)->{
+                        Collectors.groupingBy(item -> item.getToUserId(), Collectors.counting())));
+        collect.forEach((k, v) -> {
             ConversationStateVO conversationStateVO = new ConversationStateVO();
             conversationStateVO.setDateString(k);
-            v.forEach((k1,v1)->{
+            v.forEach((k1, v1) -> {
                 ConversationStateVO.State state = new ConversationStateVO.State(userServerMap.get(k1).getNickname(), v1.intValue());
                 conversationStateVO.setStateByWeek(state);
             });

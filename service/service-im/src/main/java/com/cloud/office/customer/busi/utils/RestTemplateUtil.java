@@ -47,14 +47,13 @@ public class RestTemplateUtil {
         return restTemplate.exchange(USERCENTER_URL + "/user/findUserByUsername?username=" + username, HttpMethod.POST, new HttpEntity<>(headers), User.class).getBody();
     }
 
-    public Integer addUser(@RequestBody UserDto userDto) {
+    public void addUser(@RequestBody UserDto userDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 //        restTemplate.postForObject(USERCENTER_URL+"/user", userDto,null);
         Map<String, Object> body = restTemplate.exchange(USERCENTER_URL + "/user", HttpMethod.POST, new HttpEntity<>(userDto, headers), Map.class).getBody();
         LinkedHashMap<String, Object> data = (LinkedHashMap) body.get("data");
         Integer id = (Integer) data.get("id");
-        return id;
     }
 
     public User getById(Integer id) {

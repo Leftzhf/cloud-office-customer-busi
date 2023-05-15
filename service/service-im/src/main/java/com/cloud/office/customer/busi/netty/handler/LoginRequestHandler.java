@@ -83,7 +83,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             userDto.setUserInfo(user);
             userDto.setRoleNameEns(roleNameEns);
             // 新增用户
-            userId = restTemplateRemote.addUser(userDto);
+            restTemplateRemote.addUser(userDto);
         }else {
             userId = user.getId();
         }

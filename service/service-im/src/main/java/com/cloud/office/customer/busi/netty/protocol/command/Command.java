@@ -26,4 +26,6 @@ public interface Command {
 
     Short SECOND_HAND_SHAKE_RESPONSE = 6001;
 
+    Short END_CONVERSATION_RESPONSE = 7000;
+
 }

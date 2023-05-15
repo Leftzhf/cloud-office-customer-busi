@@ -10,8 +10,8 @@ import lombok.Getter;
 @Getter
 @JSONType(deserializer = EnumValueDeserializer.class, serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
 public enum ConversationStatusEnum  {
-    NORMAL(1, "正常"),
-    DELETE(0, "已删除");
+    NORMAL(1, "进行中"),
+    DELETE(0, "已结束");
 
     @EnumValue
     @JsonValue

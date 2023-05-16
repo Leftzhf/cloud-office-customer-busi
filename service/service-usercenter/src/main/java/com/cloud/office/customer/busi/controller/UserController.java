@@ -120,6 +120,11 @@ public class UserController {
         return ResultVo.success(userService.findUserPageList(userPageDto));
     }
 
+    @PostMapping("/list/server")
+    public ResultVo getUserPageServerList(@RequestBody UserPageDto userPageDto) {
+//        log.info("获取用户分页数据,{}", JSON.toJSONString(userPageDto));
+        return ResultVo.success(userService.findUserPageServerList(userPageDto));
+    }
     /**
      * 更新用户拥有的角色
      *

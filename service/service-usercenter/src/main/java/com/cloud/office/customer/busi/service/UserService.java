@@ -69,6 +69,8 @@ public interface UserService extends IService<User> {
      */
     PageVo<User> findUserPageList(UserPageDto userPageDto);
 
+    PageVo<User> findUserPageServerList(UserPageDto userPageDto);
+
     /**
      * 更新用户和角色的对应关系（设置用户拥有的角色）
      *
@@ -99,4 +101,6 @@ public interface UserService extends IService<User> {
     void deleteUserRoleRelation(Integer roleId);
 
     List<User> getUserByRole(Integer level);
+
+    List<User> getUserTeam(Integer teamId);
 }

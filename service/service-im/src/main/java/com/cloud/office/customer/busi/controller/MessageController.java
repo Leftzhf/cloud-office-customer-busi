@@ -41,9 +41,16 @@ public class MessageController {
     }
 
     @PostMapping("/recall")
-    @ApiOperation(value = "撤回(删除)消息")
+    @ApiOperation(value = "撤回 消息")
     public ResultVo RecallMessage(@RequestBody RecallMessageDto messageListDto) {
-        log.info("撤回消息数据,{}",messageListDto);
+        log.info("撤回 数据,{}",messageListDto);
         return ResultVo.success(messageService.RecallMessage(messageListDto));
+    }
+
+    @PostMapping("/delete/{id}")
+    @ApiOperation(value = "撤回(删除)消息")
+    public ResultVo deleteMessageById(@PathVariable Integer id) {
+        log.info("删除消息数据id,{}",id);
+        return ResultVo.success(messageService.deleteMessageById(id));
     }
 }

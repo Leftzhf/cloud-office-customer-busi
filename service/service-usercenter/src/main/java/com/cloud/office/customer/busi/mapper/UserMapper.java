@@ -21,6 +21,8 @@ public interface UserMapper extends BaseMapper<User> {
      */
     IPage<User> selectPageList(UserPageDto userPageDto);
 
+    IPage<User> selectPageServerList(UserPageDto userPageDto);
+
     /**
      * 查询用户
      * 结果集带用户团队信息

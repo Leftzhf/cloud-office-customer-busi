@@ -115,4 +115,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         PageVo<Message> pageVo = PageUtils.getPageVo(messageListPageDTO);
         return pageVo;
     }
+
+    @Override
+    public Boolean deleteMessageById(Integer id) {
+        return messageMapper.deleteById(id)>0;
+    }
 }

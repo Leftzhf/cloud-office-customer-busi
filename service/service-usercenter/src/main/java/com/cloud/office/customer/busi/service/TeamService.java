@@ -1,6 +1,7 @@
 package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cloud.office.customer.busi.service_usercenter.domain.vo.TeamInfoVo;
 import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
@@ -28,4 +29,6 @@ public interface TeamService extends IService<Team> {
     PageVo<Team> getTeamPageList(TeamPageDto teamPageDto);
 
     List<Team> getTeamList();
+
+    TeamInfoVo getTeamInfo(Integer teamId);
 }

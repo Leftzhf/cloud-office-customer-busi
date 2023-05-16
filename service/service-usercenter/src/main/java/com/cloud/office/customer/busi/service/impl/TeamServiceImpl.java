@@ -10,6 +10,7 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.TeamPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Team;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
+import com.cloud.office.customer.busi.service_usercenter.domain.vo.TeamInfoVo;
 import com.cloud.office.customer.busi.util.PageUtils;
 import com.cloud.office.customer.busi.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
@@ -70,5 +71,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
     public List<Team> getTeamList() {
         List<Team> teams = baseMapper.selectList(new LambdaQueryWrapper<>());
         return teams;
+    }
+
+    @Override
+    public TeamInfoVo getTeamInfo(Integer teamId) {
+        Team team = baseMapper.selectById(teamId);
+        List<User> userTeam = userService.getUserTeam(teamId);
+        TeamInfoVo teamInfoVo = new TeamInfoVo(team, userTeam);
+        return teamInfoVo;
     }
 }

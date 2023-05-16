@@ -54,6 +54,26 @@
     </where>
   </select>
 
+  <select id="selectPageServerList" resultMap="ExtUserRoleResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    <where>
+        nickname != '访客'
+      <if test="username != null and username != ''">
+        username=#{username,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null and email != ''">
+        and email=#{email,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and status=#{status,jdbcType=INTEGER}
+      </if>
+      <if test="teamId != null">
+        and team_id=#{teamId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
   <select id="selectById" resultMap="ExtUserRoleResultMap">
     select
     <include refid="Base_Column_List" />

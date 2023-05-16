@@ -25,4 +25,6 @@ public interface MessageService extends IService<Message> {
 
     PageVo<Message> findMessagePage(MessageListPageDTO messageListDto);
 
+    Boolean deleteMessageById(Integer id);
+
 }

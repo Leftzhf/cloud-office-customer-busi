@@ -1,6 +1,7 @@
 package com.cloud.office.customer.busi.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -206,6 +207,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return PageUtils.getPageVo(page);
     }
 
+    @Override
+    public PageVo<User> findUserPageServerList(UserPageDto userPageDto) {
+        IPage<User> page = baseMapper.selectPageServerList(userPageDto);
+        return PageUtils.getPageVo(page);
+    }
+
     /**
      * 更新用户和角色的对应关系（设置用户拥有的角色）
      *
@@ -286,6 +293,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> getUserByRole(Integer level) {
         List<User> users = userMapper.selectALLUserByRole(level);
+        return users;
+    }
+
+    @Override
+    public List<User> getUserTeam(Integer teamId) {
+        LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        userLambdaQueryWrapper.eq(User::getTeamId,teamId);
+        List<User> users = userMapper.selectList(userLambdaQueryWrapper);
         return users;
     }
 }

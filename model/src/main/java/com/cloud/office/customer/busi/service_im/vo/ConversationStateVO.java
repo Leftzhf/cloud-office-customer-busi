@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author ZuoHaoFan
  * @Description: new java files header..
@@ -13,16 +15,20 @@ import lombok.NoArgsConstructor;
 public class ConversationStateVO {
 
 
-    State stateByWeek;
+    //值对象
+    List<State> stateByWeek;
 
-    String dateString;
+    //周数
+    List<String> dateString;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
    public static class State {
+        //用户昵称
         String nickName;
 
-        Integer countConverSationState;
+        //访问次数list
+        List<Integer> countConverSationState;
     }
 }

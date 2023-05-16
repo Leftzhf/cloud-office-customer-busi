@@ -67,8 +67,16 @@ public class ConversationController {
 
     //获取客服咨询情况历史
     @PostMapping("/state")
-    @ApiOperation(value = "获取客服会话统计")
+    @ApiOperation(value = "获取客服会话折线图统计")
     public ResultVo getConversationState(@RequestBody TimeQuery timeQuery) {
         return ResultVo.success(conversationService.getConversationStateVO(timeQuery));
     }
+
+    //获取客服咨询情况历史
+    @PostMapping("/barState")
+    @ApiOperation(value = "获取客服会话饼图图统计")
+    public ResultVo getConversationBarState(@RequestBody TimeQuery timeQuery) {
+        return ResultVo.success(conversationService.getConverSationStateBarVos(timeQuery));
+    }
+
 }

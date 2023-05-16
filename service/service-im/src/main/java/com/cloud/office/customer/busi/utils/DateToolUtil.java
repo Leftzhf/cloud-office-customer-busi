@@ -12,6 +12,8 @@ import java.util.Date;
  */
 public class DateToolUtil {
 
+    //创建有个星期一，星期二..到星期日的列表
+    public static String[] sortedDaysOfWeek = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六","星期日"};
     public static String getWeekStringByDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

@@ -15,6 +15,7 @@ import com.cloud.office.customer.busi.service_im.dto.ConversationDTO;
 import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_im.entity.Session;
 import com.cloud.office.customer.busi.service_im.query.TimeQuery;
+import com.cloud.office.customer.busi.service_im.vo.ConverSationStateBarVO;
 import com.cloud.office.customer.busi.service_im.vo.ConversationStateVO;
 import com.cloud.office.customer.busi.service_im.vo.OnlineSessionVO;
 import com.cloud.office.customer.busi.service_im.vo.ServerToCustomersVO;
@@ -29,10 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -225,33 +223,90 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public List<ConversationStateVO> getConversationStateVO(TimeQuery timeQuery) {
+    public ConversationStateVO getConversationStateVO(TimeQuery timeQuery) {
         LambdaQueryWrapper<Conversation> conversationLambdaQueryWrapper = new LambdaQueryWrapper<>();
         conversationLambdaQueryWrapper.le(Conversation::getCreatedAt, timeQuery.getEndTime());
         conversationLambdaQueryWrapper.ge(Conversation::getCreatedAt, timeQuery.getStartTime());
+        //找出满足时间条件的会话
         List<Conversation> conversations = conversationMapper.selectList(conversationLambdaQueryWrapper);
+        Collections.sort(conversations, Comparator.comparing(Conversation::getCreatedAt).reversed());
         ResultVo response = usercenterClient.getUserByRole(RoleEnum.SERVER.getLevel());
+        //获取客服列表
         List<User> userServer = (List<User>) response.getData();
 
         //把userServer转成按照id为键的map
         Map<Integer, User> userServerMap = userServer.stream().collect(Collectors.toMap(User::getId, user -> user));
-        List<ConversationStateVO> conversationStateVOS = new ArrayList<>();
-        //把conversations按照to_user_id和created_at分组
+        //<日期，<客服id，会话次数>>的映射
         Map<String, Map<Integer, Long>> collect = conversations.stream()
                 .collect(Collectors.groupingBy(item -> DateToolUtil.getWeekStringByDate(item.getCreatedAt()),
                         Collectors.groupingBy(item -> item.getToUserId(), Collectors.counting())));
-        collect.forEach((k, v) -> {
-            ConversationStateVO conversationStateVO = new ConversationStateVO();
-            conversationStateVO.setDateString(k);
-            v.forEach((k1, v1) -> {
-                ConversationStateVO.State state = new ConversationStateVO.State(userServerMap.get(k1).getNickname(), v1.intValue());
-                conversationStateVO.setStateByWeek(state);
-            });
-            conversationStateVOS.add(conversationStateVO);
+         List<String> sortedWeeks = Arrays.asList( DateToolUtil.sortedDaysOfWeek);
+        Map<String, Map<Integer, Long>> sortedMap = new LinkedHashMap<>();
+        sortedWeeks.forEach(dayOfWeek ->{
+            if (collect.containsKey(dayOfWeek)) {
+                sortedMap.put(dayOfWeek, collect.get(dayOfWeek));
+            }
         });
-        //按照dateString升序
-        conversationStateVOS.sort(Comparator.comparing(ConversationStateVO::getDateString));
-        return conversationStateVOS;
+        //创建返回值对象
+        ConversationStateVO conversationStateVO = new ConversationStateVO();
+        //日期list
+        ArrayList<String> dateList = new ArrayList<>();
+        //值对象list
+        ArrayList<ConversationStateVO.State> stateList = new ArrayList<>();
+        sortedMap.forEach((date, map) -> {
+            dateList.add(date);
+            map.forEach((userId, count) -> {
+                String nickName = userServerMap.get(userId).getNickname();
+                //判断stateList里是否含有nickName的对象
+                boolean isContain = stateList.stream().anyMatch(item -> item.getNickName().equals(nickName));
+                if (isContain) {
+                    //如果含有，就获取这个对象
+                    ConversationStateVO.State state = stateList.stream().filter(item -> item.getNickName().equals(nickName)).findFirst().get();
+                    //添加到数组尾部
+                    state.getCountConverSationState().add(count.intValue());
+                } else {
+                    //如果不含有就新建一个值对象
+                    ConversationStateVO.State state = new ConversationStateVO.State();
+                    state.setNickName(nickName);
+                    ArrayList<Integer> countConverSationState = new ArrayList<>();
+                    countConverSationState.add(count.intValue());
+                    state.setCountConverSationState(countConverSationState);
+                    //添加进值对象list
+                    stateList.add(state);
+                }
+            });
+            //userServerMap里缺少的
+//            List<Integer> missList = map.keySet().stream().filter(key -> !userServerMap.containsKey(key)).collect(Collectors.toList());
+//            missList.forEach(item->{
+//
+//            });
+        });
+        conversationStateVO.setStateByWeek(stateList);
+        conversationStateVO.setDateString(dateList);
+
+        return conversationStateVO;
     }
 
+    @Override
+    public List<ConverSationStateBarVO> getConverSationStateBarVos(TimeQuery timeQuery) {
+        LambdaQueryWrapper<Conversation> conversationLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        conversationLambdaQueryWrapper.le(Conversation::getCreatedAt, timeQuery.getEndTime());
+        conversationLambdaQueryWrapper.ge(Conversation::getCreatedAt, timeQuery.getStartTime());
+        //找出满足时间条件的会话
+        List<Conversation> conversations = conversationMapper.selectList(conversationLambdaQueryWrapper);
+        //获取客服列表
+        ResultVo response = usercenterClient.getUserByRole(RoleEnum.SERVER.getLevel());
+        List<User> userServer = (List<User>) response.getData();
+        //把userServer转成按照id为键的map
+        Map<Integer, User> userServerMap = userServer.stream().collect(Collectors.toMap(User::getId, user -> user));
+        Map<Integer, Long> collect = conversations.stream().collect(Collectors.groupingBy(item -> item.getToUserId(), Collectors.counting()));
+        List<ConverSationStateBarVO> converSationStateBarVOS = new ArrayList<>();
+        collect.forEach((userId, count) -> {
+            ConverSationStateBarVO converSationStateBarVO = new ConverSationStateBarVO();
+            converSationStateBarVO.setName(userServerMap.get(userId).getNickname());
+            converSationStateBarVO.setValue(count.intValue());
+            converSationStateBarVOS.add(converSationStateBarVO);
+        });
+        return converSationStateBarVOS;
+    }
 }

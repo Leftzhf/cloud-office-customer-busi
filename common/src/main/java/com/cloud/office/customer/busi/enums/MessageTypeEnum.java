@@ -16,7 +16,9 @@ public enum MessageTypeEnum {
      */
     SYSTEM(10000, "系统提示"),
     TEXT(1, "文字"),
-    IMAGE(2, "图片");
+    IMAGE(2, "图片"),
+    AUDIO(3, "音频"),
+    VIDEO(4,"视频");
 
 
     @EnumValue

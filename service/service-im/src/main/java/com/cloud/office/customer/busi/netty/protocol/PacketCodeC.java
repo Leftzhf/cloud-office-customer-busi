@@ -2,10 +2,7 @@ package com.cloud.office.customer.busi.netty.protocol;
 
 import com.cloud.office.customer.busi.netty.protocol.command.Command;
 import com.cloud.office.customer.busi.netty.protocol.request.*;
-import com.cloud.office.customer.busi.netty.protocol.response.HeartBeatResponsePacket;
-import com.cloud.office.customer.busi.netty.protocol.response.LoginResponsePacket;
-import com.cloud.office.customer.busi.netty.protocol.response.LogoutResponsePacket;
-import com.cloud.office.customer.busi.netty.protocol.response.MessageResponsePacket;
+import com.cloud.office.customer.busi.netty.protocol.response.*;
 import com.cloud.office.customer.busi.netty.serialize.Serializer;
 import com.cloud.office.customer.busi.netty.serialize.impl.JSONSerializer;
 import com.cloud.office.customer.busi.netty.utils.AesEncryptUtil;
@@ -44,6 +41,7 @@ public class PacketCodeC {
         PACKET_TYPE_MAP.put(Command.HEART_BEAT_REQUEST, HeartBeatRequestPacket.class);
         PACKET_TYPE_MAP.put(Command.HEART_BEAT_RESPONSE, HeartBeatResponsePacket.class);
         PACKET_TYPE_MAP.put(Command.SECOND_HAND_SHAKE_REQUEST, SecondHandShakeRequestPacket.class);
+        PACKET_TYPE_MAP.put(Command.END_CONVERSATION_RESPONSE, endConversationResponsePacket.class);
 
         SERIALIZER_MAP = new HashMap<>();
         Serializer serializer = new JSONSerializer();

@@ -25,7 +25,7 @@
 
   <sql id="Base_Column_List">
     <!--@sql select -->
-    id, from_user_id, to_user_id, unread_count, last_message_id, created_at, updated_at
+    id, from_user_id, to_user_id, unread_count, last_message_id, status,created_at, updated_at
     <!--@sql from tb_conversation-->
   </sql>
 

@@ -4,6 +4,7 @@ package com.cloud.office.customer.busi.controller;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.service.ConversationService;
 import com.cloud.office.customer.busi.service_im.dto.ConversationDTO;
+import com.cloud.office.customer.busi.service_im.query.TimeQuery;
 import com.cloud.office.customer.busi.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +46,7 @@ public class ConversationController {
     public ResultVo getListOnlineServerByTeamId(@PathVariable Integer teamId) {
         return ResultVo.success(conversationService.getListOnlineServerByTeamId(teamId));
     }
-    @GetMapping("/list/online/user")
+    @GetMapping("/list/online/customer")
     @ApiOperation(value = "获取在线访客")
     public ResultVo getListOnlineCustomer() {
         return ResultVo.success(conversationService.getListOnlineCustomer());
@@ -56,4 +57,26 @@ public class ConversationController {
     public ResultVo updateConversationEnd(@PathVariable Integer conversationId) {
         return ResultVo.success(conversationService.updateConversationEnd(conversationId));
     }
+
+    //获取在线会话信息
+    @GetMapping("/online")
+    @ApiOperation(value = "获取在线会话")
+    public ResultVo getOnlineConversation() {
+        return ResultVo.success(conversationService.getOnlineSessionVos());
+    }
+
+    //获取客服咨询情况历史
+    @PostMapping("/state")
+    @ApiOperation(value = "获取客服会话折线图统计")
+    public ResultVo getConversationState(@RequestBody TimeQuery timeQuery) {
+        return ResultVo.success(conversationService.getConversationStateVO(timeQuery));
+    }
+
+    //获取客服咨询情况历史
+    @PostMapping("/barState")
+    @ApiOperation(value = "获取客服会话饼图图统计")
+    public ResultVo getConversationBarState(@RequestBody TimeQuery timeQuery) {
+        return ResultVo.success(conversationService.getConverSationStateBarVos(timeQuery));
+    }
+
 }

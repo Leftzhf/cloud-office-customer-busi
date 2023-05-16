@@ -120,6 +120,11 @@ public class UserController {
         return ResultVo.success(userService.findUserPageList(userPageDto));
     }
 
+    @PostMapping("/list/server")
+    public ResultVo getUserPageServerList(@RequestBody UserPageDto userPageDto) {
+//        log.info("获取用户分页数据,{}", JSON.toJSONString(userPageDto));
+        return ResultVo.success(userService.findUserPageServerList(userPageDto));
+    }
     /**
      * 更新用户拥有的角色
      *
@@ -149,5 +154,12 @@ public class UserController {
         log.info("获取请求头用户信息,userName:{}",userName);
         UserVo userVo = userService.findUserInfoByUsername(userName);
         return ResultVo.success(userVo);
+    }
+
+    @PostMapping("/getUserByRole")
+    public ResultVo getUserByRole(@RequestParam Integer level) {
+        log.info("获取角色用户,level:{}",level);
+        List<User> userByRole = userService.getUserByRole(level);
+        return ResultVo.success(userByRole);
     }
 }

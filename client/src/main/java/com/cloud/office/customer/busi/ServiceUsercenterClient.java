@@ -6,9 +6,12 @@ import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
 import com.cloud.office.customer.busi.vo.PageVo;
+import com.cloud.office.customer.busi.vo.ResultVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 /**
  * @author ZuoHaoFan
@@ -37,4 +40,7 @@ public interface ServiceUsercenterClient {
 
     @PostMapping("/list")
     PageVo<User> findUserPageList(@RequestBody UserPageDto userPageDto);
+
+    @PostMapping("/user/getUserByRole")
+    ResultVo<List<User>> getUserByRole(@RequestParam Integer level);
 }

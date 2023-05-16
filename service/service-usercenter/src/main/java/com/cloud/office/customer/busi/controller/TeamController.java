@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/team")
 @RestController
-@Tag(name = "TeamController", description = "团队接口")
+@Tag(name = "TeamController", description = "群组接口")
 public class TeamController {
 
     @Autowired
     private TeamService teamService;
 
     /**
-     * 新增团队
+     * 新增群组
      *
-     * @param team 团队信息
+     * @param team 群组信息
      * @return
      */
     @PostMapping
@@ -30,9 +30,9 @@ public class TeamController {
     }
 
     /**
-     * 删除团队
+     * 删除群组
      *
-     * @param teamId 团队编号
+     * @param teamId 群组编号
      * @return
      */
     @DeleteMapping("/{teamId}")
@@ -42,9 +42,9 @@ public class TeamController {
     }
 
     /**
-     * 更新团队信息
+     * 更新群组信息
      *
-     * @param team 团队信息
+     * @param team 群组信息
      * @return
      */
     @PutMapping
@@ -54,9 +54,9 @@ public class TeamController {
     }
 
     /**
-     * 获取团队信息
+     * 获取群组信息
      *
-     * @param teamId 团队编号
+     * @param teamId 群组编号
      * @return
      */
     @GetMapping("/{teamId}")
@@ -65,7 +65,7 @@ public class TeamController {
     }
 
     /**
-     * 分页查询团队列表
+     * 分页查询群组列表
      *
      * @param teamPageDto 分页查询条件
      * @return
@@ -77,5 +77,10 @@ public class TeamController {
     @PostMapping("/listinfo")
     public ResultVo getTeamList() {
         return ResultVo.success(teamService.getTeamList());
+    }
+
+    @GetMapping("/teamInfo/{teamId}")
+    public ResultVo getTeamInfo(@PathVariable Integer teamId) {
+        return ResultVo.success(teamService.getTeamInfo(teamId));
     }
 }

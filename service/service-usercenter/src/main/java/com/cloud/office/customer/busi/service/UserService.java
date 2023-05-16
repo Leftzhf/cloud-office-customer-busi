@@ -2,11 +2,11 @@ package com.cloud.office.customer.busi.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloud.office.customer.busi.exception.user.UserExistsException;
-import com.cloud.office.customer.busi.vo.PageVo;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserPageDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.service_usercenter.domain.vo.UserVo;
+import com.cloud.office.customer.busi.vo.PageVo;
 
 import java.util.List;
 
@@ -69,6 +69,8 @@ public interface UserService extends IService<User> {
      */
     PageVo<User> findUserPageList(UserPageDto userPageDto);
 
+    PageVo<User> findUserPageServerList(UserPageDto userPageDto);
+
     /**
      * 更新用户和角色的对应关系（设置用户拥有的角色）
      *
@@ -97,4 +99,8 @@ public interface UserService extends IService<User> {
      * @param roleId 角色编号
      */
     void deleteUserRoleRelation(Integer roleId);
+
+    List<User> getUserByRole(Integer level);
+
+    List<User> getUserTeam(Integer teamId);
 }

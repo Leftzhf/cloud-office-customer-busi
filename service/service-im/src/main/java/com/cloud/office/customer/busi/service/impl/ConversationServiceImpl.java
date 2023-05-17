@@ -7,6 +7,7 @@ import com.cloud.office.customer.busi.enums.ConversationStatusEnum;
 import com.cloud.office.customer.busi.enums.RoleEnum;
 import com.cloud.office.customer.busi.exception.ApplicationException;
 import com.cloud.office.customer.busi.mapper.ConversationMapper;
+import com.cloud.office.customer.busi.netty.protocol.response.CreateConversationResponsePacket;
 import com.cloud.office.customer.busi.netty.protocol.response.endConversationResponsePacket;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.netty.utils.SessionManager;
@@ -15,20 +16,20 @@ import com.cloud.office.customer.busi.service_im.dto.ConversationDTO;
 import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_im.entity.Session;
 import com.cloud.office.customer.busi.service_im.query.TimeQuery;
-import com.cloud.office.customer.busi.service_im.vo.ConverSationStateBarVO;
-import com.cloud.office.customer.busi.service_im.vo.ConversationStateVO;
-import com.cloud.office.customer.busi.service_im.vo.OnlineSessionVO;
-import com.cloud.office.customer.busi.service_im.vo.ServerToCustomersVO;
+import com.cloud.office.customer.busi.service_im.vo.*;
 import com.cloud.office.customer.busi.service_usercenter.domain.dto.UserDto;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.Role;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.utils.DateToolUtil;
 import com.cloud.office.customer.busi.utils.RestTemplateUtil;
+import com.cloud.office.customer.busi.utils.ServerDistributionUtil;
 import com.cloud.office.customer.busi.vo.ResultVo;
+import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,7 +73,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     public List<Conversation> selectListByUserIdRes(Integer userId) {
         List<Conversation> conversations = baseMapper.selectListByUserId(userId);
         conversations.forEach(item -> {
-            //todo 改成resttemplate请求
+            //改成resttemplate请求
             User fromUser = restTemplate.getUserById(item.getFromUserId());
             item.setFromUser(fromUser);
             User toUser = restTemplate.getUserById(item.getToUserId());
@@ -124,15 +125,71 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public Boolean createConversation(ConversationDTO conversationDTO) {
-        LambdaQueryWrapper<Conversation> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Conversation::getFromUserId, conversationDTO.getFromUserName());
-        queryWrapper.eq(Conversation::getToUserId, conversationDTO.getToUserId());
+    public ConversationDistributionVO getConversationDistributionVO(ConversationDTO conversationDTO) {
         Conversation conversation = new Conversation();
         //先判读发送用户是否存在，如果不存在则创建用户
         User user = usercenterClient.findByUsername(conversationDTO.getFromUserName());
         if (user == null) {
             user = new User();
+            user.setAvatar("https://leftelft-picgo-1312794111.cos.ap-guangzhou.myqcloud.com/img/u=699796558,3208220781&fm=253&fmt=auto&app=138&f=JPEG.webp");
+            user.setNickname("访客");
+            user.setUsername(conversationDTO.getFromUserName());
+            user.setTeamId(conversationDTO.getTeamID());
+            user.setPassword("123456");
+            List<String> roleNameEns = new ArrayList<>();
+            roleNameEns.add("ROLE_VISITOR");
+
+            UserDto userDto = new UserDto();
+            userDto.setUserInfo(user);
+            userDto.setRoleNameEns(roleNameEns);
+            // 新增用户
+            usercenterClient.addUser(userDto);
+            //获取用户关联权限信息
+            User userInfo = usercenterClient.findByUsername(conversationDTO.getFromUserName());
+            conversation.setFromUserId(userInfo.getId());
+        } else {
+            conversation.setFromUserId(user.getId());
+        }
+        // 获取在线客服列表,过滤掉访客用户,
+        List<User> listOnlineServer = getListOnlineServer();
+        //根据teamId获取对应产品线客服列表
+        List<User> teamServer = listOnlineServer.stream().filter(item -> {
+            return item.getTeamId().equals(conversationDTO.getTeamID());
+        }).collect(Collectors.toList());
+
+        if (CollectionUtils.isEmpty(teamServer)) {
+            log.info("分配失败,teamId={}的团队没有在线客服", user.getTeamId());
+            new ApplicationException("分配失败,teamId=" + user.getTeamId() + "的团队没有在线客服");
+        }
+        //通过客服分配模块分配一个在线客服
+        User Server = ServerDistributionUtil.getServerByPolling(teamServer);
+        conversation.setToUserId(Server.getId());
+        conversation.setStatus(ConversationStatusEnum.NORMAL.getValue());
+        //创建会话
+        int insert = baseMapper.insert(conversation);
+        // 构建返回值对象
+        ConversationDistributionVO conversationDistributionVO = new ConversationDistributionVO();
+        conversationDistributionVO.setConversationId(conversation.getId());
+        conversationDistributionVO.setServer(Server);
+        conversationDistributionVO.setVisitor(user);
+        //todo 通知客服更新会话-后续可以优化一下这个流程
+        Conversation conversationById = getConversationById(conversation.getId());
+        CreateConversationResponsePacket createConversationResponsePacket = new CreateConversationResponsePacket();
+        createConversationResponsePacket.setConversation(conversationById);
+        Channel channel = ChannelUtil.getChannel(conversationById.getToUserId());
+        channel.writeAndFlush(createConversationResponsePacket);
+        return conversationDistributionVO;
+    }
+
+    @Override
+    public Boolean createConversation(ConversationDTO conversationDTO) {
+        Conversation conversation = new Conversation();
+        //先判读发送用户是否存在，如果不存在则创建用户
+        User user = usercenterClient.findByUsername(conversationDTO.getFromUserName());
+        if (user == null) {
+            user = new User();
+            user.setAvatar("https://leftelft-picgo-1312794111.cos.ap-guangzhou.myqcloud.com/img/u=699796558,3208220781&fm=253&fmt=auto&app=138&f=JPEG.webp");
+            user.setNickname("访客");
             user.setUsername(conversationDTO.getFromUserName());
             user.setTeamId(conversationDTO.getTeamID());
             user.setPassword("123456");
@@ -153,6 +210,13 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         conversation.setToUserId(conversationDTO.getToUserId());
         conversation.setStatus(ConversationStatusEnum.NORMAL.getValue());
         int insert = baseMapper.insert(conversation);
+
+        //通知客服更新会话
+        Conversation conversationById = getConversationById(conversation.getId());
+        CreateConversationResponsePacket createConversationResponsePacket = new CreateConversationResponsePacket();
+        createConversationResponsePacket.setConversation(conversationById);
+        Channel channel = ChannelUtil.getChannel(conversationById.getToUserId());
+        channel.writeAndFlush(createConversationResponsePacket);
         return insert > 0;
     }
 
@@ -308,5 +372,15 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
             converSationStateBarVOS.add(converSationStateBarVO);
         });
         return converSationStateBarVOS;
+    }
+
+    @Override
+    public Conversation getConversationById(Integer conversationId) {
+        Conversation conversation = conversationMapper.selectById(conversationId);
+        User fromUser = usercenterClient.getUserById(conversation.getFromUserId());
+        User toUser = usercenterClient.getUserById(conversation.getToUserId());
+        conversation.setFromUser(fromUser);
+        conversation.setToUser(toUser);
+        return conversation;
     }
 }

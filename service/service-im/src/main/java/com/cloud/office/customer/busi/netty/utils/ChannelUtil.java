@@ -46,7 +46,7 @@ public class ChannelUtil {
     public static void unBindUser(Channel channel) {
         if (hasLogin(channel)) {
             log.info("移除【username:channel】映射,username={},channel={}", getUser(channel).getUsername(), channel.toString());
-            USER_ID_CHANNEL_MAP.remove(getUser(channel).getUsername());
+            USER_ID_CHANNEL_MAP.remove(getUser(channel).getId());
             channel.attr(Attributes.USER_ATTRIBUTE_KEY).set(null);
             channel.attr(Attributes.SECRET_KEY).set(null);
         }

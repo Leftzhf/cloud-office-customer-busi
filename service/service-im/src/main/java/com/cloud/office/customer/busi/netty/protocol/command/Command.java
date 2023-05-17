@@ -28,4 +28,6 @@ public interface Command {
 
     Short END_CONVERSATION_RESPONSE = 7000;
 
+    Short CREATE_CONVERSATION_RESPONSE = 8000;
+
 }

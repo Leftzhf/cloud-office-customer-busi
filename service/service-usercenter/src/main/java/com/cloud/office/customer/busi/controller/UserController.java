@@ -27,6 +27,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 非关联查询
+     *
+     * @param id id
+     * @return {@link User}
+     */
     @PostMapping ("/getById")
     User getByIdUser(@RequestParam Integer id){
         return userService.getById(id);
@@ -45,6 +51,13 @@ public class UserController {
         user.setNickname(registerUserDto.getNickname());
         userService.register(user);
     }
+
+    /**
+     * 关联查询
+     *
+     * @param userId 用户id
+     * @return {@link User}
+     */
     @GetMapping("/getUserById/{userId}")
     public User getUserById(@PathVariable Integer userId) {
         log.info("获取用户信息,userId={}", userId);

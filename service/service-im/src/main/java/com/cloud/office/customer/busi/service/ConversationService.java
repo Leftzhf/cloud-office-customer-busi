@@ -5,6 +5,7 @@ import com.cloud.office.customer.busi.service_im.dto.ConversationDTO;
 import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_im.query.TimeQuery;
 import com.cloud.office.customer.busi.service_im.vo.ConverSationStateBarVO;
+import com.cloud.office.customer.busi.service_im.vo.ConversationDistributionVO;
 import com.cloud.office.customer.busi.service_im.vo.ConversationStateVO;
 import com.cloud.office.customer.busi.service_im.vo.OnlineSessionVO;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
@@ -25,6 +26,9 @@ public interface ConversationService extends IService<Conversation> {
     List<Conversation> selectListByUserIdRes(Integer userId);
 
     Boolean createConversation(ConversationDTO conversationDTO);
+
+    ConversationDistributionVO getConversationDistributionVO(ConversationDTO conversationDTO);
+
     List<User> getListOnlineServer();
     List<User> getListOnlineServerByTeamId(Integer teamId);
 
@@ -40,6 +44,8 @@ public interface ConversationService extends IService<Conversation> {
 
 
     List<ConverSationStateBarVO> getConverSationStateBarVos(TimeQuery timeQuery);
+
+    Conversation getConversationById(Integer conversationId);
 
 
 }

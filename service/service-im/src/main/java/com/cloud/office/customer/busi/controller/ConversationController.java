@@ -24,6 +24,13 @@ public class ConversationController {
     @Autowired
     private ConversationService conversationService;
 
+    @PostMapping("/distribution")
+    @ApiOperation(value = "分配客服")
+    public ResultVo getConversationDistributionVO(@RequestBody ConversationDTO conversationDTO){
+        log.info("分配客服,username={}", conversationDTO.getFromUserName());
+        return ResultVo.success(conversationService.getConversationDistributionVO(conversationDTO));
+    }
+
     @PutMapping("/create")
     @ApiOperation(value = "创建会话")
     public ResultVo createConversation(@RequestBody ConversationDTO conversationDTO) {

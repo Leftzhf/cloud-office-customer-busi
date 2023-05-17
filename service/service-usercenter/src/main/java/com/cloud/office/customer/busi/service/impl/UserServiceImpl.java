@@ -261,7 +261,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userDto.getUserInfo() == null) {
             throw new RuntimeException("新增用户失败,user=" + userDto.getUserInfo());
         }
-
+        if (StringUtils.isBlank(userDto.getUserInfo().getPassword())){
+            userDto.getUserInfo().setPassword("123456");
+        }
         // 加密用户登录密码
         userDto.getUserInfo().setPassword(passwordEncoder.encode(userDto.getUserInfo().getPassword()));
         // 插入用户记录

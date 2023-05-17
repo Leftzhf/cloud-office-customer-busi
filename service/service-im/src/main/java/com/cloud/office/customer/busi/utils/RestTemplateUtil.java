@@ -52,8 +52,6 @@ public class RestTemplateUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 //        restTemplate.postForObject(USERCENTER_URL+"/user", userDto,null);
         Map<String, Object> body = restTemplate.exchange(USERCENTER_URL + "/user", HttpMethod.POST, new HttpEntity<>(userDto, headers), Map.class).getBody();
-        LinkedHashMap<String, Object> data = (LinkedHashMap) body.get("data");
-        Integer id = (Integer) data.get("id");
     }
 
     public User getById(Integer id) {

@@ -1,7 +1,6 @@
 package com.cloud.office.customer.busi.netty.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloud.office.customer.busi.ServiceUsercenterClient;
 import com.cloud.office.customer.busi.enums.MessageStatusEnum;
 import com.cloud.office.customer.busi.netty.protocol.request.MessageRequestPacket;
@@ -9,7 +8,6 @@ import com.cloud.office.customer.busi.netty.protocol.response.MessageResponsePac
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.service.ConversationService;
 import com.cloud.office.customer.busi.service.MessageService;
-import com.cloud.office.customer.busi.service_im.entity.Conversation;
 import com.cloud.office.customer.busi.service_im.entity.Message;
 import com.cloud.office.customer.busi.service_usercenter.domain.entity.User;
 import com.cloud.office.customer.busi.utils.RestTemplateUtil;
@@ -21,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * 消息转发请求逻辑处理器
@@ -107,22 +103,22 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         }
     }
 
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        log.info("断开连接");
-        //关闭会话
-        List<Integer> conversationIdList = ChannelUtil.getConversationId(ctx.channel());
-        conversationIdList.forEach(conversationId->{
-            ChannelUtil.unBindUser(ctx.channel());
-            //更新最后一条消息id
-            QueryWrapper<Message> wrapper = new QueryWrapper<>();
-            wrapper.select("max(id) as id");
-            wrapper.eq("conversation_id", conversationId);
-            Integer lastMessageId = messageService.getOne(wrapper).getId();
-            Conversation conversation = new Conversation();
-            conversation.setId(conversationId);
-            conversation.setLastMessageId(lastMessageId);
-            conversationService.updateById(conversation);
-        });
-    }
+//    @Override
+//    public void channelInactive(ChannelHandlerContext ctx) {
+//        log.info("断开连接");
+//        //关闭会话
+//        List<Integer> conversationIdList = ChannelUtil.getConversationId(ctx.channel());
+//        conversationIdList.forEach(conversationId->{
+//            ChannelUtil.unBindUser(ctx.channel());
+//            //更新最后一条消息id
+//            QueryWrapper<Message> wrapper = new QueryWrapper<>();
+//            wrapper.select("max(id) as id");
+//            wrapper.eq("conversation_id", conversationId);
+//            Integer lastMessageId = messageService.getOne(wrapper).getId();
+//            Conversation conversation = new Conversation();
+//            conversation.setId(conversationId);
+//            conversation.setLastMessageId(lastMessageId);
+//            conversationService.updateById(conversation);
+//        });
+//    }
 }

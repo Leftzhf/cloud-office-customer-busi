@@ -1,19 +1,26 @@
 package com.cloud.office.customer.busi.netty.handler;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cloud.office.customer.busi.netty.attribute.Attributes;
 import com.cloud.office.customer.busi.netty.protocol.request.SecondHandShakeRequestPacket;
 import com.cloud.office.customer.busi.netty.protocol.response.SecondHandShakeResponsePacket;
 import com.cloud.office.customer.busi.netty.utils.ChannelUtil;
 import com.cloud.office.customer.busi.netty.utils.SessionManager;
+import com.cloud.office.customer.busi.service.ConversationService;
+import com.cloud.office.customer.busi.service.MessageService;
+import com.cloud.office.customer.busi.service_im.entity.Conversation;
+import com.cloud.office.customer.busi.service_im.entity.Message;
 import com.cloud.office.customer.busi.service_im.entity.Session;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +32,10 @@ import java.util.Map;
 @ChannelHandler.Sharable
 @Component
 public class SecondHandShakeHandler extends SimpleChannelInboundHandler<SecondHandShakeRequestPacket> {
-
+    @Autowired
+    private MessageService messageService;
+    @Autowired
+    private ConversationService conversationService;
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SecondHandShakeRequestPacket secondHandShakeRequestPacket) throws Exception {
         log.info("第二次握手: 会话id{}",secondHandShakeRequestPacket.getSessionId());
@@ -72,8 +82,23 @@ public class SecondHandShakeHandler extends SimpleChannelInboundHandler<SecondHa
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         SessionManager sessionManager = SessionManager.getInstance();
+        List<Integer> conversationIdList = ChannelUtil.getConversationId(ctx.channel());
         //移除会话信息
         sessionManager.removeSession(ChannelUtil.getConversationId(ctx.channel()), ctx.channel());
+        //todo 通知后台下线
         log.info("会话断开！移除会话Session信息！");
+        //关闭会话
+        conversationIdList.forEach(conversationId->{
+            ChannelUtil.unBindUser(ctx.channel());
+            //更新最后一条消息id
+            QueryWrapper<Message> wrapper = new QueryWrapper<>();
+            wrapper.select("max(id) as id");
+            wrapper.eq("conversation_id", conversationId);
+            Integer lastMessageId = messageService.getOne(wrapper).getId();
+            Conversation conversation = new Conversation();
+            conversation.setId(conversationId);
+            conversation.setLastMessageId(lastMessageId);
+            conversationService.updateById(conversation);
+        });
     }
 }

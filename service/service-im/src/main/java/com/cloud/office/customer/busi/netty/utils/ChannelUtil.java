@@ -74,7 +74,7 @@ public class ChannelUtil {
 
     public static List<Integer> getConversationId(Channel channel) {
         Map<Integer, Session> integerSessionMap = channel.attr(Attributes.CONVERSATION_ATTRIBUTE_KEY).get();
-        //返回integerSessionMap的键组成的list
+        //返回integerSessionMap的键组成的list,即会话id
         List<Integer> collect = integerSessionMap.keySet().stream().collect(Collectors.toList());
         return collect;
     }

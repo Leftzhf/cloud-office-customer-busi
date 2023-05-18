@@ -244,8 +244,11 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         try {
             if (session != null) {
                 Integer visitorId = session.getVisitorId();
+                Integer serverId = session.getServerId();
                 //通知访客会话已结束
                 ChannelUtil.getChannel(visitorId).writeAndFlush(new endConversationResponsePacket(conversationId, true));
+                //通知客服会话已结束
+                ChannelUtil.getChannel(serverId).writeAndFlush(new endConversationResponsePacket(conversationId, true));
             }
         } catch (Exception e) {
             new ApplicationException("访客不在线");
